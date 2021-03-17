@@ -4,9 +4,10 @@ import { userStateAction } from '../store/actions/user'
 import { RootState } from '../store'
 import { POST } from '../API'
 
+// Test component to ensure store state is updating correctly
 import C from '../components/c'
 
-const { REACT_APP_API_BASE_PATH: API_BASE_PATH, REACT_APP_API_DOMAIN: API_URL } = process.env;
+const { REACT_APP_API_DOMAIN: API_URL } = process.env;
 
 const UserSettings = () => {
     const dispatch = useDispatch();

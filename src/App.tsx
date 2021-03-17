@@ -1,11 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Provider } from 'react-redux';
+import { GlobalStyles } from './Styles';
+import store from './store';
+import Router from './layouts/router';
 
 function App() {
   return (
-    <div className="App">
-      <img src={logo} className="App-logo" alt="logo" />
-    </div>
+    <>
+      <GlobalStyles />
+      <Provider store={store}>
+        <div>
+          <Router />
+        </div>
+      </Provider>
+    </>
   );
 }
 

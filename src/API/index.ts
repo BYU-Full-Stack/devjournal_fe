@@ -1,6 +1,12 @@
 import axios from 'axios'
 
-export const defaultReqOptions = {
+type options = {
+    headers: {
+        'Content-Type': string,
+        'Authorization'?: string
+    };
+}
+export const defaultReqOptions: options = {
     headers: {
         'Content-Type': 'application/json'
     },
@@ -26,12 +32,12 @@ export const PUT = async (url = "", body = {}, options = defaultReqOptions) => {
     }
 };
 
-export const GET = async (url = "") => {
+export const GET = async (url = "", options = defaultReqOptions) => {
     try {
-        return await axios.get(url);
+        return await axios.get(url, options);
     } catch (err) {
         //    TODO: handle errors better than this
-        console.log(err);
+        console.log(err.toString());
         throw err;
     }
 };

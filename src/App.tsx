@@ -1,17 +1,19 @@
-import React from 'react';
 import { Provider } from 'react-redux';
 import { GlobalStyles } from './Styles';
 import store from './store';
-import Router from './layouts/router';
+import Nav from './layouts/Nav';
+import Pages from './layouts/Pages'
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
     <>
       <GlobalStyles />
       <Provider store={store}>
-        <div>
-          <Router />
-        </div>
+        <Router>
+          <Nav />
+          <Pages />
+        </Router>
       </Provider>
     </>
   );

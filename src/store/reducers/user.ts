@@ -1,13 +1,19 @@
 import { USER_STATE } from '../actions/user'
 
 export type USER_STATE_TYPE = {
-    username: string;
-    token: string;
+    username?: string;
+    token?: string;
+    email?: string;
+    created_date?: string;
+    user_id?: string;
 };
 
-const userState = {
+const userState: USER_STATE_TYPE = {
     username: '',
-    token: ''
+    token: '',
+    email: '',
+    created_date: '',
+    user_id: ''
 };
 
 type ACTION_TYPE = {

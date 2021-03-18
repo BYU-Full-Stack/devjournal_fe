@@ -1,6 +1,6 @@
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 
-const theme = {
+export const theme = {
     'bg-dark': '#212121',
     'black': '#121212',
     'purple': '#bf91f6',
@@ -17,11 +17,27 @@ const theme = {
 }
 
 export const GlobalStyles = createGlobalStyle`
-    html {
-        height: 100%;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+            // font-family: 'Open Sans', sans-serif;
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;800&family=Roboto+Mono:wght@200&display=swap');
+            // font-family: 'Roboto Mono', monospace;
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;800&family=Roboto+Mono:wght@200&family=Ubuntu:wght@500&display=swap');
+            // font-family: 'Ubuntu', sans-serif;
 
     body {
         background-color: ${theme['bg-dark']};
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    html, body {
+        min-height: 100% !important;
+        height: 100%;
+    }
+`;
+
+export const Navbar = styled.section`
+    div {
+        border-bottom: 3px ${theme['purple']} solid;
+        color: ${theme['purple']}
     }
 `;

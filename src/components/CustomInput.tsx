@@ -7,10 +7,11 @@ import { faEdit, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 type Props = {
     editableText: string;
     updateText: Function;
+    type?: string;
 };
 
 const Wrapper = styled.section`
-    input[type=text], span {
+    input[type=text],input[type=password], span {
         min-width: 300px;
     }
     span {
@@ -35,25 +36,35 @@ export const Span = styled.span`
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
 `;
 
-export default function C({ editableText = '', updateText }: Props) {
+export default function C({ editableText = '', updateText, type = 'text' }: Props) {
     const [isBeingEdited, setIsBeingEdited] = useState(false);
-
+    const [isFirstFocus, setIsFirstFocus] = useState(true);
+    const [toggleType, setToggleType] = useState(type);
     const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
         updateText(value)
+    };
+
+    const handleFocus = type === 'password' && isFirstFocus ? (() => { updateText(''); setIsFirstFocus(false); }) : () => undefined;
+    const toggleShowing = () => {
+        setToggleType(toggleType === 'password' ? 'text' : 'password');
     };
 
     return (
         <Wrapper>
             { isBeingEdited ?
                 <>
-                    <Input type='text' value={editableText} onChange={handleChange} />
-                    <Icon icon={faCheckCircle} onClick={setIsBeingEdited.bind(undefined, false)}></Icon>
+                    <section>
+                        <Input type={toggleType} value={editableText} onChange={handleChange} onFocus={handleFocus} />
+                        <Icon icon={faCheckCircle} onClick={setIsBeingEdited.bind(undefined, false)}></Icon>
+                    </section>
+                    {type === 'password' && !isFirstFocus && (<label>Show password<input type='checkbox' checked={toggleType === 'text'} onChange={toggleShowing} /></label>)}
                 </> :
                 <>
-                    <Span color="purple">{editableText}</Span>
+                    <Span color="purple">{editableText.length > 30 ? `${editableText.slice(0, 30)}...` : editableText}</Span>
                     <Icon size="2x" icon={faEdit} onClick={setIsBeingEdited.bind(undefined, true)} />
                 </>
             }
+
         </Wrapper>
     );
 };

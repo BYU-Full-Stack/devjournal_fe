@@ -2,7 +2,7 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import UserSettings from '../pages/user-settings'
+import UserSettings from '../pages/UserSettings'
 
 export default function Pages() {
     return (

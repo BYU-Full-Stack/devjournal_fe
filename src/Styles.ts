@@ -11,7 +11,7 @@ export const theme: { [key: string]: string } = {
     'blue-deep': '#4657ce',
     'blue-hover': '#a4ade9',
     'turq': '#21bdca',
-    'turq-hover': '#fe8062',
+    'turq-hover': '#b3eced',
     'red-deep': '#fc4422',
     'red-hover': '#fe8062',
     'white': '#f7f7f7'

@@ -11,7 +11,7 @@ import { FlexContainer, FlexCol, Button } from '../Styles'
 import { USER_STATE_TYPE } from '../store/reducers/user'
 
 
-const testUser = 'user2';
+const testUser = 'admin';
 const UserSettings = () => {
 
     const dispatch = useDispatch();
@@ -48,9 +48,7 @@ const UserSettings = () => {
             try {
                 // @ts-ignore
                 const user: USER_STATE_TYPE = await getUser(testUser, userState.token);
-                dispatch(
-                    userStateAction(user)
-                );
+                setUser(user);
             } catch (err) {
                 //    TODO: handle errors better than this
                 console.log(err);

@@ -30,6 +30,22 @@ export const getUser = async (username: string = '', token: string = '') => {
     }
 }
 
+export const getUsers = async (token: string = '') => {
+
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        // @ts-ignore
+        const { data: users = [] } = await GET(`${API_URL}${API_BASE}user/all`, customOptions);
+        return users;
+    } catch (err) {
+        //    TODO: handle errors better than this
+        console.log(err);
+        return [];
+    }
+}
+
 export const updateUser = async (user: USER_STATE_TYPE, token: string = '') => {
     const customOptions: typeof options = { ...options };
     customOptions.headers.Authorization = `Bearer ${token}`;

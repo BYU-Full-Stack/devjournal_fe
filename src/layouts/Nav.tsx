@@ -1,8 +1,8 @@
 import {
     Link
 } from "react-router-dom";
-import { FlexContainer, FlexCol, Button } from '../Styles'
-import { Navbar, theme } from '../Styles'
+import { FlexContainer, FlexCol } from '../Styles'
+import { theme } from '../Styles'
 import styled from 'styled-components'
 import logo from '../logo.svg';
 
@@ -43,7 +43,7 @@ export default function Nav() {
             <FlexCol>
                 <StyledLink to="/">Home</StyledLink>
                 <StyledLink to="/about">About</StyledLink>
-                <StyledLink to="/users">Users</StyledLink>
+                <StyledLink to="/user">Users</StyledLink>
             </FlexCol>
 
         </FlexContainer>

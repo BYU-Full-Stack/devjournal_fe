@@ -5,13 +5,14 @@ export type USER_STATE_TYPE = {
     password?: string;
     token?: string;
     email?: string;
+    role?: string;
     created_date?: string;
     user_id?: string;
 };
 
 const userState: USER_STATE_TYPE = {
     username: '',
-    token: '',
+    token: window.localStorage.getItem('token') || '',
     email: '',
     created_date: '',
     user_id: ''

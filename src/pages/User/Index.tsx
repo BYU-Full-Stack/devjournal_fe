@@ -1,39 +1,51 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { getUsers, useUser } from '../../API/AppLogic'
 
-import { getUsers } from '../../API/AppLogic'
-import { RootState } from '../../store'
-import { FlexCol, FlexContainer } from '../../Styles';
+import { USER_STATE_TYPE } from '../../store/reducers/user';
+import { FlexCol, FlexContainer, theme } from '../../Styles';
+import styled from 'styled-components'
+const StyledRow = styled(FlexContainer)`
+    border-radius: 3px;
+    border: 2px solid;
+    margin: 1em 1px;
+    padding: .75em 5px;
+    section {
+        margin: 1px 7px;
+    }
+`;
 
 export default function Users() {
     const [users, setUsers] = useState([]);
-    const userState = useSelector((state: RootState) => state.userReducer);
+    const [user] = useUser();
     useEffect(() => {
-        userState.token && (async function () {
+        user.token && (async function () {
             try {
-                const allUsers: [] = await getUsers(userState.token);
+                console.log('token', user.token)
+                const allUsers: [] = await getUsers(user.token);
                 setUsers(allUsers);
             } catch (err) {
                 //    TODO: handle errors better than this
                 console.log(err);
             }
         })();
-    });
+        // return () => setUsers([]);
+    }, [user.token]);
 
     return (
         <div>
             { users.length &&
-                users.map(({ user_id, username, email, password = '', role, created_date }, idx) => <div key={idx}>
-                    <FlexContainer>
-                        <FlexCol>{user_id}</FlexCol>
-                        <FlexCol>{username}</FlexCol>
-                        <FlexCol>{email}</FlexCol>
-                        <FlexCol>{password.slice(0, 20)}</FlexCol>
-                        <FlexCol>{role}</FlexCol>
-                        <FlexCol>{created_date}</FlexCol>
-                    </FlexContainer>
+                users.map((user, idx) => <div key={idx}>
+                    <UserRow {...user} />
                 </div>)
             }
         </div>
     );
 };
+
+const UserRow = ({ username, email, password = '', role, created_date }: USER_STATE_TYPE) =>
+    <StyledRow>
+        <FlexCol>{username}</FlexCol>
+        <FlexCol>{email}</FlexCol>
+        <FlexCol>{role}</FlexCol>
+        <FlexCol>{created_date}</FlexCol>
+    </StyledRow>;

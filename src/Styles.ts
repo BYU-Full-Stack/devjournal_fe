@@ -7,14 +7,15 @@ export const theme: { [key: string]: string } = {
     'orange-deep': '#fd8e32',
     'orange-hover': '#ffdcb7',
     'green-deep': '#00b589',
-    'green-hover': '#ffdcb7',
+    'green-hover': '#b5eadb',
     'blue-deep': '#4657ce',
     'blue-hover': '#a4ade9',
     'turq': '#21bdca',
     'turq-hover': '#b3eced',
     'red-deep': '#fc4422',
     'red-hover': '#fe8062',
-    'white': '#f7f7f7'
+    'white': '#f7f7f7',
+    'gray-light': '#e5e5e5'
 };
 
 export const GlobalStyles = createGlobalStyle`
@@ -59,6 +60,8 @@ export type StyleProps = {
     padding?: string;
     border?: string;
     hoverBorder?: string;
+    xOverflow?: string;
+    height?: string;
 };
 
 export const FlexContainer = styled.section`
@@ -67,12 +70,15 @@ export const FlexContainer = styled.section`
     flex-direction: ${(props: StyleProps) => props.direction || 'row'};
     margin: ${({ margin = '0' }: StyleProps) => margin};
     justify-content: ${({ justify = 'flex-start' }: StyleProps) => justify};
+    color: ${({ color = theme['white'] }: StyleProps) => color};
+    height: ${({ height = '100%' }: StyleProps) => height};
 `;
 
 export const FlexCol = styled.section`
     width: ${(props: StyleProps) => props.width || ''};
     justify-content: ${(props: StyleProps) => props.justify || 'flex-start'};
     maxWidth: ${({ maxWidth = '' }: StyleProps) => maxWidth};
+    margin: ${({ margin = 'none' }: StyleProps) => margin};
 `;
 
 export const Input = styled.input`  
@@ -117,5 +123,10 @@ export const Button = styled.button`
         const borderParts = hoverBorder.split(' ');
         return hoverBorder ? `${theme[borderParts[0]]} ${borderParts[1]} ${borderParts[2]}` : '';
     }}
+    }
+    :disabled {
+        border-color: ${theme['red-deep']};
+        color: ${theme['white']};
+        cursor: not-allowed;
     }
 `;

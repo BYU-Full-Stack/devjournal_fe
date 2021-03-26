@@ -18,17 +18,18 @@ export const theme: { [key: string]: string } = {
     'gray-light': '#e5e5e5'
 };
 
-export const GlobalStyles = createGlobalStyle`
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
-            // font-family: 'Open Sans', sans-serif;
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;800&family=Roboto+Mono:wght@200&display=swap');
-            // font-family: 'Roboto Mono', monospace;
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;800&family=Roboto+Mono:wght@200&family=Ubuntu:wght@500&display=swap');
-            // font-family: 'Ubuntu', sans-serif;
+export const GlobalStyles = createGlobalStyle`          
 
     body {
         background-color: ${theme['bg-dark']};
-        font-family: 'Roboto Mono', monospace;
+        // font-family: 'Playball', cursive;
+        // font-family: 'Dancing Script', cursive;
+        // font-family: 'Lobster', cursive;
+        font-family: 'Roboto', sans-serif;
+        // font-family: 'Satisfy', cursive;
+
+        // font-family: 'Ubuntu', sans-serif;
+        // font-family: 'Open Sans', sans-serif;
     }
 
     html, body {
@@ -104,6 +105,10 @@ export const H2 = styled.h2`
     display: ${({ display = 'block' }: StyleProps) => display}; 
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
     text-align: ${({ align = 'left' }: StyleProps) => align};
+`;
+
+export const PrettyH2 = styled(H2)`
+    font-family: 'Dancing Script', cursive;
 `;
 
 export const H3 = styled.h3`

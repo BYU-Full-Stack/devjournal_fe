@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { getUser, updateUser, login, useUser } from '../API/AppLogic'
-import { H2, H3 } from '../Styles'
+import { PrettyH2, H3 } from '../Styles'
 
 // Test component to ensure store state is updating correctly
 import CustomInput from '../components/CustomInput'
@@ -71,7 +71,7 @@ const UserSettings = () => {
                 console.log(err);
             }
         })();
-    }, []);
+    }, [setUser]);
 
     useEffect(() => {
         user.token && (async function () {
@@ -84,7 +84,7 @@ const UserSettings = () => {
                 console.log(err);
             }
         })();
-    }, [user.token]);
+    }, [user.token, setUser]);
 
     useEffect(() => setEditUser(user), [user])
 
@@ -113,8 +113,8 @@ const UserSettings = () => {
 
     return (
         <FlexContainer wrap="wrap" height="100%">
-            <LeftNav width='250px' maxWidth="5%">
-                <H2>Account Settings</H2>
+            <LeftNav width='250px'>
+                <PrettyH2>Account Settings</PrettyH2>
                 {fieldsToUpdate.map(({ label }, idx) => <div key={idx} onClick={() => changeUpdateField(idx)}>{label}</div>)}
             </LeftNav>
             <FlexCol margin="auto">

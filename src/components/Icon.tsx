@@ -18,7 +18,7 @@ type props = {
 
 type PointerElementProps = {
     vAlign?: string;
-    hColor?: string;
+    hcolor?: string;
     margin?: string;
     color?: string;
 };
@@ -30,11 +30,11 @@ const StyledIcon = styled(FontAwesomeIcon)`
     transition: color .3s ease-out;
     color: ${({ color = 'white' }: PointerElementProps) => theme[color]};
     &:hover {
-        color: ${({ hColor = 'orange-deep' }: PointerElementProps) => theme[hColor]};
+        color: ${({ hcolor = 'orange-deep' }: PointerElementProps) => theme[hcolor]};
     }
 `;
 
 
 export default function Icon({ icon, color = 'white', hColor = undefined, size = '2x', onClick = (() => null) }: props) {
-    return <StyledIcon hColor={hColor} icon={icon} color={color} size={size} onClick={onClick} />;
+    return <StyledIcon hcolor={hColor} icon={icon} color={color} size={size} onClick={onClick} />;
 };

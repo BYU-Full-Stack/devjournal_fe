@@ -43,7 +43,7 @@ export default function CustomInput({ myKey, editableText = '', type = 'text', h
     const [isBeingEdited, setIsBeingEdited] = useState(false);
     const [isFirstFocus, setIsFirstFocus] = useState(true);
     const [toggleType, setToggleType] = useState(type);
-    const displayText = (type === 'password' && isFirstFocus) ? editableText.slice(0, 30).replace(/./g, '&bull;') : '';
+    const displayText = (type === 'password') ? editableText.slice(0, 30).replace(/./g, '&bull;') : '';
 
     const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
         handleInputUpdate(value)
@@ -59,6 +59,7 @@ export default function CustomInput({ myKey, editableText = '', type = 'text', h
         setIsFirstFocus(true);
         setIsBeingEdited(false);
         setCanUserSave && setCanUserSave(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [myKey]);
 
     const toggleIsBeingEdited = () => {

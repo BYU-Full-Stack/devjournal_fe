@@ -4,7 +4,7 @@ import Icon from '../../components/Icon'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
 import { USER_STATE_TYPE } from '../../store/reducers/user';
-import { FlexCol, FlexContainer, theme, H2, H3 } from '../../Styles';
+import { FlexCol, FlexContainer, theme, PrettyH2, H3 } from '../../Styles';
 import styled from 'styled-components'
 
 const SharedFlexStyles = styled(FlexContainer)`
@@ -82,14 +82,14 @@ export default function Users() {
     return (
         <div style={{ marginBottom: '3rem' }}>
             <UsersContainer>
-                <H2 align="center">Admin Panel</H2><H3>{users.length} total users</H3>
+                <PrettyH2 align="center">Admin Panel</PrettyH2><H3>{users.length} total users</H3>
                 <StyledHeader>
                     <FlexCol maxWidth='1px'>{'#'}</FlexCol>
                     <FlexCol><Icon color="red-hover" hColor="red-hover" icon={faTrashAlt} ></Icon></FlexCol>
                     <FlexCol>Username</FlexCol>
                     <FlexCol>Email</FlexCol>
                     <FlexCol>Role</FlexCol>
-                    <FlexCol>User creation Date</FlexCol>
+                    <FlexCol>User Creation Date</FlexCol>
                 </StyledHeader>
                 {users.length > 0 &&
                     users.map((user, idx) =>

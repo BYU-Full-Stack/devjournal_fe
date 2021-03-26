@@ -3,6 +3,7 @@ import { USER_STATE_TYPE } from '../store/reducers/user'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store'
+import { useCallback } from 'react'
 import { userStateAction } from '../store/actions/user'
 const { REACT_APP_API_DOMAIN: API_URL, REACT_APP_API_BASE_PATH: API_BASE } = process.env;
 
@@ -81,13 +82,13 @@ export const useUser = () => {
     const userState = useSelector((state: RootState) => state.userReducer);
 
     const dispatch = useDispatch();
-    const setUser = (user: USER_STATE_TYPE) => {
+    const setUser = useCallback((user: USER_STATE_TYPE) => {
         if (user.token) {
             window.localStorage.setItem('token', user.token);
         }
         dispatch(
             userStateAction(user)
         );
-    }
+    }, [dispatch]);
     return [userState, setUser];
 }

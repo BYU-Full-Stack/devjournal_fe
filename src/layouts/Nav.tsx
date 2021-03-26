@@ -26,14 +26,15 @@ const StyledLink = styled(Link)`
 `;
 
 const LogoText = styled.h1`
+    font-family: 'Dancing Script', cursive;
     position: absolute;
     margin-top: -3em;
     top: 3.5em;
     text-align: center;
-    left: .2em;
+    left: .6em;
     color: ${theme['black']};
     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: ${theme['turq']};;
+    -webkit-text-stroke-color: ${theme['black']};;
 `;
 
 export default function Nav() {

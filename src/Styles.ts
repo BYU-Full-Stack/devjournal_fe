@@ -22,12 +22,13 @@ export const GlobalStyles = createGlobalStyle`
 
     body {
         background-color: ${theme['bg-dark']};
+        
+        font-family: 'Roboto', sans-serif;
+        // font-family: 'Satisfy', cursive;
         // font-family: 'Playball', cursive;
         // font-family: 'Dancing Script', cursive;
         // font-family: 'Lobster', cursive;
-        font-family: 'Roboto', sans-serif;
-        // font-family: 'Satisfy', cursive;
-
+        
         // font-family: 'Ubuntu', sans-serif;
         // font-family: 'Open Sans', sans-serif;
     }

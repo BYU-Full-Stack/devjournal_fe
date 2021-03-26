@@ -43,9 +43,9 @@ export const GET = async (url = "", options = defaultReqOptions) => {
 };
 
 
-export const DELETE = async (url = "") => {
+export const DELETE = async (url = "", options = defaultReqOptions) => {
     try {
-        return await axios.delete(url);
+        return await axios.delete(url, options);
     } catch (err) {
         //    TODO: handle errors better than this
         console.log(err);

@@ -12,6 +12,7 @@ type props = {
     icon: IconProp;
     color?: string;
     size?: SizeProp;
+    hColor?: string;
     onClick?: MouseEventHandler<any>;
 }
 
@@ -19,6 +20,7 @@ type PointerElementProps = {
     vAlign?: string;
     hColor?: string;
     margin?: string;
+    color?: string;
 };
 
 const StyledIcon = styled(FontAwesomeIcon)`
@@ -26,12 +28,13 @@ const StyledIcon = styled(FontAwesomeIcon)`
     vertical-align: ${({ vAlign = 'middle' }: PointerElementProps) => vAlign};
     margin: ${({ margin = '0 4px' }: PointerElementProps) => margin};
     transition: color .3s ease-out;
+    color: ${({ color = 'white' }: PointerElementProps) => theme[color]};
     &:hover {
         color: ${({ hColor = 'orange-deep' }: PointerElementProps) => theme[hColor]};
     }
 `;
 
 
-export default function Icon({ icon, color = 'white', size = '2x', onClick = (() => null) }: props) {
-    return <StyledIcon icon={icon} color={color} size={size} onClick={onClick} />;
+export default function Icon({ icon, color = 'white', hColor = undefined, size = '2x', onClick = (() => null) }: props) {
+    return <StyledIcon hColor={hColor} icon={icon} color={color} size={size} onClick={onClick} />;
 };

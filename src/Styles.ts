@@ -62,6 +62,7 @@ export type StyleProps = {
     hoverBorder?: string;
     xOverflow?: string;
     height?: string;
+    align?: string;
 };
 
 export const FlexContainer = styled.section`
@@ -77,7 +78,7 @@ export const FlexContainer = styled.section`
 export const FlexCol = styled.section`
     width: ${(props: StyleProps) => props.width || ''};
     justify-content: ${(props: StyleProps) => props.justify || 'flex-start'};
-    maxWidth: ${({ maxWidth = '' }: StyleProps) => maxWidth};
+    max-width: ${({ maxWidth = '' }: StyleProps) => maxWidth};
     margin: ${({ margin = 'none' }: StyleProps) => margin};
 `;
 
@@ -102,6 +103,7 @@ export const H1 = styled.h1`
 export const H2 = styled.h2`
     display: ${({ display = 'block' }: StyleProps) => display}; 
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
+    text-align: ${({ align = 'left' }: StyleProps) => align};
 `;
 
 export const H3 = styled.h3`

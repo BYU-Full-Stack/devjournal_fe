@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { theme, Input, StyleProps } from '../Styles'
 import Icon from './Icon'
 import { faEdit, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
-import { convertCompilerOptionsFromJson } from 'typescript'
 
 type Props = {
     myKey: number;

@@ -1,4 +1,4 @@
-import { POST, GET, defaultReqOptions as options, PUT } from './index'
+import { POST, GET, DELETE, defaultReqOptions as options, PUT } from './index'
 import { USER_STATE_TYPE } from '../store/reducers/user'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
@@ -31,6 +31,7 @@ export const getUser = async (username: string = '', token: string = '') => {
     } catch (err) {
         //    TODO: handle errors better than this
         console.log(err);
+        throw err;
     }
 }
 
@@ -58,7 +59,20 @@ export const updateUser = async (username: string, field: string, updatedUser: U
         await PUT(`${API_URL}${API_BASE}${username}/${field}`, updatedUser, customOptions);
     } catch (err) {
         //    TODO: handle errors better than this
+        throw err;
+    }
+};
+
+export const deleteUser = async (username: string, userId: string, token: string) => {
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        await DELETE(`${API_URL}${API_BASE}${username}/${userId}`, customOptions);
+    } catch (err) {
+        //    TODO: handle errors better than this
         console.log(err.response.data);
+        throw err;
     }
 };
 

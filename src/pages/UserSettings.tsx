@@ -3,7 +3,7 @@ import { getUser, updateUser, login, useUser } from '../API/AppLogic'
 import { PrettyH2, H3 } from '../Styles'
 
 // Test component to ensure store state is updating correctly
-import CustomInput from '../components/CustomInput'
+import ConfirmableInput from '../components/ConfirmableInput/ConfirmableInput'
 import { FlexContainer, FlexCol, Button, theme } from '../Styles'
 import styled from 'styled-components'
 import { USER_STATE_TYPE } from '../store/reducers/user'
@@ -119,7 +119,7 @@ const UserSettings = () => {
             </LeftNav>
             <FlexCol margin="auto">
                 <H3 display="inline">{fieldsToUpdate[indexOfUpdateField].label}:</H3>
-                <CustomInput
+                <ConfirmableInput
                     myKey={indexOfUpdateField}
                     setCanUserSave={setCanUserSave}
                     type={fieldsToUpdate[indexOfUpdateField].type ? fieldsToUpdate[indexOfUpdateField].type : 'text'}

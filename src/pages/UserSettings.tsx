@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { getUser, updateUser, login, useUser } from '../API/AppLogic'
+import { getUser, updateUser, login, useUser, useAlertBox } from '../API/AppLogic'
 import { PrettyH2, H3 } from '../Styles'
 
 // Test component to ensure store state is updating correctly
@@ -7,6 +7,8 @@ import ConfirmableInput from '../components/ConfirmableInput/ConfirmableInput'
 import { FlexContainer, FlexCol, Button, theme } from '../Styles'
 import styled from 'styled-components'
 import { USER_STATE_TYPE } from '../store/reducers/user'
+import { ALERT_STATE_TYPE } from '../store/reducers/alert'
+
 
 const LeftNav = styled(FlexCol)`
     height: 100%;
@@ -45,7 +47,10 @@ const LeftNav = styled(FlexCol)`
 
 const testUser = 'go';
 const UserSettings = () => {
-
+    const [alertState, setAlerts] = useAlertBox();
+    const addAlert = (alert: ALERT_STATE_TYPE) => {
+        setAlerts({ alerts: [...alertState.alerts, alert] });
+    };
     const saveButtonRef = useRef<HTMLButtonElement>(null)
 
     const [canUserSave, setCanUserSave] = useState(true);
@@ -66,9 +71,16 @@ const UserSettings = () => {
                     username: testUser,
                     token: auth.split(' ')[1]
                 });
+
             } catch (err) {
-                //    TODO: handle errors better than this
-                console.log(err);
+                const { message = 'Unable to login at this time.' } = err?.response?.data || {};
+
+                addAlert({
+                    key: 'login-attempt',
+                    text: message,
+                    timeout: 10,
+                    theme: 'error'
+                });
             }
         })();
     }, [setUser]);
@@ -80,8 +92,12 @@ const UserSettings = () => {
                 const apiUser: USER_STATE_TYPE = await getUser(testUser, user.token);
                 setUser(apiUser);
             } catch (err) {
-                //    TODO: handle errors better than this
-                console.log(err);
+                addAlert({
+                    key: 'get-user-attempt',
+                    text: 'Unable to retrieve user.',
+                    timeout: 10,
+                    theme: 'error'
+                });
             }
         })();
     }, [user.token, setUser]);
@@ -93,11 +109,22 @@ const UserSettings = () => {
             saveButtonRef!.current!.disabled = true;
             await updateUser(user.username, fieldsToUpdate[indexOfUpdateField].key, { ...editUser, username: user.username, updatedUsername: editUser.username });
 
+            // @ts-ignore
             setUser({ [fieldsToUpdate[indexOfUpdateField].key]: editUser[fieldsToUpdate[indexOfUpdateField].key] });
             saveButtonRef!.current!.disabled = false;
+            addAlert({
+                key: `update-${fieldsToUpdate[indexOfUpdateField].key}-attempt`,
+                text: `Successfully updated your ${fieldsToUpdate[indexOfUpdateField].key}`,
+                timeout: 4,
+                theme: 'success'
+            });
         } catch (err) {
-            //    TODO: handle errors better than this
-            console.log(err);
+            addAlert({
+                key: `failed-update-${fieldsToUpdate[indexOfUpdateField].key}-attempt`,
+                text: `Failed to update your ${fieldsToUpdate[indexOfUpdateField].key}`,
+                timeout: 10,
+                theme: 'error'
+            });
             saveButtonRef!.current!.disabled = false;
         }
     };
@@ -123,6 +150,7 @@ const UserSettings = () => {
                     myKey={indexOfUpdateField}
                     setCanUserSave={setCanUserSave}
                     type={fieldsToUpdate[indexOfUpdateField].type ? fieldsToUpdate[indexOfUpdateField].type : 'text'}
+                    // @ts-ignore
                     editableText={editUser[fieldsToUpdate[indexOfUpdateField].key]}
                     handleInputUpdate={handleUpdateTextInput} />
 

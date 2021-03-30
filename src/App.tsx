@@ -1,11 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
+import { Provider } from 'react-redux';
+import { GlobalStyles } from './Styles';
+import store from './store';
+import Nav from './layouts/Nav';
+import Pages from './layouts/Pages'
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <img src={logo} className="App-logo" alt="logo" />
-    </div>
+    <>
+      <GlobalStyles />
+      <Provider store={store}>
+        <Router>
+          <Nav />
+          <Pages />
+        </Router>
+      </Provider>
+    </>
   );
 }
 

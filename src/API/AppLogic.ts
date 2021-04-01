@@ -1,14 +1,13 @@
 import { POST, GET, DELETE, defaultReqOptions as options, PUT } from './index'
 import { USER_STATE_TYPE } from '../store/reducers/user'
-import { ALERT_STATE_TYPE, ALERTS_STATE_TYPE } from '../store/reducers/alert'
+import { ALERT_STATE_TYPE } from '../store/reducers/alert'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { RootState } from '../store'
 import { useCallback } from 'react'
 import { userStateAction } from '../store/actions/user'
-import { alertsStateAction } from '../store/actions/alert'
+import { addAlertAction } from '../store/actions/alert'
 const { REACT_APP_API_DOMAIN: API_URL, REACT_APP_API_BASE_PATH: API_BASE } = process.env;
-
 
 export const login = async (user: USER_STATE_TYPE) => {
     try {
@@ -72,17 +71,17 @@ export const deleteUser = async (username: string, userId: string, token: string
 };
 
 
-export const useAlertBox = (): [alertsState: ALERTS_STATE_TYPE, fun: Function] => {
+export const useAlertBox = (): [alertState: ALERT_STATE_TYPE[], fun: Function] => {
     const alertsState = useSelector((state: RootState) => state.alertsReducer);
 
     const dispatch = useDispatch();
-    const setAlerts = useCallback((alerts: ALERTS_STATE_TYPE) => {
+    const addAlert = useCallback((alert: ALERT_STATE_TYPE) => {
         dispatch(
-            alertsStateAction(alerts)
+            addAlertAction(alert)
         );
     }, [dispatch])
 
-    return [alertsState, setAlerts];
+    return [alertsState, addAlert];
 };
 
 export const useUser = (): [userState: USER_STATE_TYPE, fun: Function] => {

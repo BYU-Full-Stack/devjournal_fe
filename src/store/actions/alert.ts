@@ -1,7 +1,17 @@
-import { ALERTS_STATE_TYPE } from '../reducers/alert'
+import { ALERT_STATE_TYPE } from '../reducers/alert'
 
-export const ALERTS_STATE = "ALERTS_STATE";
+export const ADD_ALERT = "ADD_ALERT";
+export const GET_ALERTS = "GET_ALERTS";
+export const DELETE_ALERT = "DELETE_ALERT";
 
-export const alertsStateAction = (alertsState: ALERTS_STATE_TYPE) => {
-    return { type: ALERTS_STATE, alertsState };
+export const addAlertAction = (alert: ALERT_STATE_TYPE) => {
+    return { type: ADD_ALERT, alert };
 };
+
+export const getAlertsAction = () => {
+    return { type: GET_ALERTS }
+}
+
+export const deleteAlertAction = ({ key, alerts }: { key: string, alerts: ALERT_STATE_TYPE[] }) => {
+    return { type: DELETE_ALERT, key, alerts }
+}

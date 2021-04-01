@@ -45,12 +45,9 @@ const LeftNav = styled(FlexCol)`
     }
 `;
 
-const testUser = 'go';
+const testUser = 'admin';
 const UserSettings = () => {
-    const [alertState, setAlerts] = useAlertBox();
-    const addAlert = (alert: ALERT_STATE_TYPE) => {
-        setAlerts({ alerts: [...alertState.alerts, alert] });
-    };
+    const [, addAlert] = useAlertBox();
     const saveButtonRef = useRef<HTMLButtonElement>(null)
 
     const [canUserSave, setCanUserSave] = useState(true);
@@ -66,7 +63,7 @@ const UserSettings = () => {
     useEffect(() => {
         (async function () {
             try {
-                const auth = await login({ username: testUser, password: `passgo` });
+                const auth = await login({ username: testUser, password: `pass${testUser}` });
                 setUser({
                     username: testUser,
                     token: auth.split(' ')[1]
@@ -76,9 +73,9 @@ const UserSettings = () => {
                 const { message = 'Unable to login at this time.' } = err?.response?.data || {};
 
                 addAlert({
-                    key: 'login-attempt',
+                    key: `login-attempt-${new Date()}`,
                     text: message,
-                    timeout: 10,
+                    timeout: 7,
                     theme: 'error'
                 });
             }
@@ -93,9 +90,9 @@ const UserSettings = () => {
                 setUser(apiUser);
             } catch (err) {
                 addAlert({
-                    key: 'get-user-attempt',
+                    key: `get-user-attempt-${new Date()}`,
                     text: 'Unable to retrieve user.',
-                    timeout: 10,
+                    timeout: 7,
                     theme: 'error'
                 });
             }
@@ -113,16 +110,16 @@ const UserSettings = () => {
             setUser({ [fieldsToUpdate[indexOfUpdateField].key]: editUser[fieldsToUpdate[indexOfUpdateField].key] });
             saveButtonRef!.current!.disabled = false;
             addAlert({
-                key: `update-${fieldsToUpdate[indexOfUpdateField].key}-attempt`,
+                key: `update-${fieldsToUpdate[indexOfUpdateField].key}-attempt-${new Date()}`,
                 text: `Successfully updated your ${fieldsToUpdate[indexOfUpdateField].key}`,
                 timeout: 4,
                 theme: 'success'
             });
         } catch (err) {
             addAlert({
-                key: `failed-update-${fieldsToUpdate[indexOfUpdateField].key}-attempt`,
+                key: `failed-update-${fieldsToUpdate[indexOfUpdateField].key}-attempt-${new Date()}`,
                 text: `Failed to update your ${fieldsToUpdate[indexOfUpdateField].key}`,
-                timeout: 10,
+                timeout: 7,
                 theme: 'error'
             });
             saveButtonRef!.current!.disabled = false;

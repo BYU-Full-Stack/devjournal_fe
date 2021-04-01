@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from '../../Styles'
 
@@ -14,13 +15,15 @@ type AlertProps = {
 }
 
 type StyledAlertProps = {
+    visible?: boolean;
     top: string;
     themecol: string;
 }
 
 const StyledAlert = styled.div`
     position: absolute;
-    right: .5em;
+    transition: right .5s;
+    right: ${({ visible = false }: StyledAlertProps) => visible ? '.5em' : '-50em'};
     font-size: 14px;
     background-color: ${theme['bg-dark']};
     color: ${theme['white']};
@@ -29,6 +32,7 @@ const StyledAlert = styled.div`
     height: 50px;
     padding: 1em;
     border-radius: 3px;
+    z-index: 10;
 
     ${({ top = '' }: StyledAlertProps) => top && css`
             top: ${top};
@@ -41,10 +45,26 @@ const StyledAlert = styled.div`
 `;
 
 const Alert: React.FC<AlertProps> = ({ text, dismissable = true, dismiss, timeout = 4, top = '', theme = 'error' }) => {
-    setTimeout(dismiss, timeout * 1000);
-    return <StyledAlert top={top} themecol={theme}>
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        // set isVisible to true 100 milliseconds later to achieve css transition
+        setTimeout(() => setIsVisible(true), 100);
+
+        // Using setTimeout agaian to achieve css transition
+        setTimeout(() => setIsVisible(false), (timeout * 1000) - 200);
+        setTimeout(() => dismiss(), timeout * 1000);
+    }, []);
+
+    const hide = () => {
+        // Using setTimeout agaian to achieve css transition
+        setIsVisible(false);
+        setTimeout(dismiss, 100);
+    };
+
+    return <StyledAlert top={top} themecol={theme} visible={isVisible}>
         {text}
-        {dismissable && <Icon hcolor={theme === 'success' ? 'green-deep' : 'red-deep'} position="absolute" top="1px" right="1px" fontSize="18px" icon={faTimes} onClick={() => dismiss()} />}
+        {dismissable && <Icon hcolor={theme === 'success' ? 'green-deep' : 'red-deep'} position="absolute" top="1px" right="1px" fontSize="18px" icon={faTimes} onClick={hide} />}
     </StyledAlert>
 }
 

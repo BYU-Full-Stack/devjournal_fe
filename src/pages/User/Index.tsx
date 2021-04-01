@@ -6,7 +6,6 @@ import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import { USER_STATE_TYPE } from '../../store/reducers/user';
 import { FlexCol, FlexContainer, theme, PrettyH2, H3 } from '../../Styles';
 import styled from 'styled-components'
-import { ALERT_STATE_TYPE } from '../../store/reducers/alert';
 
 const SharedFlexStyles = styled(FlexContainer)`
     cursor: default;
@@ -48,11 +47,7 @@ const UsersContainer = styled.div`
 export default function Users() {
     const [users, setUsers] = useState<USER_STATE_TYPE[]>([]);
     const [user] = useUser();
-    const [alertState, setAlerts] = useAlertBox();
-
-    const addAlert = (alert: ALERT_STATE_TYPE) => {
-        setAlerts({ alerts: [...alertState.alerts, alert] });
-    };
+    const [, addAlert] = useAlertBox();
 
     useEffect(() => {
         user.token && (async function () {
@@ -61,9 +56,9 @@ export default function Users() {
                 setUsers(allUsers);
             } catch (err) {
                 addAlert({
-                    key: 'failed-users-retrieval',
+                    key: `failed-users-retrieval--${new Date()}`,
                     text: 'Failed to retrieve all users',
-                    timeout: 10,
+                    timeout: 7,
                     theme: 'error'
                 });
             }
@@ -75,17 +70,17 @@ export default function Users() {
             await deleteUser(username, user_id, user.token);
 
             addAlert({
-                key: `delete-user-${users[index].username}`,
+                key: `delete-user-${users[index].username}-${new Date()}`,
                 text: `Successfully deleted user with username '${users[index].username}'`,
-                timeout: 10,
+                timeout: 7,
                 theme: 'success'
             });
             setUsers([...users.slice(0, index), ...users.slice(index + 1)]);
         } catch (err) {
             addAlert({
-                key: `failed-delete-user-${users[index].username}`,
+                key: `failed-delete-user-${users[index].username}-${new Date()}`,
                 text: `Failed to delete user with username '${users[index].username}'`,
-                timeout: 10,
+                timeout: 7,
                 theme: 'error'
             });
         }

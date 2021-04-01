@@ -1,8 +1,4 @@
-import { ALERTS_STATE } from '../actions/alert'
-
-export type ALERTS_STATE_TYPE = {
-    alerts: ALERT_STATE_TYPE[];
-};
+import { ADD_ALERT, DELETE_ALERT } from '../actions/alert'
 
 export type ALERT_STATE_TYPE = {
     key: string;
@@ -12,19 +8,21 @@ export type ALERT_STATE_TYPE = {
     theme?: string;
 };
 
-const alertState: ALERTS_STATE_TYPE = {
-    alerts: []
-};
+const alertState: ALERT_STATE_TYPE[] = [];
 
 type ACTION_TYPE = {
     type: string;
-    alertsState: ALERTS_STATE_TYPE;
+    alert?: ALERT_STATE_TYPE;
+    alerts?: ALERT_STATE_TYPE[];
+    key?: string;
 };
 
 const alertReducer = (state = alertState, action: ACTION_TYPE) => {
     switch (action.type) {
-        case ALERTS_STATE:
-            return { ...state, ...action.alertsState };
+        case ADD_ALERT:
+            return [...state, action.alert];
+        case DELETE_ALERT:
+            return state.filter(({ key }: ALERT_STATE_TYPE) => key !== action.key)
         default:
             return state;
     }

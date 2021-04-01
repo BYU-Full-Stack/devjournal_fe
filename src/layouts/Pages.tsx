@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import Users from '../pages/User/Index'
 import UserSettings from '../pages/UserSettings'
+import Login from '../pages/login'
 
 export default function Pages() {
     return (
@@ -15,7 +16,7 @@ export default function Pages() {
                 <UserSettings />
             </Route>
             <Route path="/">
-                <UserSettings />
+                <Login />
             </Route>
         </Switch>
     );

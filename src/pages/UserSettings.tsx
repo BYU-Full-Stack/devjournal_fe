@@ -43,7 +43,7 @@ const LeftNav = styled(FlexCol)`
     }
 `;
 
-const testUser = 'go';
+const testUser = 'user1';
 const UserSettings = () => {
 
     const saveButtonRef = useRef<HTMLButtonElement>(null)
@@ -61,7 +61,7 @@ const UserSettings = () => {
     useEffect(() => {
         (async function () {
             try {
-                const auth = await login({ username: testUser, password: `passgo` });
+                const auth = await login({ username: testUser, password: `passuser1` });
                 setUser({
                     username: testUser,
                     token: auth.split(' ')[1]

@@ -44,7 +44,9 @@ export default function Nav() {
             <FlexCol>
                 <StyledLink to="/">Home</StyledLink>
                 <StyledLink to="/about">About</StyledLink>
-                <StyledLink to="/user">Users</StyledLink>
+                <StyledLink to="/journals">Journals</StyledLink>
+                <StyledLink to="/account">User Details</StyledLink>
+                <StyledLink to="/user">All Users</StyledLink>
             </FlexCol>
 
         </FlexContainer>

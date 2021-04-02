@@ -5,7 +5,7 @@ import {
 import Users from '../pages/User/Index'
 import UserSettings from '../pages/UserSettings'
 import Login from '../pages/login'
-import ListJournals from '../pages/Journal/ListJournals'
+import Journal from '../pages/Journal/Journal'
 
 export default function Pages() {
     return (
@@ -17,7 +17,7 @@ export default function Pages() {
                 <UserSettings />
             </Route>
             <Route path="/journals">
-                <ListJournals />
+                <Journal />
             </Route>
             <Route path="/">
                 <Login />

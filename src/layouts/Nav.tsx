@@ -1,8 +1,5 @@
-import {
-    Link
-} from "react-router-dom";
 import { FlexContainer, FlexCol } from '../Styles'
-import { theme } from '../Styles'
+import { theme, StyledLink } from '../Styles'
 import styled from 'styled-components'
 import logo from '../logo.svg';
 
@@ -10,19 +7,6 @@ const StyledLogo = styled.img`
     max-width: 50px;
     height: auto;
     margin: 4px;
-`;
-
-const StyledLink = styled(Link)`
-    display: inline-block;
-    color: inherit;
-    color: ${theme['turq']};
-    margin: 1em 1em 0 1em;
-    transition: border-bottom .5s;
-    &:hover {
-        color: ${theme['turq-hover']};
-        border-bottom: ${theme['orange-deep']} 4px solid;
-    }
-    text-decoration: none;
 `;
 
 const LogoText = styled.h1`
@@ -44,7 +28,9 @@ export default function Nav() {
             <FlexCol>
                 <StyledLink to="/">Home</StyledLink>
                 <StyledLink to="/about">About</StyledLink>
-                <StyledLink to="/user">Users</StyledLink>
+                <StyledLink to="/journals">Journals</StyledLink>
+                <StyledLink to="/account">User Details</StyledLink>
+                <StyledLink to="/user">All Users</StyledLink>
             </FlexCol>
 
         </FlexContainer>

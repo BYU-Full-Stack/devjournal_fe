@@ -1,7 +1,7 @@
 import { USER_STATE } from '../actions/user'
 
 export type USER_STATE_TYPE = {
-    username?: string;
+    username: string;
     password?: string;
     token?: string;
     email?: string;

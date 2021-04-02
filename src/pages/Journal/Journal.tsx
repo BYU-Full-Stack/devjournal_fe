@@ -10,7 +10,7 @@ import ListEntries from "./ListEntries";
 
 //////////////////  TYPES ///////////////////
 export type JournalType = {
-    id?: string,
+    id: string,
     name?: string,
     color?: string,
     dateCreated?: Date,

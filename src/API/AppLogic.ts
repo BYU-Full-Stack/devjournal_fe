@@ -92,6 +92,21 @@ export const getJournals = async (username: string, token: string = '') => {
     }
 }
 
+export const getEntries = async (username: string,journalId: string, token: string = '') => {
+
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        const { data: entries = [] } = await GET(`${API_URL}${API_BASE}${username}/${journalId}/entries`, customOptions);
+        return entries;
+    } catch (err) {
+        //    TODO: handle errors better than this
+        console.log(err);
+        return [];
+    }
+}
+
 export const useUser = () => {
     const userState = useSelector((state: RootState) => state.userReducer);
 

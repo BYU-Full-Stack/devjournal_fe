@@ -4,6 +4,8 @@ import {
 } from "react-router-dom";
 import Users from '../pages/User/Index'
 import UserSettings from '../pages/UserSettings'
+import Login from '../pages/login'
+import Journal from '../pages/Journal/Journal'
 
 export default function Pages() {
     return (
@@ -14,8 +16,11 @@ export default function Pages() {
             <Route path="/account">
                 <UserSettings />
             </Route>
+            <Route path="/journals">
+                <Journal />
+            </Route>
             <Route path="/">
-                <UserSettings />
+                <Login />
             </Route>
         </Switch>
     );

@@ -25,7 +25,7 @@ const UserSettings = () => {
     useEffect(() => {
         (async function () {
             try {
-                const auth = await login({ username: testUser, password: `passuser1` });
+                const auth = await login({ username: testUser, password: `passuser1` }) || '';
                 setUser({
                     username: testUser,
                     token: auth.split(' ')[1]
@@ -78,14 +78,15 @@ const UserSettings = () => {
     return (
         <FlexContainer wrap="wrap" height="100%">
             <LeftNav width='250px'>
-                <PrettyH2>Account Settings</PrettyH2>
-                {fieldsToUpdate.map(({ label }, idx) => <div key={idx} onClick={() => changeUpdateField(idx)}>{label}</div>)}
+                <PrettyH2 data-testid="page-title">Account Settings</PrettyH2>
+                {fieldsToUpdate.map(({ label }, idx) => <div key={idx} onClick={() => changeUpdateField(idx)} data-testid={`${label}-field-to-update`}>{label}</div>)}
             </LeftNav>
             <FlexCol margin="auto">
                 <H3 display="inline">{fieldsToUpdate[indexOfUpdateField].label}:</H3>
                 <CustomInput
                     myKey={indexOfUpdateField}
                     setCanUserSave={setCanUserSave}
+                    label={fieldsToUpdate[indexOfUpdateField].label}
                     type={fieldsToUpdate[indexOfUpdateField].type ? fieldsToUpdate[indexOfUpdateField].type : 'text'}
                     editableText={editUser[fieldsToUpdate[indexOfUpdateField].key]}
                     handleInputUpdate={handleUpdateTextInput} />
@@ -98,6 +99,7 @@ const UserSettings = () => {
                         border="transparent 2px solid"
                         hoverBorder="turq 2px solid"
                         disabled={canUserSave}
+                        data-testid="user-settings-save-btn"
                         onClick={updateUserSettings}
                     >Save</Button>
                 </FlexContainer>

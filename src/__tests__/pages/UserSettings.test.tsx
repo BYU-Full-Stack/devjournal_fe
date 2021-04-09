@@ -1,8 +1,59 @@
-// import { rest } from 'msw'
-// import { setupServer } from 'msw/node'
+import { rest } from 'msw'
+import { setupServer } from 'msw/node'
 import { render, fireEvent, waitFor, screen } from '../TestUtils/RenderWithRedux'
 import '@testing-library/jest-dom/extend-expect';
 import UserSettings from '../../pages/UserSettings'
+
+const updateTextInput = (field: string, value: string) => {
+    // @ts-ignore
+    const saveBtn: HTMLButtonElement = screen.getByTestId(/user-settings-save-btn/i);
+
+    // change from updating the username to viewing the user's email
+    fireEvent.click(screen.getByTestId(new RegExp(`${field}-field-to-update`, 'i')));
+
+    // make the editable text editable
+    fireEvent.click(screen.getByTestId(/toggle-custom-input/i));
+
+    // make sure the save btn is disabled
+    expect(saveBtn.disabled).toBe(true)
+
+    // update the user's email 
+    // @ts-ignore
+    const customInput: HTMLInputElement = screen.getByTestId(/^custom-input$/i);
+    fireEvent.change(customInput, { target: { value } });
+
+    // ensure the input change happened
+    expect(customInput.value).toEqual(value)
+
+    // confirm chanes & close the input 
+    fireEvent.click(screen.getByTestId(/toggle-custom-input/i));
+
+    // make sure the save btn is enabled again
+    expect(saveBtn.disabled).toBe(false)
+};
+
+const server = setupServer(
+    rest.post('/login', (req, res, ctx) => {
+        return res((res) => {
+            res.status = 200
+            res.headers.set('Authorization', 'token')
+            return res
+        })
+    }),
+    rest.get('/:username', (req, res, ctx) => {
+        console.log('username', req.params)
+        return res(
+            ctx.json({
+                title: 'Lord of the Rings',
+                author: 'J. R. R. Tolkien',
+            }),
+        )
+    })
+)
+
+beforeAll(() => server.listen())
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())
 
 const initialState = {
     userReducer: {
@@ -14,48 +65,18 @@ const initialState = {
     }
 };
 
-test('Renders page text', () => {
-    render(<UserSettings />, { initialState })
+test('Renders page text', async () => {
+    await waitFor(() => render(<UserSettings />, { initialState }));
     const PageTitle = screen.getByText(/Account Settings/i);
     expect(PageTitle).toBeInTheDocument();
 });
 
-// test('Updates redux username', () => {
-//     render(<UserSettings />, { initialState })
+test('Use the custom input to update the email', async () => {
+    await waitFor(() => render(<UserSettings />, { initialState }));
+    updateTextInput('email', 'newemail@gmail.com');
+});
 
-    // fireEvent.click(screen.getByText('Load Greeting'))
-
-    // await waitFor(() => screen.getByRole('heading'))
-
-    // expect(screen.getByRole('input')).toEqual('')
-    // expect(screen.getByRole('button')).toHaveAttribute('disabled')
-// })
-
-// const server = setupServer(
-//     rest.get('/greeting', (req, res, ctx) => {
-//         return res(ctx.json({ greeting: 'hello there' }))
-//     })
-// )
-
-// beforeAll(() => server.listen())
-// afterEach(() => server.resetHandlers())
-// afterAll(() => server.close())
-
-
-
-// test('handles server error', async () => {
-//     server.use(
-//         rest.get('/greeting', (req, res, ctx) => {
-//             return res(ctx.status(500))
-//         })
-//     )
-
-//     render(<UserSettings/>)
-
-//     fireEvent.click(screen.getByText('Load Greeting'))
-
-//     await waitFor(() => screen.getByRole('alert'))
-
-//     expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!')
-//     expect(screen.getByRole('button')).not.toHaveAttribute('disabled')
-// })
+test('Use the custom input to update the username', async () => {
+    await waitFor(() => render(<UserSettings />, { initialState }));
+    updateTextInput('username', 'adminuser');
+});

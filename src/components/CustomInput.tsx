@@ -78,10 +78,17 @@ export default function CustomInput({ myKey, label, editableText = '', type = 't
                         <Icon icon={faCheckCircle} onClick={toggleIsBeingEdited} testid="toggle-custom-input"></Icon>
                     </section>
 
-                    {type === 'password' && !isFirstFocus && (<label data-testid="show-password-label">Show password<input type='checkbox' checked={toggleType === 'text'} onChange={toggleShowing} data-testid="show-password-checkbox" /></label>)}
+                    {type === 'password' && !isFirstFocus &&
+                        (<label data-testid="show-password-label">Show password
+                            <input
+                                type='checkbox'
+                                checked={toggleType === 'text'}
+                                onChange={toggleShowing}
+                                data-testid="show-password-checkbox" /></label>)}
                 </> :
                 <>
                     {type === 'password' ?
+                        // show little password dots (when not being edited) instead of revealing the password  
                         <Span dangerouslySetInnerHTML={{ __html: displayText }} color="purple" data-testid="password-hidden-text"></Span>
                         :
                         <Span color="purple" data-testid="editable-text">{editableText.slice(0, 30)}</Span>

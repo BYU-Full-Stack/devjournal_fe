@@ -4,20 +4,20 @@ import { render, fireEvent, waitFor, screen } from '../TestUtils/RenderWithRedux
 import '@testing-library/jest-dom/extend-expect';
 import UserSettings from '../../pages/UserSettings'
 
-const updateTextInput = (field: string, value: string) => {
+const updateTextInput = async (field: string, value: string) => {
     // @ts-ignore
     const saveBtn: HTMLButtonElement = screen.getByTestId(/user-settings-save-btn/i);
 
-    // change from updating the username to viewing the user's email
+    // change to updating the desired field (email, username, or password)
     fireEvent.click(screen.getByTestId(new RegExp(`${field}-field-to-update`, 'i')));
 
-    // make the editable text editable
+    // make the display text editable
     fireEvent.click(screen.getByTestId(/toggle-custom-input/i));
 
     // make sure the save btn is disabled
     expect(saveBtn.disabled).toBe(true)
 
-    // update the user's email 
+    // update the user's data 
     // @ts-ignore
     const customInput: HTMLInputElement = screen.getByTestId(/^custom-input$/i);
     fireEvent.change(customInput, { target: { value } });
@@ -25,11 +25,14 @@ const updateTextInput = (field: string, value: string) => {
     // ensure the input change happened
     expect(customInput.value).toEqual(value)
 
-    // confirm chanes & close the input 
+    // confirm changes & close the input 
     fireEvent.click(screen.getByTestId(/toggle-custom-input/i));
 
     // make sure the save btn is enabled again
     expect(saveBtn.disabled).toBe(false)
+
+    // perform api save of changes
+    await waitFor(() => fireEvent.click(screen.getByTestId('user-settings-save-btn')));
 };
 
 const server = setupServer(
@@ -40,15 +43,24 @@ const server = setupServer(
             return res
         })
     }),
-    rest.get('/:username', (req, res, ctx) => {
-        console.log('username', req.params)
+    rest.get('/api/:username', (req, res, ctx) => {
         return res(
             ctx.json({
-                title: 'Lord of the Rings',
-                author: 'J. R. R. Tolkien',
+                email: 'go@go.gmail.com',
+                created_date: 'today',
+                user_id: '',
+                password: '',
             }),
         )
-    })
+    }),
+    rest.put('/api/:username/:field', (req, res, ctx) => {
+        const { username, field } = req.params || {};
+        return res((res) => {
+            res.status = 200
+            return res
+        })
+    }
+    )
 )
 
 beforeAll(() => server.listen())
@@ -73,10 +85,15 @@ test('Renders page text', async () => {
 
 test('Use the custom input to update the email', async () => {
     await waitFor(() => render(<UserSettings />, { initialState }));
-    updateTextInput('email', 'newemail@gmail.com');
+    await waitFor(() => updateTextInput('email', 'newemail@gmail.com'));
 });
 
 test('Use the custom input to update the username', async () => {
     await waitFor(() => render(<UserSettings />, { initialState }));
-    updateTextInput('username', 'adminuser');
+    await waitFor(() => updateTextInput('username', 'adminuser'));
+});
+
+test('Use the custom input to update the password', async () => {
+    await waitFor(() => render(<UserSettings />, { initialState }));
+    await waitFor(() => updateTextInput('password', 'new-password'));
 });

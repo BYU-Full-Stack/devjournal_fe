@@ -54,15 +54,15 @@ const UserSettings = () => {
 
     const updateUserSettings = async (value: Object) => {
         try {
-            saveButtonRef!.current!.disabled = true;
+            saveButtonRef!.current && (saveButtonRef!.current.disabled = true);
             await updateUser(user.username, fieldsToUpdate[indexOfUpdateField].key, { ...editUser, username: user.username, updatedUsername: editUser.username });
 
             setUser({ [fieldsToUpdate[indexOfUpdateField].key]: editUser[fieldsToUpdate[indexOfUpdateField].key] });
-            saveButtonRef!.current!.disabled = false;
+            saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
         } catch (err) {
             //    TODO: handle errors better than this
             console.log(err);
-            saveButtonRef!.current!.disabled = false;
+            saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
         }
     };
 

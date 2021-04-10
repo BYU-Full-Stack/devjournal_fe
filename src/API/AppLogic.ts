@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../store'
 import { useCallback } from 'react'
 import { userStateAction } from '../store/actions/user'
+import { JournalType } from '../pages/Journal/Journal'
 const { REACT_APP_API_DOMAIN: API_URL, REACT_APP_API_BASE_PATH: API_BASE } = process.env;
 
 
@@ -78,7 +79,6 @@ export const deleteUser = async (username: string, userId: string, token: string
 };
 
 export const getJournals = async (username: string, token: string = '') => {
-
     const customOptions: typeof options = { ...options };
     customOptions.headers.Authorization = `Bearer ${token}`;
 
@@ -92,7 +92,19 @@ export const getJournals = async (username: string, token: string = '') => {
     }
 }
 
-export const getEntries = async (username: string,journalId: string, token: string = '') => {
+export const updateJournal = async (username: string, token: string = '', updatedJournal: JournalType | undefined) => {
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        await PUT(`${API_URL}${API_BASE}${username}/journal`, updatedJournal, customOptions);
+    } catch (err) {
+        //    TODO: handle errors better than this
+        throw err;
+    }
+};
+
+export const getEntries = async (username: string,journalId: string | undefined, token: string = '') => {
 
     const customOptions: typeof options = { ...options };
     customOptions.headers.Authorization = `Bearer ${token}`;

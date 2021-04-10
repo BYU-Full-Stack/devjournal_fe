@@ -6,8 +6,8 @@ import { faEdit, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
 type Props = {
     myKey: number;
-    editableText: string;
-    handleInputUpdate: (input: string) => void;
+    editableText?: string;
+    handleInputUpdate: (input: string, key: number) => void;
     setCanUserSave?: (bool: boolean) => void;
     type?: string;
 };
@@ -34,7 +34,7 @@ const Wrapper = styled.section`
 `;
 
 export const Span = styled.span`
-    display: ${({ display = 'inline-block' }: StyleProps) => display}; 
+    display: ${({ display = 'inline-block' }: StyleProps) => display};
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
     x-overflow: ${({ xOverflow = 'auto' }: StyleProps) => xOverflow};
 `;
@@ -46,10 +46,10 @@ export default function CustomInput({ myKey, editableText = '', type = 'text', h
     const displayText = (type === 'password') ? editableText.slice(0, 30).replace(/./g, '&bull;') : '';
 
     const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-        handleInputUpdate(value)
+        handleInputUpdate(value, myKey)
     };
 
-    const handleFocus = type === 'password' && isFirstFocus ? (() => { handleInputUpdate(''); setIsFirstFocus(false); }) : () => undefined;
+    const handleFocus = type === 'password' && isFirstFocus ? (() => { handleInputUpdate('', myKey); setIsFirstFocus(false); }) : () => undefined;
     const toggleShowing = () => {
         setToggleType(toggleType === 'password' ? 'text' : 'password');
     };

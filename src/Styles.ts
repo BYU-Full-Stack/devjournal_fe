@@ -37,7 +37,7 @@ export const GlobalStyles = createGlobalStyle`
     html, body {
         min-height: 100% !important;
         height: 100%;
-
+        overflow-x: hidden;
     }
 
 `;

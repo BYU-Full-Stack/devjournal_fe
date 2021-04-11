@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 import { updateJournal, useUser } from "../../API/AppLogic";
@@ -6,14 +6,14 @@ import CustomInput from "../../components/CustomInput";
 import { Button, FlexCol, FlexContainer, H1, H3 } from "../../Styles";
 import { JournalType } from "./Journal";
 import Icon from "../../components/Icon";
+import { Link } from "react-router-dom";
 
 type Props = {
-    setIsBeingEdited: (bool: boolean) => void,
     journal?: JournalType,
     setJournals: Function,
 }
 
-const EditJournal = ({setIsBeingEdited, journal, setJournals = () => {} }: Props) => {
+const EditJournal = ({journal, setJournals = () => {} }: Props) => {
     const saveButtonRef = useRef<HTMLButtonElement>(null)
 
     const [canUserSave, setCanUserSave] = useState(true);
@@ -53,7 +53,7 @@ const EditJournal = ({setIsBeingEdited, journal, setJournals = () => {} }: Props
 
     return (
         <main>
-            <Button onClick={() => setIsBeingEdited(false)}>Back</Button>
+            <Link to="/journals"><Button>Back</Button></Link>
             <H1>Editing {journal?.name} Journal</H1>
             <FlexContainer wrap="wrap" height="100%">
                 <FlexCol margin="auto">

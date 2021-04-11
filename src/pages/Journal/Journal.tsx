@@ -21,7 +21,7 @@ export type JournalType = {
 }
 
 export type JournalArray = {
-    journals?: JournalType[],
+    journals: JournalType[],
     setJournals: Function,
 }
 
@@ -34,7 +34,7 @@ const Journal = () => {
         sensitive: true
     })
 
-    const [journals, setJournals] = useState([]);
+    const [journals, setJournals] = useState<JournalType[]>([]);
     const [user] = useUser();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -42,7 +42,7 @@ const Journal = () => {
         user.token && (async function () {
             try {
                 setIsLoading(true);
-                const allJournals: [] = await getJournals(user.username, user.token);
+                const allJournals: JournalType[] = await getJournals(user.username, user.token);
                 setJournals(allJournals);
                 setIsLoading(false);
             } catch (err) {

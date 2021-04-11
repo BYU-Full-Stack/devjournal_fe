@@ -1,11 +1,14 @@
-import { faEdit } from '@fortawesome/free-regular-svg-icons'
+import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
 import styled from 'styled-components';
 import { H1, theme, StyledLink } from './../../Styles';
 import Icon from '../../components/Icon'
 import {JournalType, JournalArray} from './Journal'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditJournal from './EditJournal';
+import { Link, useRouteMatch } from 'react-router-dom';
+import { RouteMatchType } from '../../Types';
+import DeleteJournal from './DeleteJournal';
 
 type CellType = {
     col: number;
@@ -15,7 +18,7 @@ type CellType = {
 //////////////////  STYLED COMPONENTS ///////////////////
 export const RowWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1fr 50% repeat(2, 2fr) 125px;
+    grid-template-columns: 1fr 50% repeat(2, 2fr) repeat(2, 125px);
 `;
 
 export const HeaderRow = styled(RowWrapper)`
@@ -45,15 +48,34 @@ const JournalLink = styled(StyledLink)`
 `;
 
 const ListJournals = (props: JournalArray) => {
-    const [isBeingEdited, setIsBeingEdited] = useState(false);
+    let editMatch: RouteMatchType | null;
+    editMatch = useRouteMatch({
+        path: "/journals/edit/:id",
+        strict: true,
+        sensitive: true
+    })
+
+    let deleteMatch: RouteMatchType | null;
+    deleteMatch = useRouteMatch({
+        path: "/journals/delete/:id",
+        strict: true,
+        sensitive: true
+    })
+
     const [journalBeingEdited, setJournalBeingEdited] = useState<JournalType>()
+    const [journalBeingDeleted, setJournalBeingDeleted] = useState<JournalType>()
 
-    const handleJournalEdit = (props: JournalType) => {
-        setJournalBeingEdited(props);
-        setIsBeingEdited(true);
-    }
+    useEffect(() => {
+        let journal : JournalType | undefined
+        journal = Object.values(props.journals).find((x: JournalType) => x?.id === editMatch?.params?.id);
+        setJournalBeingEdited(journal);
+    }, [editMatch, props.journals])
 
-
+    useEffect(() => {
+        let journal : JournalType | undefined
+        journal = Object.values(props.journals).find((x: JournalType) => x?.id === deleteMatch?.params?.id);
+        setJournalBeingDeleted(journal);
+    }, [deleteMatch, props.journals])
 
     const JournalRow = ({id, name, color, dateCreated, lastUpdated, user_id, idx}: JournalType) =>
         <RowWrapper>
@@ -64,13 +86,20 @@ const ListJournals = (props: JournalArray) => {
             <TableCell col={3}><br/>{dateCreated}</TableCell>
             <TableCell col={4}><br/>{lastUpdated}</TableCell>
             <TableCell col={5}>
-                <Icon size="2x" icon={faEdit} onClick={() => handleJournalEdit({idx, id, name, color, dateCreated, lastUpdated, user_id})} />
+                <Link to={`/journals/edit/${id}`}><Icon size="2x" icon={faEdit} /></Link>
+            </TableCell>
+            <TableCell col={6}>
+                <Link to={`/journals/delete/${id}`}><Icon size="2x" icon={faTrashAlt} /></Link>
             </TableCell>
         </RowWrapper>
 
-    if (isBeingEdited) {
+    if (journalBeingEdited) {
         return (
-            <EditJournal setIsBeingEdited={setIsBeingEdited} journal={journalBeingEdited} setJournals={props.setJournals} />
+            <EditJournal journal={journalBeingEdited} setJournals={props.setJournals} />
+        )
+    } else if (journalBeingDeleted) {
+        return (
+            <DeleteJournal journal={journalBeingDeleted} setJournals={props.setJournals} />
         )
     } else {
         return (
@@ -84,6 +113,7 @@ const ListJournals = (props: JournalArray) => {
                         <TableCell col={3}>Date Created</TableCell>
                         <TableCell col={4}>Last Updated</TableCell>
                         <TableCell col={5}>Edit Journal</TableCell>
+                        <TableCell col={6}>Delete Journal</TableCell>
                     </HeaderRow>
                     {props?.journals && props.journals.length > 0 &&
                         props.journals.map((journal, idx) =>

@@ -35,7 +35,6 @@ const EditJournal = ({setIsBeingEdited, journal, setJournals = () => {} }: Props
 
             setJournals((prevJournals: Array<Object>) => {
                 const {idx = 0} = journal || {};
-                console.log("prevJournals", prevJournals)
                 return (
                     [...prevJournals.slice(0, idx),
                      editJournal,

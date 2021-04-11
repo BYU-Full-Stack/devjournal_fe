@@ -3,9 +3,37 @@ import { faEdit } from '@fortawesome/free-regular-svg-icons'
 import styled from 'styled-components';
 import { H1, theme, StyledLink } from './../../Styles';
 import Icon from '../../components/Icon'
-import {JournalType, JournalArray, RowWrapper, HeaderRow, TableCell} from './Journal'
+import {JournalType, JournalArray} from './Journal'
 import { useState } from 'react';
 import EditJournal from './EditJournal';
+
+type CellType = {
+    col: number;
+    span?: number;
+}
+
+//////////////////  STYLED COMPONENTS ///////////////////
+export const RowWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 50% repeat(2, 2fr) 125px;
+`;
+
+export const HeaderRow = styled(RowWrapper)`
+    font-weight: bold;
+`;
+
+export const TableCell = styled.div`
+    grid-column: ${(props: CellType) => {
+        let span = props.span !== undefined ? props.span : 1;
+        return (
+            props.col + " / span " + span
+        )}
+    };
+    border: 2px solid ${theme['turq']};
+    color: ${theme['white']};
+    padding: 0.25em;
+    padding-left: 0.75em;
+`;
 
 const JournalLink = styled(StyledLink)`
     color: ${theme['white']};
@@ -21,7 +49,6 @@ const ListJournals = (props: JournalArray) => {
     const [journalBeingEdited, setJournalBeingEdited] = useState<JournalType>()
 
     const handleJournalEdit = (props: JournalType) => {
-        console.log("editing ", props);
         setJournalBeingEdited(props);
         setIsBeingEdited(true);
     }

@@ -127,6 +127,9 @@ export const useUser = () => {
         if (user.token) {
             window.localStorage.setItem('token', user.token);
         }
+        if (user.username) {
+            window.localStorage.setItem('username', user.username);
+        }
         dispatch(
             userStateAction(user)
         );

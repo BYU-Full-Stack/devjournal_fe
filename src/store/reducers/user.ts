@@ -11,7 +11,7 @@ export type USER_STATE_TYPE = {
 };
 
 const userState: USER_STATE_TYPE = {
-    username: '',
+    username: window.localStorage.getItem('username') || '',
     token: window.localStorage.getItem('token') || '',
     email: '',
     created_date: '',

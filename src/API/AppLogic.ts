@@ -90,7 +90,31 @@ export const getJournals = async (username: string, token: string = '') => {
         console.log(err);
         return [];
     }
-}
+};
+
+export const createJournal = async (username: string, createdJournal: JournalType, token: string = '') => {
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        await POST(`${API_URL}${API_BASE}${username}/journal`, createdJournal, customOptions);
+    } catch (err) {
+        //    TODO: handle errors better than this
+        console.log(err);
+    }
+};
+
+export const deleteJournal = async (username: string, journalId: string, token: string = '') => {
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        await DELETE(`${API_URL}${API_BASE}${username}/journal/${journalId}`, customOptions);
+    } catch (err) {
+        //    TODO: handle errors better than this
+        console.log(err);
+    }
+};
 
 export const updateJournal = async (username: string, token: string = '', updatedJournal: JournalType | undefined) => {
     const customOptions: typeof options = { ...options };

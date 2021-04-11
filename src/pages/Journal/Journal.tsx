@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Redirect, useRouteMatch } from "react-router-dom";
+import { Redirect, useHistory, useRouteMatch } from "react-router-dom";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 import { FlexContainer} from "../../Styles";
@@ -37,6 +37,7 @@ const Journal = () => {
     const [journals, setJournals] = useState<JournalType[]>([]);
     const [user] = useUser();
     const [isLoading, setIsLoading] = useState(true);
+    const routeHistory = useHistory();
 
     useEffect(() => {
         user.token && (async function () {
@@ -47,14 +48,11 @@ const Journal = () => {
                 setIsLoading(false);
             } catch (err) {
                 //    TODO: handle errors better than this
-                <Redirect push to={{
-                    pathname: "/error",
-                    state: { err: err }
-                  }}/>
+                routeHistory.push("/error");
                 console.log("error", err);
             }
         })();
-    }, [user.token, user.username]);
+    }, [routeHistory, user.token, user.username]);
 
     let journal : JournalType | undefined;
     journal = Object.values(journals).find((x: JournalType) => x?.id === match?.params?.id);

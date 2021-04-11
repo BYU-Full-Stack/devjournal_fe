@@ -1,7 +1,7 @@
 import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
 import styled from 'styled-components';
-import { H1, theme, StyledLink } from './../../Styles';
+import { H1, theme, StyledLink, Button } from './../../Styles';
 import Icon from '../../components/Icon'
 import {JournalType, JournalArray} from './Journal'
 import { useEffect, useState } from 'react';
@@ -13,6 +13,7 @@ import DeleteJournal from './DeleteJournal';
 type CellType = {
     col: number;
     span?: number;
+    border?: string;
 }
 
 //////////////////  STYLED COMPONENTS ///////////////////
@@ -32,7 +33,7 @@ export const TableCell = styled.div`
             props.col + " / span " + span
         )}
     };
-    border: 2px solid ${theme['turq']};
+    border: ${({ border = `2px solid ${theme['turq']}`}: CellType) => border};
     color: ${theme['white']};
     padding: 0.25em;
     padding-left: 0.75em;
@@ -106,7 +107,11 @@ const ListJournals = (props: JournalArray) => {
             <main>
                 <H1>Journals</H1>
                 <div>
-                    <TableCell col={1} span={6}>Journals</TableCell>
+                    <RowWrapper>
+                        <TableCell col={5} span={2} border={""}>
+                            <JournalLink to="/journals/create">Create New Journal</JournalLink>
+                        </TableCell>
+                    </RowWrapper>
                     <HeaderRow>
                         <TableCell col={1}></TableCell>
                         <TableCell col={2}>Journal Name</TableCell>

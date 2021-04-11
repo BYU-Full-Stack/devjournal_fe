@@ -16,10 +16,12 @@ export type JournalType = {
     dateCreated?: Date,
     lastUpdated?: Date,
     user_id?: string,
+    idx?: number,
 }
 
 export type JournalArray = {
     journals?: JournalType[],
+    setJournals: Function,
 }
 
 type CellType = {
@@ -81,7 +83,7 @@ const Journal = () => {
 
     if (journal === undefined) {
         return (
-            <ListJournals journals={journals}/>
+            <ListJournals setJournals={setJournals} journals={journals}/>
         )
     } else {
         return (

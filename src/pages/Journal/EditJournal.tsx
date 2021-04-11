@@ -1,22 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+
 import { updateJournal, useUser } from "../../API/AppLogic";
 import CustomInput from "../../components/CustomInput";
 import { Button, FlexCol, FlexContainer, H1, H3 } from "../../Styles";
 import { JournalType } from "./Journal";
+import Icon from "../../components/Icon";
 
 type Props = {
     setIsBeingEdited: (bool: boolean) => void,
     journal?: JournalType,
+    setJournals: Function,
 }
 
-const EditJournal = ({setIsBeingEdited, journal }: Props) => {
+const EditJournal = ({setIsBeingEdited, journal, setJournals = () => {} }: Props) => {
     const saveButtonRef = useRef<HTMLButtonElement>(null)
 
     const [canUserSave, setCanUserSave] = useState(true);
     const [user] = useUser();
+    const [isLoading, setIsLoading] = useState(false);
     const [editJournal, setEditJournal] = useState(journal)
-    console.log(editJournal)
     const fieldsToUpdate = ["name", "color"];
 
     const handleUpdateTextInput = (value: String, myKey: number) => {
@@ -25,14 +28,27 @@ const EditJournal = ({setIsBeingEdited, journal }: Props) => {
 
     const updateJournalDetails = async () => {
         try {
-            saveButtonRef!.current!.disabled = true;
+            saveButtonRef!.current && (saveButtonRef!.current.disabled = true);
+            //show loading
+            setIsLoading(true);
             await updateJournal(user.username, user.token, editJournal)
 
-            saveButtonRef!.current!.disabled = false;
+            setJournals((prevJournals: Array<Object>) => {
+                const {idx = 0} = journal || {};
+                console.log("prevJournals", prevJournals)
+                return (
+                    [...prevJournals.slice(0, idx),
+                     editJournal,
+                    ...prevJournals.slice(idx + 1)]
+                )
+            })
+            saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
+            //take off loading
+            setIsLoading(false);
         } catch (err) {
             //    TODO: handle errors better than this
             console.log(err);
-            saveButtonRef!.current!.disabled = false;
+            saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
         }
     }
 
@@ -66,6 +82,11 @@ const EditJournal = ({setIsBeingEdited, journal }: Props) => {
                             onClick={updateJournalDetails}
                         >Save</Button>
                     </FlexContainer>
+                    {(isLoading) &&
+                        <FlexContainer justify={"center"}>
+                            <Icon size={"4x"} icon={faSpinner} spin={true}></Icon>
+                        </FlexContainer>
+                    }
                 </FlexCol>
             </FlexContainer>
         </main>

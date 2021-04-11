@@ -26,7 +26,9 @@ const ListJournals = (props: JournalArray) => {
         setIsBeingEdited(true);
     }
 
-    const JournalRow = ({id, name, color, dateCreated, lastUpdated}: JournalType & { idx: number }) =>
+
+
+    const JournalRow = ({id, name, color, dateCreated, lastUpdated, user_id, idx}: JournalType) =>
         <RowWrapper>
             <TableCell col={1}><br/>{color}</TableCell>
             <TableCell col={2}>
@@ -35,13 +37,13 @@ const ListJournals = (props: JournalArray) => {
             <TableCell col={3}><br/>{dateCreated}</TableCell>
             <TableCell col={4}><br/>{lastUpdated}</TableCell>
             <TableCell col={5}>
-                <Icon size="2x" icon={faEdit} onClick={() => handleJournalEdit({id, name, color, dateCreated, lastUpdated})} />
+                <Icon size="2x" icon={faEdit} onClick={() => handleJournalEdit({idx, id, name, color, dateCreated, lastUpdated, user_id})} />
             </TableCell>
         </RowWrapper>
 
     if (isBeingEdited) {
         return (
-            <EditJournal setIsBeingEdited={setIsBeingEdited} journal={journalBeingEdited}/>
+            <EditJournal setIsBeingEdited={setIsBeingEdited} journal={journalBeingEdited} setJournals={props.setJournals} />
         )
     } else {
         return (

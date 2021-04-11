@@ -14,6 +14,7 @@ type props = {
     size?: SizeProp;
     hColor?: string;
     onClick?: MouseEventHandler<any>;
+    spin?: boolean;
 }
 
 type PointerElementProps = {
@@ -35,6 +36,6 @@ const StyledIcon = styled(FontAwesomeIcon)`
 `;
 
 
-export default function Icon({ icon, color = 'white', hColor = undefined, size = '2x', onClick = (() => null) }: props) {
-    return <StyledIcon hcolor={hColor} icon={icon} color={color} size={size} onClick={onClick} />;
+export default function Icon({ icon, color = 'white', hColor = undefined, size = '2x', onClick = (() => null), spin = false }: props) {
+    return <StyledIcon hcolor={hColor} icon={icon} color={color} size={size} onClick={onClick} spin={spin}/>;
 };

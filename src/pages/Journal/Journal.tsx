@@ -25,7 +25,7 @@ export type JournalArray = {
     setJournals: Function,
 }
 
-//////////////////  FUNCTION ///////////////////
+//////////////////  COMPONENT ///////////////////
 const Journal = () => {
     let match: RouteMatchType | null;
     match = useRouteMatch({

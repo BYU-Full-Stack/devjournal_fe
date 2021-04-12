@@ -7,6 +7,8 @@ import { JournalType } from './Journal';
 import Icon from "../../components/Icon";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
+//////////////////  TYPES ///////////////////
+
 type EntryType = {
   id: string;
   journalId: string;
@@ -17,9 +19,13 @@ type EntryType = {
   lastUpdated: Date;
 };
 
+//////////////////  STYLED COMPONENTS ///////////////////
+
 const SmallText = styled.span`
   font-size: 12px;
 `;
+
+//////////////////  COMPONENT ///////////////////
 
 const ListEntries = (props: JournalType) => {
   const [entries, setEntries] = useState<EntryType[]>([]);

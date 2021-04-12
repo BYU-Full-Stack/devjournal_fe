@@ -1,7 +1,7 @@
 import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
 import styled from 'styled-components';
-import { H1, theme, StyledLink, Button } from './../../Styles';
+import { H1, theme, StyledLink } from './../../Styles';
 import Icon from '../../components/Icon'
 import {JournalType, JournalArray} from './Journal'
 import { useEffect, useState } from 'react';
@@ -9,6 +9,8 @@ import EditJournal from './EditJournal';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { RouteMatchType } from '../../Types';
 import DeleteJournal from './DeleteJournal';
+
+//////////////////  TYPES ///////////////////
 
 type CellType = {
     col: number;
@@ -47,6 +49,8 @@ const JournalLink = styled(StyledLink)`
     }
     display: initial;
 `;
+
+//////////////////  COMPONENT ///////////////////
 
 const ListJournals = (props: JournalArray) => {
     let editMatch: RouteMatchType | null;

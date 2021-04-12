@@ -7,6 +7,8 @@ import { Button, FlexCol, FlexContainer, H1, H3 } from "../../Styles"
 import { JournalType } from "./Journal";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
+//////////////////  COMPONENT ///////////////////
+
 const CreateJournal = () => {
     const saveButtonRef = useRef<HTMLButtonElement>(null)
 

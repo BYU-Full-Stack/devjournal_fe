@@ -8,10 +8,14 @@ import { JournalType } from "./Journal";
 import Icon from "../../components/Icon";
 import { Link } from "react-router-dom";
 
+//////////////////  TYPES ///////////////////
+
 type Props = {
     journal?: JournalType,
     setJournals: Function,
 }
+
+//////////////////  COMPONENT ///////////////////
 
 const EditJournal = ({journal, setJournals = () => {} }: Props) => {
     const saveButtonRef = useRef<HTMLButtonElement>(null)

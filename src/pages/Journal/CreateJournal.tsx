@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react"
 import { Link, useHistory } from "react-router-dom";
 import { createJournal, useUser } from "../../API/AppLogic";
-import CustomInput from "../../components/CustomInput";
+import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput";
 import { Button, FlexCol, FlexContainer, H1, H3 } from "../../Styles"
 import { JournalType } from "./Journal";
 import Loading from "../../components/Loading";
@@ -47,13 +47,13 @@ const CreateJournal = () => {
             <FlexContainer wrap="wrap" height="100%">
                 <FlexCol margin="auto">
                     <H3 display="inline">Name:</H3>
-                    <CustomInput
+                    <ConfirmableInput
                         myKey={0}
                         setCanUserSave={setCanUserSave}
                         editableText={journal?.name}
                         handleInputUpdate={handleUpdateTextInput} />
                     <H3 display="inline">Color:</H3>
-                    <CustomInput
+                    <ConfirmableInput
                         myKey={1}
                         setCanUserSave={setCanUserSave}
                         editableText={journal?.color}

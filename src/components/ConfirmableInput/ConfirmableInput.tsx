@@ -6,8 +6,8 @@ import { faEdit, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
 type Props = {
     myKey: number;
-    editableText: string;
-    label: string;
+    editableText?: string;
+    label?: string;
     handleInputUpdate: (input: string, key: number) => void;
     setCanUserSave?: (bool: boolean) => void;
     type?: string;

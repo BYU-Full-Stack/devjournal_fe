@@ -19,16 +19,24 @@ const Entry = (props: EntryType) => {
     <>
       <button onClick={() => setSeeMarkdown(!seeMarkdown)}>switch</button>
       {seeMarkdown === false ? (
-        <Editor
-          height='90vh'
-          defaultLanguage='markdown'
-          defaultValue={'### what'}
-          theme='vs-dark'
-        />
+        <>
+          <button>save</button>
+          <button>preview</button>
+          <button>discard</button>
+          <Editor
+            height='90vh'
+            defaultLanguage='markdown'
+            defaultValue={props.markdown}
+            theme='vs-dark'
+          />
+        </>
       ) : (
-        <ReactMarkdown
-          source={typeof props.markdown === 'string' ? '### goo' : ''}
-        />
+        <>
+          <button>edit</button>
+          <ReactMarkdown
+            source={typeof props.markdown === 'string' ? props.markdown : ''}
+          />
+        </>
       )}
     </>
   );

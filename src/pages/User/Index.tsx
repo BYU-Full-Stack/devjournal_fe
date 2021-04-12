@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getUsers, useUser, deleteUser } from '../../API/AppLogic'
+import { getUsers, useUser, deleteUser, useAlertBox } from '../../API/AppLogic'
 import Icon from '../../components/Icon'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
@@ -45,17 +45,22 @@ const UsersContainer = styled.div`
 `;
 
 export default function Users() {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<USER_STATE_TYPE[]>([]);
     const [user] = useUser();
+    const [, addAlert] = useAlertBox();
 
     useEffect(() => {
         user.token && (async function () {
             try {
-                const allUsers: [] = await getUsers(user.token);
+                const allUsers: USER_STATE_TYPE[] = await getUsers(user.token);
                 setUsers(allUsers);
             } catch (err) {
-                //    TODO: handle errors better than this
-                console.log(err);
+                addAlert({
+                    key: `failed-users-retrieval--${new Date()}`,
+                    text: 'Failed to retrieve all users',
+                    timeout: 7,
+                    theme: 'error'
+                });
             }
         })();
     }, [user.token]);
@@ -63,16 +68,28 @@ export default function Users() {
     const handleDelete = async (username: string, user_id: string, index: number) => {
         try {
             await deleteUser(username, user_id, user.token);
+
+            addAlert({
+                key: `delete-user-${users[index].username}-${new Date()}`,
+                text: `Successfully deleted user with username '${users[index].username}'`,
+                timeout: 7,
+                theme: 'success'
+            });
             setUsers([...users.slice(0, index), ...users.slice(index + 1)]);
         } catch (err) {
-            console.log('err', err);
+            addAlert({
+                key: `failed-delete-user-${users[index].username}-${new Date()}`,
+                text: `Failed to delete user with username '${users[index].username}'`,
+                timeout: 7,
+                theme: 'error'
+            });
         }
     };
 
     const UserRow = ({ user_id = "", username = "", email, role, created_date, idx = 0 }: USER_STATE_TYPE & { idx: number }) =>
         <StyledRow>
             <FlexCol maxWidth='1px'>{idx + 1}</FlexCol>
-            <FlexCol><Icon color="red-hover" hColor="red-deep" icon={faTrashAlt} onClick={() => handleDelete(username, user_id, idx)} ></Icon></FlexCol>
+            <FlexCol><Icon color="red-hover" hcolor="red-deep" icon={faTrashAlt} onClick={() => handleDelete(username, user_id, idx)} ></Icon></FlexCol>
             <FlexCol>{username}</FlexCol>
             <FlexCol>{email}</FlexCol>
             <FlexCol>{role}</FlexCol>
@@ -85,7 +102,7 @@ export default function Users() {
                 <PrettyH2 align="center">Admin Panel</PrettyH2><H3>{users.length} total users</H3>
                 <StyledHeader>
                     <FlexCol maxWidth='1px'>{'#'}</FlexCol>
-                    <FlexCol><Icon color="red-hover" hColor="red-hover" icon={faTrashAlt} ></Icon></FlexCol>
+                    <FlexCol><Icon color="red-hover" hcolor="red-hover" icon={faTrashAlt} ></Icon></FlexCol>
                     <FlexCol>Username</FlexCol>
                     <FlexCol>Email</FlexCol>
                     <FlexCol>Role</FlexCol>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { theme, Input, StyleProps } from '../Styles'
-import Icon from './Icon'
+import { theme, Input, StyleProps } from '../../Styles'
+import Icon from '../Icon'
 import { faEdit, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
 type Props = {
@@ -40,7 +40,7 @@ export const Span = styled.span`
     x-overflow: ${({ xOverflow = 'auto' }: StyleProps) => xOverflow};
 `;
 
-export default function CustomInput({ myKey, label, editableText = '', type = 'text', handleInputUpdate, setCanUserSave = undefined }: Props) {
+export default function ConfirmableInput({ myKey, label, editableText = '', type = 'text', handleInputUpdate, setCanUserSave = undefined }: Props) {
     const [isBeingEdited, setIsBeingEdited] = useState(false);
     const [isFirstFocus, setIsFirstFocus] = useState(true);
     const [toggleType, setToggleType] = useState(type);

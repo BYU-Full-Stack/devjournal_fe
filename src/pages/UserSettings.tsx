@@ -1,15 +1,53 @@
 import { useEffect, useRef, useState } from 'react'
-import { getUser, updateUser, login, useUser } from '../API/AppLogic'
+import { getUser, updateUser, login, useUser, useAlertBox } from '../API/AppLogic'
 import { PrettyH2, H3 } from '../Styles'
 
 // Test component to ensure store state is updating correctly
-import CustomInput from '../components/CustomInput'
-import { FlexContainer, FlexCol, Button, LeftNav } from '../Styles'
+import ConfirmableInput from '../components/ConfirmableInput/ConfirmableInput'
+import { FlexContainer, FlexCol, Button, theme } from '../Styles'
+import styled from 'styled-components'
 import { USER_STATE_TYPE } from '../store/reducers/user'
+import { ALERT_STATE_TYPE } from '../store/reducers/alert'
 
-const testUser = 'user1';
+
+const LeftNav = styled(FlexCol)`
+    height: 100%;
+    border-radius: 4px;
+    background-color: ${theme['gray-light']};
+    margin-top: 1em;
+    color: ${theme['bg-dark']};
+    h2 {
+        background-color: ${theme['bg-dark']};
+        text-align: center;
+        margin: 0;
+        padding: 1em 0;
+        border-radius: inherit;
+        border: 2px ${theme['gray-light']} solid;
+        border-bottom: none;
+    }
+    div {
+        padding: 10px 5px;
+        transition-duration: .5s;
+        :hover {
+            &:nth-child(2) {
+                background-color: ${theme['orange-hover']};
+            }
+            &:nth-child(3) {
+                background-color: ${theme['green-hover']};
+            }
+            &:nth-child(4) {
+                background-color: ${theme['red-hover']};
+            }
+        }
+        border: 1px ${theme['gray-light']} solid;
+        border-top: none;
+        cursor: pointer;
+    }
+`;
+
+const testUser = 'admin';
 const UserSettings = () => {
-
+    const [, addAlert] = useAlertBox();
     const saveButtonRef = useRef<HTMLButtonElement>(null)
 
     const [canUserSave, setCanUserSave] = useState(true);
@@ -25,14 +63,21 @@ const UserSettings = () => {
     useEffect(() => {
         (async function () {
             try {
-                const auth = await login({ username: testUser, password: `passuser1` }) || '';
+                const auth = await login({ username: testUser, password: `pass${testUser}` }) || '';
                 setUser({
                     username: testUser,
                     token: auth.split(' ')[1]
                 });
+
             } catch (err) {
-                //    TODO: handle errors better than this
-                console.log(err);
+                const { message = 'Unable to login at this time.' } = err?.response?.data || {};
+
+                addAlert({
+                    key: `login-attempt-${new Date()}`,
+                    text: message,
+                    timeout: 7,
+                    theme: 'error'
+                });
             }
         })();
     }, [setUser]);
@@ -44,8 +89,12 @@ const UserSettings = () => {
                 const apiUser: USER_STATE_TYPE = await getUser(testUser, user.token);
                 setUser(apiUser);
             } catch (err) {
-                //    TODO: handle errors better than this
-                console.log(err);
+                addAlert({
+                    key: `get-user-attempt-${new Date()}`,
+                    text: 'Unable to retrieve user.',
+                    timeout: 7,
+                    theme: 'error'
+                });
             }
         })();
     }, [user.token, setUser]);
@@ -54,15 +103,28 @@ const UserSettings = () => {
 
     const updateUserSettings = async (value: Object) => {
         try {
-            saveButtonRef!.current && (saveButtonRef!.current.disabled = true);
+            saveButtonRef.current && (saveButtonRef.current.disabled = true);
             await updateUser(user.username, fieldsToUpdate[indexOfUpdateField].key, { ...editUser, username: user.username, updatedUsername: editUser.username });
 
+            // @ts-ignore
             setUser({ [fieldsToUpdate[indexOfUpdateField].key]: editUser[fieldsToUpdate[indexOfUpdateField].key] });
-            saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
+
+            saveButtonRef.current && (saveButtonRef.current.disabled = false);
+            addAlert({
+                key: `update-${fieldsToUpdate[indexOfUpdateField].key}-attempt-${new Date()}`,
+                text: `Successfully updated your ${fieldsToUpdate[indexOfUpdateField].key}`,
+                timeout: 4,
+                theme: 'success'
+            });
+
         } catch (err) {
-            //    TODO: handle errors better than this
-            console.log(err);
-            saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
+            saveButtonRef.current && (saveButtonRef!.current.disabled = false);
+            addAlert({
+                key: `failed-update-${fieldsToUpdate[indexOfUpdateField].key}-attempt-${new Date()}`,
+                text: `Failed to update your ${fieldsToUpdate[indexOfUpdateField].key}`,
+                timeout: 7,
+                theme: 'error'
+            });
         }
     };
 
@@ -83,11 +145,12 @@ const UserSettings = () => {
             </LeftNav>
             <FlexCol margin="auto">
                 <H3 display="inline">{fieldsToUpdate[indexOfUpdateField].label}:</H3>
-                <CustomInput
+                <ConfirmableInput
                     myKey={indexOfUpdateField}
                     setCanUserSave={setCanUserSave}
                     label={fieldsToUpdate[indexOfUpdateField].label}
                     type={fieldsToUpdate[indexOfUpdateField].type ? fieldsToUpdate[indexOfUpdateField].type : 'text'}
+                    // @ts-ignore
                     editableText={editUser[fieldsToUpdate[indexOfUpdateField].key]}
                     handleInputUpdate={handleUpdateTextInput} />
 

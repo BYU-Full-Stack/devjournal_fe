@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { Redirect, useHistory, useRouteMatch } from "react-router-dom";
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { useHistory, useRouteMatch } from "react-router-dom";
 
-import { FlexContainer} from "../../Styles";
-import Icon from "../../components/Icon";
 import { getJournals, useUser } from "../../API/AppLogic";
 import ListJournals from './ListJournals';
 import { RouteMatchType } from '../../Types'
 import ListEntries from "./ListEntries";
+import Loading from "../../components/Loading";
 
 //////////////////  TYPES ///////////////////
 export type JournalType = {
@@ -59,9 +57,7 @@ const Journal = () => {
 
     if (isLoading) {
         return (
-            <FlexContainer justify={"center"} align={"center"} height={"500px"}>
-                <Icon size={"4x"} icon={faSpinner} spin={true}></Icon>
-            </FlexContainer>
+            <Loading/>
         )
     } else {
         if (journal === undefined) {

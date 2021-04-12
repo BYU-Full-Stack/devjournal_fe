@@ -1,12 +1,11 @@
 import React, { useRef, useState } from "react";
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 import { updateJournal, useUser } from "../../API/AppLogic";
 import CustomInput from "../../components/CustomInput";
 import { Button, FlexCol, FlexContainer, H1, H3 } from "../../Styles";
 import { JournalType } from "./Journal";
-import Icon from "../../components/Icon";
 import { Link } from "react-router-dom";
+import Loading from "../../components/Loading";
 
 //////////////////  TYPES ///////////////////
 
@@ -86,9 +85,7 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
                         >Save</Button>
                     </FlexContainer>
                     {(isLoading) &&
-                        <FlexContainer justify={"center"}>
-                            <Icon size={"4x"} icon={faSpinner} spin={true}></Icon>
-                        </FlexContainer>
+                        <Loading height={"100%"}/>
                     }
                 </FlexCol>
             </FlexContainer>

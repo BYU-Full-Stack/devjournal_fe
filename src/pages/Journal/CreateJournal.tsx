@@ -2,10 +2,9 @@ import React, { useRef, useState } from "react"
 import { Link, useHistory } from "react-router-dom";
 import { createJournal, useUser } from "../../API/AppLogic";
 import CustomInput from "../../components/CustomInput";
-import Icon from "../../components/Icon";
 import { Button, FlexCol, FlexContainer, H1, H3 } from "../../Styles"
 import { JournalType } from "./Journal";
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import Loading from "../../components/Loading";
 
 //////////////////  COMPONENT ///////////////////
 
@@ -72,9 +71,7 @@ const CreateJournal = () => {
                         >Create</Button>
                     </FlexContainer>
                     {(isLoading) &&
-                        <FlexContainer justify={"center"}>
-                            <Icon size={"4x"} icon={faSpinner} spin={true}></Icon>
-                        </FlexContainer>
+                        <Loading height={"100%"}/>
                     }
                 </FlexCol>
             </FlexContainer>

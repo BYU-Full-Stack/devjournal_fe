@@ -4,8 +4,7 @@ import { getEntries, useUser } from '../../API/AppLogic';
 import { FlexCol, FlexContainer, LeftNav, PrettyH2, H1 } from '../../Styles';
 import Entry from '../Entry/Entry';
 import { JournalType } from './Journal';
-import Icon from "../../components/Icon";
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import Loading from '../../components/Loading';
 
 //////////////////  TYPES ///////////////////
 
@@ -59,9 +58,7 @@ const ListEntries = (props: JournalType) => {
 
   if (isLoading) {
     return (
-        <FlexContainer justify={"center"} align={"center"} height={"500px"}>
-            <Icon size={"4x"} icon={faSpinner} spin={true}></Icon>
-        </FlexContainer>
+      <Loading/>
     )
   } else {
     return (

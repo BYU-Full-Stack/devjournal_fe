@@ -1,8 +1,7 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { H2, H3 } from '../Styles'
 import { login, useUser } from '../API/AppLogic'
 
-import CustomInput from '../components/CustomInput'
 import { FlexContainer, FlexCol, Button } from '../Styles'
 
 const Login = () => {
@@ -10,9 +9,9 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [userState, setUser] = useUser();
 
-    async function loginUser () {
+    async function loginUser() {
         try {
-            const auth = await login({ username, password });
+            const auth = await login({ username, password }) || '';
             setUser({
                 username,
                 token: auth.split(' ')[1]
@@ -29,19 +28,19 @@ const Login = () => {
             <FlexCol></FlexCol>
             <FlexCol>
                 <H3>Login</H3>
-                <input type='text' value={username} onChange={({target:{value=''}={}}) => {
+                <input type='text' value={username} onChange={({ target: { value = '' } = {} }) => {
                     setUserName(value);
-                }}/>
-                <input type='password' value={password} onChange={({target:{value=''}={}}) => {
+                }} />
+                <input type='password' value={password} onChange={({ target: { value = '' } = {} }) => {
                     setPassword(value);
-                }}/>
+                }} />
                 <Button
-                        bgColor="bg-dark"
-                        padding=".4em 1em"
-                        border="transparent 2px solid"
-                        hoverBorder="turq 2px solid"
-                        onClick={() => loginUser()}
-                    >Save</Button>
+                    bgColor="bg-dark"
+                    padding=".4em 1em"
+                    border="transparent 2px solid"
+                    hoverBorder="turq 2px solid"
+                    onClick={() => loginUser()}
+                >Save</Button>
             </FlexCol>
         </FlexContainer>
     );

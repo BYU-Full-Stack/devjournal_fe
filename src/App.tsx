@@ -3,6 +3,7 @@ import { GlobalStyles } from './Styles';
 import store from './store';
 import Nav from './layouts/Nav';
 import Pages from './layouts/Pages'
+import Alerts from './components/Alerts/Index'
 import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     <>
       <GlobalStyles />
       <Provider store={store}>
+        <Alerts />
         <Router>
           <Nav />
           <Pages />

@@ -12,6 +12,7 @@ type props = {
     icon: IconProp;
     size?: SizeProp;
     onClick?: MouseEventHandler<any>;
+    testid?: string;
 }
 
 type IconStyleProps = {
@@ -53,6 +54,6 @@ const StyledIcon = styled(FontAwesomeIcon)`
         `}
 `;
 
-export default function Icon({ icon, color = 'white', size = '2x', onClick = (() => null), ...rest }: props & IconStyleProps) {
-    return <StyledIcon icon={icon} color={color} size={size} onClick={onClick} {...rest} />;
+export default function Icon({ icon, color = 'white', hcolor = undefined, size = '2x', onClick = (() => null), testid, ...rest }: props & IconStyleProps) {
+    return <StyledIcon hcolor={hcolor} icon={icon} color={color} size={size} onClick={onClick} data-testid={testid} {...rest} />;
 };

@@ -11,7 +11,7 @@ const Login = () => {
 
     async function loginUser() {
         try {
-            const auth = await login({ username, password });
+            const auth = await login({ username, password }) || '';
             setUser({
                 username,
                 token: auth.split(' ')[1]

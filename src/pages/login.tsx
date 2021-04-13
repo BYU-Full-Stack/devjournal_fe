@@ -9,9 +9,9 @@ const Login = () => {
     const [password, setPassword] = useState('password');
     const [userState, setUser] = useUser();
 
-    async function loginUser () {
+    async function loginUser() {
         try {
-            const auth = await login({ username, password });
+            const auth = await login({ username, password }) || '';
             setUser({
                 username,
                 token: auth.split(' ')[1]

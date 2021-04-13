@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { theme, Input, StyleProps } from '../Styles'
-import Icon from './Icon'
+import { theme, Input, StyleProps } from '../../Styles'
+import Icon from '../Icon'
 import { faEdit, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
 type Props = {
     myKey: number;
-    editableText: string;
-    handleInputUpdate: (input: string) => void;
+    editableText?: string;
+    label?: string;
+    handleInputUpdate: (input: string, key: number) => void;
     setCanUserSave?: (bool: boolean) => void;
     type?: string;
 };
@@ -34,22 +35,22 @@ const Wrapper = styled.section`
 `;
 
 export const Span = styled.span`
-    display: ${({ display = 'inline-block' }: StyleProps) => display}; 
+    display: ${({ display = 'inline-block' }: StyleProps) => display};
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
     x-overflow: ${({ xOverflow = 'auto' }: StyleProps) => xOverflow};
 `;
 
-export default function CustomInput({ myKey, editableText = '', type = 'text', handleInputUpdate, setCanUserSave = undefined }: Props) {
+export default function ConfirmableInput({ myKey, label, editableText = '', type = 'text', handleInputUpdate, setCanUserSave = undefined }: Props) {
     const [isBeingEdited, setIsBeingEdited] = useState(false);
     const [isFirstFocus, setIsFirstFocus] = useState(true);
     const [toggleType, setToggleType] = useState(type);
     const displayText = (type === 'password') ? editableText.slice(0, 30).replace(/./g, '&bull;') : '';
 
     const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-        handleInputUpdate(value)
+        handleInputUpdate(value, myKey)
     };
 
-    const handleFocus = type === 'password' && isFirstFocus ? (() => { handleInputUpdate(''); setIsFirstFocus(false); }) : () => undefined;
+    const handleFocus = type === 'password' && isFirstFocus ? (() => { handleInputUpdate('', myKey); setIsFirstFocus(false); }) : () => undefined;
     const toggleShowing = () => {
         setToggleType(toggleType === 'password' ? 'text' : 'password');
     };
@@ -72,19 +73,27 @@ export default function CustomInput({ myKey, editableText = '', type = 'text', h
             { isBeingEdited ?
                 <>
                     <section>
-                        <Input type={toggleType} value={editableText} onChange={handleChange} onFocus={handleFocus} />
-                        <Icon icon={faCheckCircle} onClick={toggleIsBeingEdited}></Icon>
+                        <label hidden>{label}</label>
+                        <Input type={toggleType} value={editableText} onChange={handleChange} onFocus={handleFocus} data-testid="custom-input" />
+                        <Icon icon={faCheckCircle} onClick={toggleIsBeingEdited} testid="toggle-custom-input"></Icon>
                     </section>
 
-                    {type === 'password' && !isFirstFocus && (<label>Show password<input type='checkbox' checked={toggleType === 'text'} onChange={toggleShowing} /></label>)}
+                    {type === 'password' && !isFirstFocus &&
+                        (<label data-testid="show-password-label">Show password
+                            <input
+                                type='checkbox'
+                                checked={toggleType === 'text'}
+                                onChange={toggleShowing}
+                                data-testid="show-password-checkbox" /></label>)}
                 </> :
                 <>
                     {type === 'password' ?
-                        <Span dangerouslySetInnerHTML={{ __html: displayText }} color="purple"></Span>
+                        // show little password dots (when not being edited) instead of revealing the password
+                        <Span dangerouslySetInnerHTML={{ __html: displayText }} color="purple" data-testid="password-hidden-text"></Span>
                         :
-                        <Span color="purple">{editableText.slice(0, 30)}</Span>
+                        <Span color="purple" data-testid="editable-text">{editableText.slice(0, 30)}</Span>
                     }
-                    <Icon size="2x" icon={faEdit} onClick={toggleIsBeingEdited} />
+                    <Icon size="2x" icon={faEdit} onClick={toggleIsBeingEdited} testid="toggle-custom-input" />
                 </>
             }
 

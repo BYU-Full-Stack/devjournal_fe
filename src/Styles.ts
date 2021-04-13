@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components'
 
 export const theme: { [key: string]: string } = {
@@ -18,17 +19,17 @@ export const theme: { [key: string]: string } = {
     'gray-light': '#e5e5e5'
 };
 
-export const GlobalStyles = createGlobalStyle`          
+export const GlobalStyles = createGlobalStyle`
 
     body {
         background-color: ${theme['bg-dark']};
-        
+
         font-family: 'Roboto', sans-serif;
         // font-family: 'Satisfy', cursive;
         // font-family: 'Playball', cursive;
         // font-family: 'Dancing Script', cursive;
         // font-family: 'Lobster', cursive;
-        
+
         // font-family: 'Ubuntu', sans-serif;
         // font-family: 'Open Sans', sans-serif;
     }
@@ -36,7 +37,7 @@ export const GlobalStyles = createGlobalStyle`
     html, body {
         min-height: 100% !important;
         height: 100%;
-        
+        overflow-x: hidden;
     }
 
 `;
@@ -73,6 +74,7 @@ export const FlexContainer = styled.section`
     flex-direction: ${(props: StyleProps) => props.direction || 'row'};
     margin: ${({ margin = '0' }: StyleProps) => margin};
     justify-content: ${({ justify = 'flex-start' }: StyleProps) => justify};
+    align-items: ${({ align = 'flex-start' }: StyleProps) => align};
     color: ${({ color = theme['white'] }: StyleProps) => color};
     height: ${({ height = '100%' }: StyleProps) => height};
 `;
@@ -84,7 +86,44 @@ export const FlexCol = styled.section`
     margin: ${({ margin = 'none' }: StyleProps) => margin};
 `;
 
-export const Input = styled.input`  
+export const LeftNav = styled(FlexCol)`
+    height: 100%;
+    border-radius: 4px;
+    background-color: ${theme['gray-light']};
+    margin-top: 1em;
+    color: ${theme['bg-dark']};
+    h2 {
+        background-color: ${theme['bg-dark']};
+        text-align: center;
+        margin: 0;
+        padding: 1em 0;
+        border-radius: inherit;
+        border: 2px ${theme['gray-light']} solid;
+        border-bottom: none;
+    }
+    div {
+        padding: 10px 5px;
+        transition-duration: .5s;
+        :hover {
+            &:nth-child(3n + 2) {
+                background-color: ${theme['orange-hover']};
+            }
+            &:nth-child(3n + 3) {
+                background-color: ${theme['green-hover']};
+            }
+            &:nth-child(3n + 4) {
+                background-color: ${theme['red-hover']};
+            }
+        }
+        border: 1px ${theme['gray-light']} solid;
+        border-top: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+    }
+`;
+
+export const Input = styled.input`
     font-family: inherit;
     font-size: 16px;
     border-radius: 0 0 4px 4px;
@@ -98,12 +137,12 @@ export const Input = styled.input`
 `;
 
 export const H1 = styled.h1`
-    display: ${({ display = 'block' }: StyleProps) => display}; 
+    display: ${({ display = 'block' }: StyleProps) => display};
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
 `;
 
 export const H2 = styled.h2`
-    display: ${({ display = 'block' }: StyleProps) => display}; 
+    display: ${({ display = 'block' }: StyleProps) => display};
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
     text-align: ${({ align = 'left' }: StyleProps) => align};
 `;
@@ -113,7 +152,7 @@ export const PrettyH2 = styled(H2)`
 `;
 
 export const H3 = styled.h3`
-    display: ${({ display = 'block' }: StyleProps) => display}; 
+    display: ${({ display = 'block' }: StyleProps) => display};
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
 `;
 
@@ -137,4 +176,17 @@ export const Button = styled.button`
         color: ${theme['white']};
         cursor: not-allowed;
     }
+`;
+
+export const StyledLink = styled(Link)`
+    display: inline-block;
+    color: inherit;
+    color: ${theme['turq']};
+    margin: 1em 1em 0 1em;
+    transition: border-bottom .25s;
+    &:hover {
+        color: ${theme['turq-hover']};
+        border-bottom: ${theme['orange-deep']} 4px solid;
+    }
+    text-decoration: none;
 `;

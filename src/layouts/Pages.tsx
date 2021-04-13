@@ -5,6 +5,7 @@ import {
 import Users from '../pages/User/Index'
 import UserSettings from '../pages/UserSettings'
 import Login from '../pages/login'
+import Register from "../pages/newUser";
 
 export default function Pages() {
     return (
@@ -14,6 +15,9 @@ export default function Pages() {
             </Route>
             <Route path="/account">
                 <UserSettings />
+            </Route>
+            <Route path="/register">
+                <Register />
             </Route>
             <Route path="/">
                 <Login />

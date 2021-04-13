@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 
 import { updateJournal, useUser } from "../../API/AppLogic";
 import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput";
-import { Button, FlexCol, FlexContainer, H1, H3 } from "../../Styles";
+import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles";
 import { JournalType } from "./Journal";
 import { Link } from "react-router-dom";
 import Loading from "../../components/Loading";
@@ -10,7 +10,7 @@ import Loading from "../../components/Loading";
 //////////////////  TYPES ///////////////////
 
 type Props = {
-    journal?: JournalType,
+    journal: JournalType,
     setJournals: Function,
 }
 
@@ -36,12 +36,13 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
             setIsLoading(true);
             await updateJournal(user.username, user.token, editJournal)
 
-            setJournals((prevJournals: Array<Object>) => {
-                const {idx = 0} = journal || {};
+            setJournals((prevJournals: Array<JournalType>) => {
+                let editIdx = prevJournals.findIndex((x) => x.id === journal.id);
+
                 return (
-                    [...prevJournals.slice(0, idx),
+                    [...prevJournals.slice(0, editIdx),
                      editJournal,
-                    ...prevJournals.slice(idx + 1)]
+                    ...prevJournals.slice(editIdx + 1)]
                 )
             })
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
@@ -55,8 +56,15 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
     }
 
     return (
-        <main>
-            <Link to="/journals"><Button>Back</Button></Link>
+        <Main>
+            <Link to="/journals">
+                <Button
+                    bgColor="bg-dark"
+                    padding=".4em 1em"
+                    border="transparent 2px solid"
+                    hoverBorder="turq 2px solid"
+                >Back to Journals</Button>
+            </Link>
             <H1>Editing {journal?.name} Journal</H1>
             <FlexContainer wrap="wrap" height="100%">
                 <FlexCol margin="auto">
@@ -89,7 +97,7 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
                     }
                 </FlexCol>
             </FlexContainer>
-        </main>
+        </Main>
     )
 }
 

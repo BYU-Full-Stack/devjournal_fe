@@ -5,6 +5,7 @@ import {
 import Users from '../pages/User/Index'
 import UserSettings from '../pages/UserSettings'
 import Login from '../pages/login'
+import Register from "../pages/newUser";
 import Journal from '../pages/Journal/Journal'
 import Error from '../pages/Error'
 import CreateJournal from "../pages/Journal/CreateJournal";
@@ -18,6 +19,8 @@ export default function Pages() {
             <Route path="/account">
                 <UserSettings />
             </Route>
+            <Route path="/register">
+                <Register />
             <Route path="/journals/create">
                 <CreateJournal/>
             </Route>

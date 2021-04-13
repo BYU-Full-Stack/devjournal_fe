@@ -31,6 +31,7 @@ export default function Nav() {
                 <StyledLink to="/journals">Journals</StyledLink>
                 <StyledLink to="/account">User Details</StyledLink>
                 <StyledLink to="/user">All Users</StyledLink>
+                <StyledLink to="/register">Register</StyledLink>
             </FlexCol>
 
         </FlexContainer>

@@ -21,6 +21,30 @@ export const login = async (user: USER_STATE_TYPE) => {
     }
 };
 
+export const logout = async (user: USER_STATE_TYPE) => {
+    try {
+
+    }
+    catch (err) {
+        //    TODO: handle errors better than this
+        console.log(err)
+    }
+};
+
+export const registerUser = async (newUser: USER_STATE_TYPE) => {
+    const customOptions: typeof options = { ...options };
+    try {
+        const { headers: {
+            authorization: auth = 'Bearer '
+        } = {} } = await POST(`${API_URL}${API_BASE}user/signup`, newUser, customOptions);
+        
+        return auth;
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
 export const getUser = async (username: string = '', token: string = '') => {
 
     const customOptions: typeof options = { ...options };

@@ -12,6 +12,7 @@ type props = {
     icon: IconProp;
     size?: SizeProp;
     onClick?: MouseEventHandler<any>;
+    spin?: boolean;
     testid?: string;
 }
 
@@ -34,7 +35,7 @@ const StyledIcon = styled(FontAwesomeIcon)`
     margin: ${({ margin = '0 4px' }: IconStyleProps) => margin};
     transition: color .3s ease-out;
     color: ${({ color = 'white' }: IconStyleProps) => theme[color]};
-    
+
     &:hover {
         color: ${({ hcolor = 'orange-deep' }: IconStyleProps) => theme[hcolor]};
     }
@@ -54,6 +55,6 @@ const StyledIcon = styled(FontAwesomeIcon)`
         `}
 `;
 
-export default function Icon({ icon, color = 'white', hcolor = undefined, size = '2x', onClick = (() => null), testid, ...rest }: props & IconStyleProps) {
-    return <StyledIcon hcolor={hcolor} icon={icon} color={color} size={size} onClick={onClick} data-testid={testid} {...rest} />;
+export default function Icon({ icon, color = 'white', hcolor = undefined, size = '2x', onClick = (() => null), spin = false, testid, ...rest }: props & IconStyleProps) {
+    return <StyledIcon hcolor={hcolor} icon={icon} color={color} size={size} onClick={onClick} spin={spin} data-testid={testid} {...rest} />;
 };

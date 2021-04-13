@@ -1,51 +1,28 @@
 import { useEffect, useState } from 'react';
-import { useRouteMatch } from 'react-router-dom';
-import styled from 'styled-components';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
-import { theme } from './../../Styles';
 import { getJournals, useUser } from '../../API/AppLogic';
 import ListJournals from './ListJournals';
 import { RouteMatchType } from '../../Types';
 import ListEntries from './ListEntries';
+import Loading from '../../components/Loading';
 
 export type JournalType = {
-  id: string;
+  id?: string;
   name?: string;
   color?: string;
   dateCreated?: Date;
   lastUpdated?: Date;
   user_id?: string;
+  idx?: number;
 };
 
 export type JournalArray = {
-  journals?: JournalType[];
+  journals: JournalType[];
+  setJournals: Function;
 };
 
-type CellType = {
-  col: number;
-  span?: number;
-};
-
-export const RowWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 50% repeat(2, 2fr) 125px;
-`;
-
-export const HeaderRow = styled(RowWrapper)`
-  font-weight: bold;
-`;
-
-export const TableCell = styled.div`
-  grid-column: ${(props: CellType) => {
-    let span = props.span !== undefined ? props.span : 1;
-    return props.col + ' / span ' + span;
-  }};
-  border: 2px solid ${theme['turq']};
-  color: ${theme['white']};
-  padding: 0.25em;
-  padding-left: 0.75em;
-`;
-
+//////////////////  COMPONENT ///////////////////
 const Journal = () => {
   let match: RouteMatchType | null;
   match = useRouteMatch({
@@ -53,33 +30,44 @@ const Journal = () => {
     strict: true,
     sensitive: true,
   });
-  console.log(match);
 
-  const [journals, setJournals] = useState([]);
+  const [journals, setJournals] = useState<JournalType[]>([]);
   const [user] = useUser();
+  const [isLoading, setIsLoading] = useState(true);
+  const routeHistory = useHistory();
 
   useEffect(() => {
     user.token &&
       (async function () {
         try {
-          const allJournals: [] = await getJournals(user.username, user.token);
+          setIsLoading(true);
+          const allJournals: JournalType[] = await getJournals(
+            user.username,
+            user.token
+          );
           setJournals(allJournals);
+          setIsLoading(false);
         } catch (err) {
-          console.log(err);
+          //    TODO: handle errors better than this
+          routeHistory.push('/error');
+          console.log('error', err);
         }
       })();
-  }, [user.token, user.username]);
+  }, [routeHistory, user.token, user.username]);
 
   let journal: JournalType | undefined;
   journal = Object.values(journals).find(
     (x: JournalType) => x?.id === match?.params?.id
   );
-  console.log(journal);
 
-  if (journal === undefined) {
-    return <ListJournals journals={journals} />;
+  if (isLoading) {
+    return <Loading />;
   } else {
-    return <ListEntries {...journal} />;
+    if (journal === undefined) {
+      return <ListJournals setJournals={setJournals} journals={journals} />;
+    } else {
+      return <ListEntries {...journal} />;
+    }
   }
 };
 

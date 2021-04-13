@@ -6,9 +6,9 @@ import { faEdit, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
 type Props = {
     myKey: number;
-    editableText: string;
-    label: string;
-    handleInputUpdate: (input: string) => void;
+    editableText?: string;
+    label?: string;
+    handleInputUpdate: (input: string, key: number) => void;
     setCanUserSave?: (bool: boolean) => void;
     type?: string;
 };
@@ -35,7 +35,7 @@ const Wrapper = styled.section`
 `;
 
 export const Span = styled.span`
-    display: ${({ display = 'inline-block' }: StyleProps) => display}; 
+    display: ${({ display = 'inline-block' }: StyleProps) => display};
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
     x-overflow: ${({ xOverflow = 'auto' }: StyleProps) => xOverflow};
 `;
@@ -47,10 +47,10 @@ export default function ConfirmableInput({ myKey, label, editableText = '', type
     const displayText = (type === 'password') ? editableText.slice(0, 30).replace(/./g, '&bull;') : '';
 
     const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-        handleInputUpdate(value)
+        handleInputUpdate(value, myKey)
     };
 
-    const handleFocus = type === 'password' && isFirstFocus ? (() => { handleInputUpdate(''); setIsFirstFocus(false); }) : () => undefined;
+    const handleFocus = type === 'password' && isFirstFocus ? (() => { handleInputUpdate('', myKey); setIsFirstFocus(false); }) : () => undefined;
     const toggleShowing = () => {
         setToggleType(toggleType === 'password' ? 'text' : 'password');
     };
@@ -88,7 +88,7 @@ export default function ConfirmableInput({ myKey, label, editableText = '', type
                 </> :
                 <>
                     {type === 'password' ?
-                        // show little password dots (when not being edited) instead of revealing the password  
+                        // show little password dots (when not being edited) instead of revealing the password
                         <Span dangerouslySetInnerHTML={{ __html: displayText }} color="purple" data-testid="password-hidden-text"></Span>
                         :
                         <Span color="purple" data-testid="editable-text">{editableText.slice(0, 30)}</Span>

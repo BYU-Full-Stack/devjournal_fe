@@ -1,19 +1,23 @@
-import { useState } from 'react';
 import { ChromePicker } from 'react-color'
 
-const ColorPicker = () => {
-    const [color, setColor] = useState("#fff");
+type Props = {
+    visible: boolean;
+    color?: string;
+    setColor: (hex: string) => void;
+}
 
+const ColorPicker = (props: Props) => {
     const handleChangeComplete = (newColor: any) => {
-        console.log(newColor);
-        setColor(newColor.hex);
+        props.setColor(newColor.hex);
     }
-    return (
-        <ChromePicker
-            color={color}
-            onChangeComplete={handleChangeComplete}
-        />
-    )
+    if (props.visible) {
+        return (
+            <ChromePicker
+                color={props.color}
+                onChangeComplete={handleChangeComplete}
+            />
+        )
+    } else return (<div/>)
 };
 
 export default ColorPicker;

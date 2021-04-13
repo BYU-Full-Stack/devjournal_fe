@@ -8,9 +8,11 @@ type Props = {
     myKey: number;
     editableText?: string;
     label?: string;
+    maxLength?: number;
     handleInputUpdate: (input: string, key: number) => void;
     setCanUserSave?: (bool: boolean) => void;
     type?: string;
+    setVisibleObject?: (bool: boolean) => void;
 };
 
 const Wrapper = styled.section`
@@ -40,7 +42,7 @@ export const Span = styled.span`
     x-overflow: ${({ xOverflow = 'auto' }: StyleProps) => xOverflow};
 `;
 
-export default function ConfirmableInput({ myKey, label, editableText = '', type = 'text', handleInputUpdate, setCanUserSave = undefined }: Props) {
+export default function ConfirmableInput({ myKey, label, editableText = '', maxLength, type = 'text', handleInputUpdate, setCanUserSave = undefined, setVisibleObject = undefined }: Props) {
     const [isBeingEdited, setIsBeingEdited] = useState(false);
     const [isFirstFocus, setIsFirstFocus] = useState(true);
     const [toggleType, setToggleType] = useState(type);
@@ -66,6 +68,7 @@ export default function ConfirmableInput({ myKey, label, editableText = '', type
     const toggleIsBeingEdited = () => {
         setCanUserSave && setCanUserSave(!isBeingEdited);
         setIsBeingEdited(isBeingEdited => !isBeingEdited);
+        setVisibleObject && setVisibleObject(!isBeingEdited);
     }
 
     return (
@@ -74,7 +77,7 @@ export default function ConfirmableInput({ myKey, label, editableText = '', type
                 <>
                     <section>
                         <label hidden>{label}</label>
-                        <Input type={toggleType} value={editableText} onChange={handleChange} onFocus={handleFocus} data-testid="custom-input" />
+                        <Input type={toggleType} value={editableText} onChange={handleChange} onFocus={handleFocus} maxLength={maxLength} data-testid="custom-input" />
                         <Icon icon={faCheckCircle} onClick={toggleIsBeingEdited} testid="toggle-custom-input"></Icon>
                     </section>
 

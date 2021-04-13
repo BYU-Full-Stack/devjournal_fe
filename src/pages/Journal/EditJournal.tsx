@@ -23,11 +23,16 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
     const [canUserSave, setCanUserSave] = useState(true);
     const [user] = useUser();
     const [isLoading, setIsLoading] = useState(false);
-    const [editJournal, setEditJournal] = useState(journal)
+    const [editJournal, setEditJournal] = useState(journal);
+    const [displayColorPicker, setDisplayColorPicker] = useState(false);
     const fieldsToUpdate = ["name", "color"];
 
     const handleUpdateTextInput = (value: String, myKey: number) => {
         setEditJournal({ ...editJournal, [fieldsToUpdate[myKey]]: value })
+    }
+
+    const setJournalColor = (hex: string) => {
+        setEditJournal({...editJournal, color: hex})
     }
 
     const updateJournalDetails = async () => {
@@ -74,15 +79,19 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
                         myKey={0}
                         setCanUserSave={setCanUserSave}
                         editableText={editJournal?.name}
-                        handleInputUpdate={handleUpdateTextInput} />
+                        maxLength={20}
+                        handleInputUpdate={handleUpdateTextInput}/>
                     <H3 display="inline">Color:</H3>
                     <ConfirmableInput
                         myKey={1}
                         setCanUserSave={setCanUserSave}
                         editableText={editJournal?.color}
-                        handleInputUpdate={handleUpdateTextInput} />
+                        maxLength={20}
+                        handleInputUpdate={handleUpdateTextInput}
+                        setVisibleObject={setDisplayColorPicker}/>
 
-                    <FlexContainer justify="flex-end" margin="1em 0em">
+                    <FlexContainer justify="space-between" margin="1em 0em">
+                        <ColorPicker visible={displayColorPicker} color={editJournal?.color} setColor={setJournalColor}></ColorPicker>
                         <Button
                             ref={saveButtonRef}
                             bgColor="bg-dark"
@@ -92,7 +101,6 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
                             disabled={canUserSave}
                             onClick={updateJournalDetails}
                         >Save</Button>
-                        <ColorPicker></ColorPicker>
                     </FlexContainer>
                     {(isLoading) &&
                         <Loading height={"100%"}/>

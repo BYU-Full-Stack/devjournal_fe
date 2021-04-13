@@ -5,6 +5,7 @@ import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput
 import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles"
 import { JournalType } from "./Journal";
 import Loading from "../../components/Loading";
+import ColorPicker from "../../components/ColorPicker";
 
 //////////////////  COMPONENT ///////////////////
 
@@ -19,16 +20,22 @@ const CreateJournal = () => {
         name: "",
         color: "",
     });
+    const [displayColorPicker, setDisplayColorPicker] = useState(false);
     const fieldsToUpdate = ["name", "color"];
 
     const handleUpdateTextInput = (value: String, myKey: number) => {
         setJournal({ ...journal, [fieldsToUpdate[myKey]]: value })
     }
 
+    const setJournalColor = (hex: string) => {
+        setJournal({...journal, color: hex})
+    }
+
     const createJournalHandler = async () => {
         try {
             saveButtonRef!.current && (saveButtonRef!.current.disabled = true);
             setIsLoading(true);
+            console.log(journal);
             await createJournal(user.username, journal, user.token)
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
             setIsLoading(false);
@@ -58,15 +65,19 @@ const CreateJournal = () => {
                         myKey={0}
                         setCanUserSave={setCanUserSave}
                         editableText={journal?.name}
+                        maxLength={20}
                         handleInputUpdate={handleUpdateTextInput} />
                     <H3 display="inline">Color:</H3>
                     <ConfirmableInput
                         myKey={1}
                         setCanUserSave={setCanUserSave}
                         editableText={journal?.color}
-                        handleInputUpdate={handleUpdateTextInput} />
+                        maxLength={20}
+                        handleInputUpdate={handleUpdateTextInput}
+                        setVisibleObject={setDisplayColorPicker}/>
 
-                    <FlexContainer justify="flex-end" margin="1em 0em">
+                    <FlexContainer justify="space-between" margin="1em 0em">
+                        <ColorPicker visible={displayColorPicker} color={journal?.color} setColor={setJournalColor}></ColorPicker>
                         <Button
                             ref={saveButtonRef}
                             bgColor="bg-dark"

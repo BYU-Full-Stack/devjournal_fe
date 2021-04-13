@@ -60,8 +60,8 @@ export const TableCell = styled.div`
     padding: 0.5em;
     padding-left: 0.75em;
 `;
-
-const JournalLink = styled(StyledLink)`
+ //(StyledLink)`
+const JournalLink = styled.span`
     color: ${theme['white']};
     &:hover {
         color: ${theme['blue-hover']};
@@ -112,7 +112,7 @@ const ListJournals = (props: JournalArray) => {
             <RowWrapper>
                 <TableCell col={1} backgroundColor={color} alignSelf={"normal"}></TableCell>
                 <TableCell col={2}>
-                    <JournalLink to={`/journals/${id}`}>{name}</JournalLink>
+                    <JournalLink>{name}</JournalLink>
                 </TableCell>
                 <TableCell col={3}>{dateCreated}</TableCell>
                 <TableCell col={4}>{lastUpdated}</TableCell>

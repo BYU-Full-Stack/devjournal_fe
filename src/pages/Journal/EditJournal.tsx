@@ -6,6 +6,7 @@ import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles";
 import { JournalType } from "./Journal";
 import { Link } from "react-router-dom";
 import Loading from "../../components/Loading";
+import ColorPicker from "../../components/ColorPicker";
 
 //////////////////  TYPES ///////////////////
 
@@ -91,6 +92,7 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
                             disabled={canUserSave}
                             onClick={updateJournalDetails}
                         >Save</Button>
+                        <ColorPicker></ColorPicker>
                     </FlexContainer>
                     {(isLoading) &&
                         <Loading height={"100%"}/>

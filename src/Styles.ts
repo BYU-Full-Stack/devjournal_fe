@@ -184,7 +184,7 @@ export const StyledLink = styled(Link)`
     display: inline-block;
     color: inherit;
     color: ${theme['turq']};
-    margin: 1em 1em 0 1em;
+    margin: 1.5em 1em 0 1em;
     transition: border-bottom .25s;
     &:hover {
         color: ${theme['turq-hover']};

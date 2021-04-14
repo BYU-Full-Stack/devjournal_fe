@@ -1,8 +1,16 @@
-import { FlexContainer, FlexCol } from '../Styles'
 import { theme, StyledLink } from '../Styles'
 import styled from 'styled-components'
 import logo from '../logo.svg';
 import { useUser } from '../API/AppLogic';
+
+//////////////////  TYPES ///////////////////
+
+type CellType = {
+    col?: number;
+    colSpan?: number;
+    justifySelf?: string;
+    paddingLeft?: string;
+}
 
 const StyledLogo = styled.img`
     max-width: 60px;
@@ -13,22 +21,40 @@ const StyledLogo = styled.img`
 const LogoText = styled.h1`
     font-family: 'Dancing Script', cursive;
     position: absolute;
-    margin-top: -3em;
-    top: 4em;//3.5em;
+    margin-top: -1em;
+    top: 3em;
     text-align: center;
-    left: .6em;
+    left: 2em;
     color: ${theme['black']};
+    font-size: 1em;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: ${theme['black']};;
+`;
+
+export const Wrapper = styled.div`
+    display: grid;
+    grid-template-columns: 100px 2fr 1fr;
+    border: 2px white solid;
+`;
+
+export const TableCell = styled.div`
+    grid-column: ${(props: CellType) => {
+        let span = props.colSpan !== undefined ? props.colSpan : 1;
+        return (
+            props.col + " / span " + span
+        )}
+    };
+    justify-self: ${({ justifySelf = 'unset'}: CellType) => justifySelf};
+    padding: 0.75em 0.25em 0.75em 0.75em;
 `;
 
 export default function Nav() {
     const [user] = useUser();
 
     return (
-        <FlexContainer>
-            <FlexCol width={'5%'}><StyledLogo src={logo} /><LogoText>Dev<br></br>Journal</LogoText></FlexCol>
-            <FlexCol width={"80%"}>
+        <Wrapper>
+            <TableCell col={1}><StyledLogo src={logo} /><LogoText>Dev<br></br>Journal</LogoText></TableCell>
+            <TableCell col={2}>
                 <StyledLink to="/">Home</StyledLink>
                 {/* <StyledLink to="/about">About</StyledLink> */}
                 <StyledLink to="/journals">Journals</StyledLink>
@@ -36,8 +62,8 @@ export default function Nav() {
                 {(user.role === "ADMIN") &&
                     <StyledLink to="/user">All Users</StyledLink>
                 }
-            </FlexCol>
-            <FlexCol justify={"flex-end"}>
+            </TableCell>
+            <TableCell col={3} justifySelf={"flex-end"}>
                 {(user.token)
                 ?
                     <StyledLink to="/logout">Sign Out</StyledLink>
@@ -47,9 +73,7 @@ export default function Nav() {
                     <StyledLink to="/register">Register</StyledLink>
                     </>
                 }
-            </FlexCol>
-
-
-        </FlexContainer>
+            </TableCell>
+        </Wrapper>
     );
 }

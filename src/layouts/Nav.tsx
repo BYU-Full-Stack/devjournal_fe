@@ -34,7 +34,7 @@ const LogoText = styled.h1`
 export const Wrapper = styled.div`
     display: grid;
     grid-template-columns: 100px 2fr 1fr;
-    border: 2px white solid;
+    border-bottom: 2px white solid;
 `;
 
 export const TableCell = styled.div`

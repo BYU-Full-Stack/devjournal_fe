@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getEntries, useUser } from '../../API/AppLogic';
-import { FlexCol, FlexContainer, LeftNav, PrettyH2, H1 } from '../../Styles';
+import {
+  FlexCol,
+  FlexContainer,
+  LeftNav,
+  PrettyH2,
+  H1,
+  Button,
+} from '../../Styles';
 import Entry from '../Entry/Entry';
 import { JournalType } from './Journal';
 import Loading from '../../components/Loading';
+import { Link } from 'react-router-dom';
 
 //////////////////  TYPES ///////////////////
 
@@ -85,8 +93,11 @@ const ListEntries = (props: JournalType) => {
               </div>
             );
           })}
+          <Link to='/journals/:id/entries/create'>
+            <Button>Create New Entry</Button>
+          </Link>
         </LeftNav>
-        <FlexCol margin='auto'>
+        <FlexCol width='80%' margin='1em'>
           {visibleEntry !== undefined ? (
             <>
               <H1>{visibleEntry.title}</H1>

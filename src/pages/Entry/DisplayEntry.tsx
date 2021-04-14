@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '../../Styles';
 import { EntryType } from '../Journal/ListEntries';
@@ -9,10 +9,11 @@ type Props = {
 };
 
 const DisplayEntry = ({ entry, saveEntry }: Props) => {
-  const [markdown, setMarkdown] = useState('');
-  if (entry?.markdown && entry.markdown.length > 0) {
-    setMarkdown(entry?.markdown);
-  }
+  const [markdown, setMarkdown] = useState(
+    entry?.markdown ? entry?.markdown : ''
+  );
+
+  useEffect(() => setMarkdown(markdown), [entry?.markdown]);
   return (
     <>
       <Button

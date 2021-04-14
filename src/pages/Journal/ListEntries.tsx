@@ -90,7 +90,6 @@ const ListEntries = (props: JournalType) => {
           {visibleEntry !== undefined ? (
             <>
               <H1>{visibleEntry.title}</H1>
-              <div>{visibleEntry.markdown}</div>
               <Entry entry={visibleEntry} setEntries={setEntries} />
             </>
           ) : (

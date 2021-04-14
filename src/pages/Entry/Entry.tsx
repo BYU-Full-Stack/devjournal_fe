@@ -20,16 +20,15 @@ export type SelectedEntryType = {
 const Entry = ({ entry, setEntries }: SelectedEntryType) => {
   const [seeMarkdown, setSeeMarkdown] = useState(false);
   const updateEntryList = (editedEntry: EntryType) => {
-
     setEntries((prevEntries: Array<EntryType>) => {
       const editIdx = prevEntries.findIndex((x) => x.id === entry.id);
+      // setSeeMarkdown(true);
       return [
         ...prevEntries.slice(0, editIdx),
         editedEntry,
         ...prevEntries.slice(editIdx + 1),
       ];
     });
-    setSeeMarkdown(true);
   };
 
   return (
@@ -37,15 +36,11 @@ const Entry = ({ entry, setEntries }: SelectedEntryType) => {
       <button onClick={() => setSeeMarkdown(!seeMarkdown)}>switch</button>
       {seeMarkdown === false ? (
         <>
-          <EditEntry
-            entry={entry}
-            saveEntry={updateEntryList}
-          />
+          <EditEntry entry={entry} saveEntry={updateEntryList} />
         </>
       ) : (
         <>
-          <div>kaboom</div>
-          {/* <DisplayEntry entry={entry} saveEntry={setSeeMarkdown} /> */}
+          <DisplayEntry entry={entry} saveEntry={setSeeMarkdown} />
         </>
       )}
     </>

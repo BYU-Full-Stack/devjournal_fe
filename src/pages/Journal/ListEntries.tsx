@@ -93,7 +93,7 @@ const ListEntries = (props: JournalType) => {
               </div>
             );
           })}
-          <Link to='/journals/:id/entries/create'>
+          <Link to={`/journals/${props.id}/entries/create`}>
             <Button>Create New Entry</Button>
           </Link>
         </LeftNav>

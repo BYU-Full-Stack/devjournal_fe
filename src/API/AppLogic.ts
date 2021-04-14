@@ -263,7 +263,7 @@ export const createEntry = async (
     );
   } catch (err) {
     //    TODO: handle errors better than this
-    console.log(err);
+    console.log(err.response.data);
   }
 };
 

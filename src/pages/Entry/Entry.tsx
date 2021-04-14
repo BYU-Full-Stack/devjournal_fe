@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -22,7 +22,7 @@ const Entry = ({ entry, setEntries }: SelectedEntryType) => {
   const updateEntryList = (editedEntry: EntryType) => {
     setEntries((prevEntries: Array<EntryType>) => {
       const editIdx = prevEntries.findIndex((x) => x.id === entry.id);
-      // setSeeMarkdown(true);
+      setSeeMarkdown(true);
       return [
         ...prevEntries.slice(0, editIdx),
         editedEntry,
@@ -30,6 +30,20 @@ const Entry = ({ entry, setEntries }: SelectedEntryType) => {
       ];
     });
   };
+
+  useEffect(
+    () =>
+      setEntries((prevEntries: Array<EntryType>) => {
+        const editIdx = prevEntries.findIndex((x) => x.id === entry.id);
+        setSeeMarkdown(true);
+        return [
+          ...prevEntries.slice(0, editIdx),
+          entry,
+          ...prevEntries.slice(editIdx + 1),
+        ];
+      }),
+    [entry]
+  );
 
   return (
     <>

@@ -13,7 +13,7 @@ const DisplayEntry = ({ entry, saveEntry }: Props) => {
     entry?.markdown ? entry?.markdown : ''
   );
 
-  useEffect(() => setMarkdown(markdown), [entry?.markdown]);
+  useEffect(() => setMarkdown(markdown), [entry]);
   return (
     <>
       <Button

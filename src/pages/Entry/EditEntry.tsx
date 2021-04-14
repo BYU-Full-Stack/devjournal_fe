@@ -28,7 +28,7 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
   const [editEntry, setEditEntry] = useState(entry);
 
   // watch for the entry from props to update and then update state
-  useEffect(() => setEditEntry(entry), [entry])
+  useEffect(() => setEditEntry(entry), [entry]);
 
   const handleUpdateTextInput: OnChange = (value, e) => {
     setEditEntry({ ...editEntry, markdown: value });

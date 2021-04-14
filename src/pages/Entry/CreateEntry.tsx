@@ -10,15 +10,18 @@ import { createEntry, useUser } from '../../API/AppLogic';
 import ConfirmableInput from '../../components/ConfirmableInput/ConfirmableInput';
 import { Button, FlexCol, FlexContainer, H1, H3 } from '../../Styles';
 import { EntryType } from '../Journal/ListEntries';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
 const CreateEntry = () => {
   const [user] = useUser();
   const routeHistory = useHistory();
   const [canUserSave, setCanUserSave] = useState(true);
+  const journalId = useParams<{ id?: string }>();
+
   const [entry, setEntry] = useState<EntryType>({
     title: '',
     markdown: '',
+    html: '',
   });
 
   console.log(routeHistory);
@@ -33,12 +36,15 @@ const CreateEntry = () => {
   };
 
   const createEntryHandler = async () => {
-    // entry.journalId =
     try {
-      await createEntry(user.username, entry, user.token);
+      await createEntry(
+        user.username,
+        { ...entry, journalId: journalId ? journalId.id : '' },
+        user.token
+      );
       routeHistory.push('/journals/:id');
     } catch (err) {
-      console.log(err);
+      console.log();
     }
   };
   return (

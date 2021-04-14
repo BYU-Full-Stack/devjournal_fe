@@ -42,7 +42,7 @@ const CreateJournal = () => {
             routeHistory.push("/journals");
         } catch (err) {
             //    TODO: handle errors better than this
-            console.log(err);
+            console.log("error", err);
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
         }
     }

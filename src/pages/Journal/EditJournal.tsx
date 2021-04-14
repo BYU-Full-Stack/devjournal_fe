@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-import { updateJournal, useUser } from "../../API/AppLogic";
+import { getJournalByID, updateJournal, useUser } from "../../API/AppLogic";
 import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput";
 import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles";
 import { JournalType } from "./Journal";
@@ -42,12 +42,15 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
             setIsLoading(true);
             await updateJournal(user.username, user.token, editJournal)
 
+            //get that specific journal back from db so that we get the new times.
+            const newJournal: JournalType = await getJournalByID(user.username, editJournal.id, user.token)
+
             setJournals((prevJournals: Array<JournalType>) => {
                 let editIdx = prevJournals.findIndex((x) => x.id === journal.id);
 
                 return (
                     [...prevJournals.slice(0, editIdx),
-                     editJournal,
+                     newJournal,
                     ...prevJournals.slice(editIdx + 1)]
                 )
             })

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 
-import { getJournals, useUser } from "../../API/AppLogic";
+import { getEntries, getJournals, useUser } from "../../API/AppLogic";
 import ListJournals from './ListJournals';
 import { RouteMatchType } from '../../Types'
 import ListEntries from "./ListEntries";
@@ -16,6 +16,7 @@ export type JournalType = {
     lastUpdated?: Date,
     user_id?: string,
     idx?: number,
+    numEntries?: number,
 }
 
 export type JournalArray = {
@@ -41,9 +42,27 @@ const Journal = () => {
         user.token && (async function () {
             try {
                 setIsLoading(true);
-                const allJournals: JournalType[] = await getJournals(user.username, user.token);
-                setJournals(allJournals);
-                setIsLoading(false);
+                let promises: any[] = [];
+
+                let allJournals = await getJournals(user.username, user.token);
+
+                promises = allJournals.map(async (x: JournalType) => {
+                    return (
+                        getEntries(user.username, x.id, user.token)
+                    )
+                })
+
+                Promise.all(promises).then((values) => {
+                    const newJournals = allJournals.map((journal: any, idx: number) => {
+                        return ({
+                            ...journal,
+                            numEntries: values[idx].length
+                        })
+                    })
+
+                    setJournals(newJournals);
+                    setIsLoading(false);
+                });
             } catch (err) {
                 //    TODO: handle errors better than this
                 routeHistory.push("/error");

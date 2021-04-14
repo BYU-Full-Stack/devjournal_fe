@@ -61,28 +61,6 @@ const UserSettings = () => {
     ];
 
     useEffect(() => {
-        (async function () {
-            try {
-                const auth = await login({ username: testUser, password: `pass${testUser}` }) || '';
-                setUser({
-                    username: testUser,
-                    token: auth.split(' ')[1]
-                });
-
-            } catch (err) {
-                const { message = 'Unable to login at this time.' } = err?.response?.data || {};
-
-                addAlert({
-                    key: `login-attempt-${new Date()}`,
-                    text: message,
-                    timeout: 7,
-                    theme: 'error'
-                });
-            }
-        })();
-    }, [setUser]);
-
-    useEffect(() => {
         user.token && (async function () {
             try {
                 // @ts-ignore

@@ -87,13 +87,13 @@ export default function Users() {
     };
 
     const UserRow = ({ user_id = "", username = "", email, role, created_date, idx = 0 }: USER_STATE_TYPE & { idx: number }) =>
-        <StyledRow>
-            <FlexCol maxWidth='1px'>{idx + 1}</FlexCol>
-            <FlexCol><Icon color="red-hover" hcolor="red-deep" icon={faTrashAlt} onClick={() => handleDelete(username, user_id, idx)} ></Icon></FlexCol>
-            <FlexCol>{username}</FlexCol>
-            <FlexCol>{email}</FlexCol>
-            <FlexCol>{role}</FlexCol>
-            <FlexCol>{created_date}</FlexCol>
+        <StyledRow data-testid="user-row">
+            <FlexCol data-testid="user-idx" maxWidth='1px'>{idx + 1}</FlexCol>
+            <FlexCol><Icon data-testid="user-delete-icon" color="red-hover" hcolor="red-deep" icon={faTrashAlt} onClick={() => handleDelete(username, user_id, idx)} ></Icon></FlexCol>
+            <FlexCol data-testid="user-username">{username}</FlexCol>
+            <FlexCol data-testid="user-email">{email}</FlexCol>
+            <FlexCol data-testid="user-role">{role}</FlexCol>
+            <FlexCol data-testid="user-created-date">{created_date}</FlexCol>
         </StyledRow>
 
     return (
@@ -101,12 +101,12 @@ export default function Users() {
             <UsersContainer>
                 <PrettyH2 align="center">Admin Panel</PrettyH2><H3>{users.length} total users</H3>
                 <StyledHeader>
-                    <FlexCol maxWidth='1px'>{'#'}</FlexCol>
-                    <FlexCol><Icon color="red-hover" hcolor="red-hover" icon={faTrashAlt} ></Icon></FlexCol>
-                    <FlexCol>Username</FlexCol>
-                    <FlexCol>Email</FlexCol>
-                    <FlexCol>Role</FlexCol>
-                    <FlexCol>User Creation Date</FlexCol>
+                    <FlexCol maxWidth='1px' data-testid="title-idx">{'#'}</FlexCol>
+                    <FlexCol><Icon data-testid="title-delete-icon" color="red-hover" hcolor="red-hover" icon={faTrashAlt} ></Icon></FlexCol>
+                    <FlexCol data-testid="title-username">Username</FlexCol>
+                    <FlexCol data-testid="title-email">Email</FlexCol>
+                    <FlexCol data-testid="title-role">Role</FlexCol>
+                    <FlexCol data-testid="title-created-date">User Creation Date</FlexCol>
                 </StyledHeader>
                 {users.length > 0 &&
                     users.map((user, idx) =>

@@ -76,7 +76,7 @@ export default function Nav() {
             <TableCell col={3} justifySelf={"flex-end"}>
                 {(user.token)
                     ?
-                    <StyledLink onClick={logout} to="/logout">Sign Out</StyledLink>
+                    <StyledLink onClick={logout} to="/login">Sign Out</StyledLink>
                     :
                     <>
                         <StyledLink to="/login">Login</StyledLink>

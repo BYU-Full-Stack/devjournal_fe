@@ -4,12 +4,11 @@ import styled from 'styled-components';
 import { H1, theme, Button, Main } from './../../Styles';
 import Icon from '../../components/Icon'
 import {JournalType, JournalArray} from './Journal'
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import EditJournal from './EditJournal';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { RouteMatchType } from '../../Types';
 import DeleteJournal from './DeleteJournal';
-import { getEntries, useUser } from '../../API/AppLogic';
 
 //////////////////  TYPES ///////////////////
 

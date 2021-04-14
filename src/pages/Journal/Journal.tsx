@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
-import { getJournals, useUser } from '../../API/AppLogic';
+import {
+  getEntries,
+  getJournals,
+  useAlertBox,
+  useUser,
+} from '../../API/AppLogic';
 import ListJournals from './ListJournals';
 import { RouteMatchType } from '../../Types';
 import ListEntries from './ListEntries';
@@ -11,10 +16,11 @@ export type JournalType = {
   id?: string;
   name?: string;
   color?: string;
-  dateCreated?: Date;
-  lastUpdated?: Date;
+  dateCreated?: Date | string;
+  lastUpdated?: Date | string;
   user_id?: string;
   idx?: number;
+  numEntries?: number;
 };
 
 export type JournalArray = {
@@ -35,25 +41,43 @@ const Journal = () => {
   const [user] = useUser();
   const [isLoading, setIsLoading] = useState(true);
   const routeHistory = useHistory();
+  const [, addAlert] = useAlertBox();
 
   useEffect(() => {
     user.token &&
       (async function () {
         try {
           setIsLoading(true);
-          const allJournals: JournalType[] = await getJournals(
-            user.username,
-            user.token
-          );
-          setJournals(allJournals);
-          setIsLoading(false);
+          let promises: any[] = [];
+
+          let allJournals = await getJournals(user.username, user.token);
+
+          promises = allJournals.map(async (x: JournalType) => {
+            return getEntries(user.username, x.id, user.token);
+          });
+
+          Promise.all(promises).then((values) => {
+            const newJournals = allJournals.map((journal: any, idx: number) => {
+              return {
+                ...journal,
+                numEntries: values[idx].length,
+              };
+            });
+
+            setJournals(newJournals);
+            setIsLoading(false);
+          });
         } catch (err) {
-          //    TODO: handle errors better than this
+          addAlert({
+            key: `get-journals-attempt-${new Date()}`,
+            text: 'Unable to Retrieve Journals.',
+            timeout: 7,
+            theme: 'error',
+          });
           routeHistory.push('/error');
-          console.log('error', err);
         }
       })();
-  }, [routeHistory, user.token, user.username]);
+  }, [addAlert, routeHistory, user.token, user.username]);
 
   let journal: JournalType | undefined;
   journal = Object.values(journals).find(

@@ -66,11 +66,12 @@ export type StyleProps = {
     xOverflow?: string;
     height?: string;
     align?: string;
+    borderColor?: string;
 };
 
 export const FlexContainer = styled.section`
     display: flex;
-    flex-wrap: ${(props: StyleProps) => props.wrap || 'no-wrap'};
+    flex-wrap: ${(props: StyleProps) => props.wrap || 'nowrap'};
     flex-direction: ${(props: StyleProps) => props.direction || 'row'};
     margin: ${({ margin = '0' }: StyleProps) => margin};
     justify-content: ${({ justify = 'flex-start' }: StyleProps) => justify};
@@ -161,6 +162,7 @@ export const Button = styled.button`
     background-color: ${({ bgColor = 'bg-dark' }: StyleProps) => theme[bgColor]};
     color: ${({ color = 'white' }: StyleProps) => theme[color]};
     border: ${({ border = 'none' }: StyleProps) => border};
+    border-color: ${({ borderColor = 'unset' }: StyleProps) => borderColor};
     width: ${({ width = 'unset' }: StyleProps) => width};
     padding: ${({ padding = 'unset' }: StyleProps) => padding};
     transition: all .4s ease-out;
@@ -182,11 +184,15 @@ export const StyledLink = styled(Link)`
     display: inline-block;
     color: inherit;
     color: ${theme['turq']};
-    margin: 1em 1em 0 1em;
+    margin: 1.5em 1em 0 1em;
     transition: border-bottom .25s;
     &:hover {
         color: ${theme['turq-hover']};
         border-bottom: ${theme['orange-deep']} 4px solid;
     }
     text-decoration: none;
+`;
+
+export const Main = styled.main`
+    margin: 20px;
 `;

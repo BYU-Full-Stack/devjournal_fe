@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { H2, H3, PrettyH2 } from '../Styles';
-import { login, useUser } from '../API/AppLogic';
+import { getUser, login, useUser } from '../API/AppLogic';
 import { FlexContainer, FlexCol, Button } from '../Styles';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const [username, setUserName] = useState('username');
-  const [password, setPassword] = useState('password');
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
   const [userState, setUser] = useUser();
 
   async function loginUser() {
     try {
       const auth = (await login({ username, password })) || '';
+      const { role } = await getUser(username, auth.split(' ')[1]);
       setUser({
         username,
         token: auth.split(' ')[1],
+        role: role,
       });
       console.log(auth);
     } catch (err) {

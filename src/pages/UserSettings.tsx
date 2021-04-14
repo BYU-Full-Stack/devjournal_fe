@@ -55,32 +55,10 @@ const UserSettings = () => {
     const [editUser, setEditUser] = useState(user);
     const [indexOfUpdateField, setIndexOfUpdateField] = useState(0);
     const fieldsToUpdate = [
-        { label: 'Username', key: 'username' },
-        { label: 'Password', key: 'password', type: 'password' },
-        { label: 'Email', key: 'email' },
+        { label: 'Username', key: 'username', maxLength: 20 },
+        { label: 'Password', key: 'password', type: 'password', maxLength: 50 },
+        { label: 'Email', key: 'email', maxLength: 50 },
     ];
-
-    useEffect(() => {
-        (async function () {
-            try {
-                const auth = await login({ username: testUser, password: `pass${testUser}` }) || '';
-                setUser({
-                    username: testUser,
-                    token: auth.split(' ')[1]
-                });
-
-            } catch (err) {
-                const { message = 'Unable to login at this time.' } = err?.response?.data || {};
-
-                addAlert({
-                    key: `login-attempt-${new Date()}`,
-                    text: message,
-                    timeout: 7,
-                    theme: 'error'
-                });
-            }
-        })();
-    }, [setUser]);
 
     useEffect(() => {
         user.token && (async function () {
@@ -97,7 +75,7 @@ const UserSettings = () => {
                 });
             }
         })();
-    }, [user.token, setUser]);
+    }, [user.token, setUser, addAlert]);
 
     useEffect(() => setEditUser(user), [user])
 
@@ -152,6 +130,7 @@ const UserSettings = () => {
                     type={fieldsToUpdate[indexOfUpdateField].type ? fieldsToUpdate[indexOfUpdateField].type : 'text'}
                     // @ts-ignore
                     editableText={editUser[fieldsToUpdate[indexOfUpdateField].key]}
+                    maxLength={fieldsToUpdate[indexOfUpdateField].maxLength}
                     handleInputUpdate={handleUpdateTextInput} />
 
                 <FlexContainer justify="flex-end" margin="1em 0em">

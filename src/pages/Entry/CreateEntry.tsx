@@ -21,6 +21,7 @@ const CreateEntry = () => {
     markdown: '',
   });
 
+  console.log(routeHistory);
   const titlePlace = ['title'];
 
   const handleUpdateTextInput: OnChange = (value, e) => {
@@ -32,6 +33,7 @@ const CreateEntry = () => {
   };
 
   const createEntryHandler = async () => {
+    // entry.journalId =
     try {
       await createEntry(user.username, entry, user.token);
       routeHistory.push('/journals/:id');

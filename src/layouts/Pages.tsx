@@ -20,14 +20,18 @@ export default function Pages() {
       <Route path='/register'>
         <Register />
       </Route>
+      <Route path='/login'>
+        <Login />
+      </Route>
       <Route path='/journals/create'>
         <CreateJournal />
       </Route>
-      <Route path='/journals/:id/entries/create'>
-        <CreateEntry />
-      </Route>
+
       <Route path='/journals'>
         <Journal />
+      </Route>
+      <Route path='/journals/:id/entries/create'>
+        <CreateEntry />
       </Route>
       <Route path='/error'>
         <Error />

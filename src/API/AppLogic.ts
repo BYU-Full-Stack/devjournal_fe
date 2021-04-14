@@ -56,11 +56,10 @@ export const getUser = async (username: string = '', token: string = '') => {
 
   try {
     // @ts-ignore
-    const { data: { email, created_date, user_id, password } = {} } = await GET(
-      `${API_URL}${API_BASE}${username}`,
-      customOptions
-    );
-    return { email, created_date, user_id, password };
+    const {
+      data: { email, created_date, user_id, password, role } = {},
+    } = await GET(`${API_URL}${API_BASE}${username}`, customOptions);
+    return { email, created_date, user_id, password, role };
   } catch (err) {
     throw err;
   }
@@ -129,9 +128,26 @@ export const getJournals = async (username: string, token: string = '') => {
     );
     return journals;
   } catch (err) {
-    //    TODO: handle errors better than this
-    console.log(err);
-    return [];
+    throw err;
+  }
+};
+
+export const getJournalByID = async (
+  username: string,
+  journalId?: string,
+  token: string = ''
+) => {
+  const customOptions: typeof options = { ...options };
+  customOptions.headers.Authorization = `Bearer ${token}`;
+
+  try {
+    const { data: journal = {} } = await GET(
+      `${API_URL}${API_BASE}${username}/journal/${journalId}`,
+      customOptions
+    );
+    return journal;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -142,7 +158,6 @@ export const createJournal = async (
 ) => {
   const customOptions: typeof options = { ...options };
   customOptions.headers.Authorization = `Bearer ${token}`;
-
   try {
     await POST(
       `${API_URL}${API_BASE}${username}/journal`,
@@ -150,14 +165,13 @@ export const createJournal = async (
       customOptions
     );
   } catch (err) {
-    //    TODO: handle errors better than this
-    console.log(err);
+    throw err;
   }
 };
 
 export const deleteJournal = async (
   username: string,
-  journalId: string,
+  journalId?: string,
   token: string = ''
 ) => {
   const customOptions: typeof options = { ...options };
@@ -169,15 +183,14 @@ export const deleteJournal = async (
       customOptions
     );
   } catch (err) {
-    //    TODO: handle errors better than this
-    console.log(err);
+    throw err;
   }
 };
 
 export const updateJournal = async (
   username: string,
   token: string = '',
-  updatedJournal: JournalType | undefined
+  updatedJournal?: JournalType
 ) => {
   const customOptions: typeof options = { ...options };
   customOptions.headers.Authorization = `Bearer ${token}`;
@@ -189,7 +202,6 @@ export const updateJournal = async (
       customOptions
     );
   } catch (err) {
-    //    TODO: handle errors better than this
     throw err;
   }
 };

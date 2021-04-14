@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { H2, H3, PrettyH2 } from '../Styles'
-import { login, useUser } from '../API/AppLogic'
+import { getUser, login, useUser } from '../API/AppLogic'
 import { FlexContainer, FlexCol, Button } from '../Styles'
 import { Link } from 'react-router-dom'
 
@@ -12,9 +12,11 @@ const Login = () => {
     async function loginUser() {
         try {
             const auth = await login({ username, password }) || '';
+            const { role } = await getUser(username, auth.split(' ')[1])
             setUser({
                 username,
-                token: auth.split(' ')[1]
+                token: auth.split(' ')[1],
+                role: role
             });
             console.log(auth)
         } catch (err) {

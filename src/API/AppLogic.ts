@@ -52,8 +52,8 @@ export const getUser = async (username: string = '', token: string = '') => {
 
     try {
         // @ts-ignore
-        const { data: { email, created_date, user_id, password } = {} } = await GET(`${API_URL}${API_BASE}${username}`, customOptions);
-        return { email, created_date, user_id, password };
+        const { data: { email, created_date, user_id, password, role } = {} } = await GET(`${API_URL}${API_BASE}${username}`, customOptions);
+        return { email, created_date, user_id, password, role };
     } catch (err) {
         throw err;
     }

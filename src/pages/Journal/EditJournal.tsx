@@ -1,16 +1,17 @@
 import React, { useRef, useState } from "react";
 
-import { updateJournal, useUser } from "../../API/AppLogic";
+import { getJournalByID, updateJournal, useUser } from "../../API/AppLogic";
 import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput";
-import { Button, FlexCol, FlexContainer, H1, H3 } from "../../Styles";
+import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles";
 import { JournalType } from "./Journal";
 import { Link } from "react-router-dom";
 import Loading from "../../components/Loading";
+import ColorPicker from "../../components/ColorPicker";
 
 //////////////////  TYPES ///////////////////
 
 type Props = {
-    journal?: JournalType,
+    journal: JournalType,
     setJournals: Function,
 }
 
@@ -22,11 +23,16 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
     const [canUserSave, setCanUserSave] = useState(true);
     const [user] = useUser();
     const [isLoading, setIsLoading] = useState(false);
-    const [editJournal, setEditJournal] = useState(journal)
+    const [editJournal, setEditJournal] = useState(journal);
+    const [displayColorPicker, setDisplayColorPicker] = useState(false);
     const fieldsToUpdate = ["name", "color"];
 
     const handleUpdateTextInput = (value: String, myKey: number) => {
         setEditJournal({ ...editJournal, [fieldsToUpdate[myKey]]: value })
+    }
+
+    const setJournalColor = (hex: string) => {
+        setEditJournal({...editJournal, color: hex})
     }
 
     const updateJournalDetails = async () => {
@@ -36,12 +42,17 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
             setIsLoading(true);
             await updateJournal(user.username, user.token, editJournal)
 
-            setJournals((prevJournals: Array<Object>) => {
-                const {idx = 0} = journal || {};
+            //get that specific journal back from db so that we get the new times.
+            const newJournal: JournalType = await getJournalByID(user.username, editJournal.id, user.token)
+
+            setJournals((prevJournals: Array<JournalType>) => {
+                let editIdx = prevJournals.findIndex((x) => x.id === journal.id);
+                newJournal.numEntries = prevJournals[editIdx].numEntries;
+
                 return (
-                    [...prevJournals.slice(0, idx),
-                     editJournal,
-                    ...prevJournals.slice(idx + 1)]
+                    [...prevJournals.slice(0, editIdx),
+                     newJournal,
+                    ...prevJournals.slice(editIdx + 1)]
                 )
             })
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
@@ -55,8 +66,15 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
     }
 
     return (
-        <main>
-            <Link to="/journals"><Button>Back</Button></Link>
+        <Main>
+            <Link to="/journals">
+                <Button
+                    bgColor="bg-dark"
+                    padding=".4em 1em"
+                    border="transparent 2px solid"
+                    hoverBorder="turq 2px solid"
+                >Back to Journals</Button>
+            </Link>
             <H1>Editing {journal?.name} Journal</H1>
             <FlexContainer wrap="wrap" height="100%">
                 <FlexCol margin="auto">
@@ -65,15 +83,19 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
                         myKey={0}
                         setCanUserSave={setCanUserSave}
                         editableText={editJournal?.name}
-                        handleInputUpdate={handleUpdateTextInput} />
+                        maxLength={20}
+                        handleInputUpdate={handleUpdateTextInput}/>
                     <H3 display="inline">Color:</H3>
                     <ConfirmableInput
                         myKey={1}
                         setCanUserSave={setCanUserSave}
                         editableText={editJournal?.color}
-                        handleInputUpdate={handleUpdateTextInput} />
+                        maxLength={20}
+                        handleInputUpdate={handleUpdateTextInput}
+                        setVisibleObject={setDisplayColorPicker}/>
 
-                    <FlexContainer justify="flex-end" margin="1em 0em">
+                    <FlexContainer justify="space-between" margin="1em 0em">
+                        <ColorPicker visible={displayColorPicker} color={editJournal?.color} setColor={setJournalColor}></ColorPicker>
                         <Button
                             ref={saveButtonRef}
                             bgColor="bg-dark"
@@ -89,7 +111,7 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
                     }
                 </FlexCol>
             </FlexContainer>
-        </main>
+        </Main>
     )
 }
 

@@ -55,9 +55,9 @@ const UserSettings = () => {
     const [editUser, setEditUser] = useState(user);
     const [indexOfUpdateField, setIndexOfUpdateField] = useState(0);
     const fieldsToUpdate = [
-        { label: 'Username', key: 'username' },
-        { label: 'Password', key: 'password', type: 'password' },
-        { label: 'Email', key: 'email' },
+        { label: 'Username', key: 'username', maxLength: 20 },
+        { label: 'Password', key: 'password', type: 'password', maxLength: 50 },
+        { label: 'Email', key: 'email', maxLength: 50 },
     ];
 
     useEffect(() => {
@@ -152,6 +152,7 @@ const UserSettings = () => {
                     type={fieldsToUpdate[indexOfUpdateField].type ? fieldsToUpdate[indexOfUpdateField].type : 'text'}
                     // @ts-ignore
                     editableText={editUser[fieldsToUpdate[indexOfUpdateField].key]}
+                    maxLength={fieldsToUpdate[indexOfUpdateField].maxLength}
                     handleInputUpdate={handleUpdateTextInput} />
 
                 <FlexContainer justify="flex-end" margin="1em 0em">

@@ -37,7 +37,7 @@ export const registerUser = async (newUser: USER_STATE_TYPE) => {
         const { headers: {
             authorization: auth = 'Bearer '
         } = {} } = await POST(`${API_URL}${API_BASE}user/signup`, newUser, customOptions);
-        
+
         return auth;
     }
     catch (err) {
@@ -109,6 +109,20 @@ export const getJournals = async (username: string, token: string = '') => {
     }
 };
 
+export const getJournalByID = async (username: string, journalId?: string, token: string = '') => {
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        const { data: journal = {} } = await GET(`${API_URL}${API_BASE}${username}/journal/${journalId}`, customOptions);
+        return journal;
+    } catch (err) {
+        //    TODO: handle errors better than this
+        console.log(err);
+        return {};
+    }
+};
+
 export const createJournal = async (username: string, createdJournal: JournalType, token: string = '') => {
     const customOptions: typeof options = { ...options };
     customOptions.headers.Authorization = `Bearer ${token}`;
@@ -121,7 +135,7 @@ export const createJournal = async (username: string, createdJournal: JournalTyp
     }
 };
 
-export const deleteJournal = async (username: string, journalId: string, token: string = '') => {
+export const deleteJournal = async (username: string, journalId?: string, token: string = '') => {
     const customOptions: typeof options = { ...options };
     customOptions.headers.Authorization = `Bearer ${token}`;
 
@@ -133,7 +147,7 @@ export const deleteJournal = async (username: string, journalId: string, token: 
     }
 };
 
-export const updateJournal = async (username: string, token: string = '', updatedJournal: JournalType | undefined) => {
+export const updateJournal = async (username: string, token: string = '', updatedJournal?: JournalType) => {
     const customOptions: typeof options = { ...options };
     customOptions.headers.Authorization = `Bearer ${token}`;
 
@@ -145,7 +159,7 @@ export const updateJournal = async (username: string, token: string = '', update
     }
 };
 
-export const getEntries = async (username: string,journalId: string | undefined, token: string = '') => {
+export const getEntries = async (username: string, journalId?: string, token: string = '') => {
 
     const customOptions: typeof options = { ...options };
     customOptions.headers.Authorization = `Bearer ${token}`;

@@ -21,6 +21,7 @@ export default function Pages() {
             </Route>
             <Route path="/register">
                 <Register />
+            </Route>
             <Route path="/journals/create">
                 <CreateJournal/>
             </Route>

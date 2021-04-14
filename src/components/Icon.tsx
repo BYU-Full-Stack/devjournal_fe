@@ -35,6 +35,7 @@ const StyledIcon = styled(FontAwesomeIcon)`
     margin: ${({ margin = '0 4px' }: IconStyleProps) => margin};
     transition: color .3s ease-out;
     color: ${({ color = 'white' }: IconStyleProps) => theme[color]};
+    z-index: 1;
 
     &:hover {
         color: ${({ hcolor = 'orange-deep' }: IconStyleProps) => theme[hcolor]};

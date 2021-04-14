@@ -5,8 +5,8 @@ import { FlexContainer, FlexCol, Button } from '../Styles'
 import { Link } from 'react-router-dom'
 
 const Login = () => {
-    const [username, setUserName] = useState('username');
-    const [password, setPassword] = useState('password');
+    const [username, setUserName] = useState('');
+    const [password, setPassword] = useState('');
     const [userState, setUser] = useUser();
 
     async function loginUser() {
@@ -46,7 +46,7 @@ const Login = () => {
                     >Save</Button>
             </div>
                 <Link to='/register'>
-                    <Button 
+                    <Button
                         bgColor="bg-dark"
                         padding=".4em 1em"
                         border="transparent 2px solid"

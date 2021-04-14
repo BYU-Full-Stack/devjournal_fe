@@ -103,9 +103,7 @@ export const getJournals = async (username: string, token: string = '') => {
         const { data: journals = [] } = await GET(`${API_URL}${API_BASE}${username}/journal`, customOptions);
         return journals;
     } catch (err) {
-        //    TODO: handle errors better than this
-        console.log(err);
-        return [];
+        throw err;
     }
 };
 
@@ -117,9 +115,7 @@ export const getJournalByID = async (username: string, journalId?: string, token
         const { data: journal = {} } = await GET(`${API_URL}${API_BASE}${username}/journal/${journalId}`, customOptions);
         return journal;
     } catch (err) {
-        //    TODO: handle errors better than this
-        console.log(err);
-        return {};
+        throw err;
     }
 };
 
@@ -130,8 +126,7 @@ export const createJournal = async (username: string, createdJournal: JournalTyp
     try {
         await POST(`${API_URL}${API_BASE}${username}/journal`, createdJournal, customOptions);
     } catch (err) {
-        //    TODO: handle errors better than this
-        console.log(err);
+        throw err;
     }
 };
 
@@ -142,8 +137,7 @@ export const deleteJournal = async (username: string, journalId?: string, token:
     try {
         await DELETE(`${API_URL}${API_BASE}${username}/journal/${journalId}`, customOptions);
     } catch (err) {
-        //    TODO: handle errors better than this
-        console.log(err);
+        throw err;
     }
 };
 
@@ -154,7 +148,6 @@ export const updateJournal = async (username: string, token: string = '', update
     try {
         await PUT(`${API_URL}${API_BASE}${username}/journal`, updatedJournal, customOptions);
     } catch (err) {
-        //    TODO: handle errors better than this
         throw err;
     }
 };
@@ -168,9 +161,7 @@ export const getEntries = async (username: string, journalId?: string, token: st
         const { data: entries = [] } = await GET(`${API_URL}${API_BASE}${username}/${journalId}/entries`, customOptions);
         return entries;
     } catch (err) {
-        //    TODO: handle errors better than this
-        console.log(err);
-        return [];
+        throw err;
     }
 }
 

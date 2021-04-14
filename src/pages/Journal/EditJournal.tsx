@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 
-import { getJournalByID, updateJournal, useUser } from "../../API/AppLogic";
+import { getJournalByID, updateJournal, useAlertBox, useUser } from "../../API/AppLogic";
 import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput";
 import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles";
 import { JournalType } from "./Journal";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Loading from "../../components/Loading";
 import ColorPicker from "../../components/ColorPicker";
 
@@ -24,6 +24,8 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
     const [user] = useUser();
     const [isLoading, setIsLoading] = useState(false);
     const [editJournal, setEditJournal] = useState(journal);
+    const routeHistory = useHistory();
+    const [, addAlert] = useAlertBox();
     const [displayColorPicker, setDisplayColorPicker] = useState(false);
     const fieldsToUpdate = ["name", "color"];
 
@@ -58,9 +60,20 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
             //take off loading
             setIsLoading(false);
+            addAlert({
+                key: `update-${newJournal.name}-attempt-${new Date()}`,
+                text: `Successfully updated your ${newJournal.name} Journal`,
+                timeout: 4,
+                theme: 'success'
+            });
         } catch (err) {
-            //    TODO: handle errors better than this
-            console.log(err);
+            addAlert({
+                key: `update-journal-attempt-${new Date()}`,
+                text: 'Unable to Update Journal.',
+                timeout: 7,
+                theme: 'error'
+            });
+            routeHistory.push("/error");
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
         }
     }

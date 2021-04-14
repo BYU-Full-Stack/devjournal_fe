@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { deleteJournal, useUser } from "../../API/AppLogic";
+import { deleteJournal, useAlertBox, useUser } from "../../API/AppLogic";
 import Loading from "../../components/Loading";
 import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles";
 import { JournalType } from "./Journal";
+import { dateType } from "./ListJournals";
 
 //////////////////  TYPES ///////////////////
 
@@ -57,9 +58,23 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [userDeleting, setUserDeleting] = useState(false);
     const [user] = useUser();
+    const [, addAlert] = useAlertBox();
     const routeHistory = useHistory();
 
     const fieldNames = ["ID", "UserID", "Journal Name", "Color", "Date Created", "Last Updated", "Number of Entries"];
+
+    useLayoutEffect(() => {
+        journal.lastUpdated = (journal.lastUpdated !== undefined) ? new Date(journal.lastUpdated) : undefined;
+        journal.dateCreated = (journal.dateCreated !== undefined) ? new Date(journal.dateCreated) : undefined;
+
+        let dateOptions: dateType = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+
+        journal.lastUpdated?.setHours(journal.lastUpdated.getHours() - 6);
+        journal.dateCreated?.setHours(journal.dateCreated.getHours() - 6);
+
+        journal.lastUpdated = journal.lastUpdated?.toLocaleString([], dateOptions);
+        journal.dateCreated = journal.dateCreated?.toLocaleString([], dateOptions);
+    },[journal]);
 
     const deleteJournalHandler = async () => {
         try {
@@ -83,9 +98,20 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
             setIsLoading(false);
             setUserDeleting(false);
             routeHistory.push("/journals");
+            addAlert({
+                key: `delete-${journal.name}-attempt-${new Date()}`,
+                text: `Successfully deleted your ${journal.name} Journal`,
+                timeout: 4,
+                theme: 'success'
+            });
         } catch (err) {
-            //    TODO: handle errors better than this
-            console.log(err);
+            addAlert({
+                key: `delete-journal-attempt-${new Date()}`,
+                text: 'Unable to Delete Journal.',
+                timeout: 7,
+                theme: 'error'
+            });
+            routeHistory.push("/error");
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
         }
     }

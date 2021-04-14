@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 
-import { getEntries, getJournals, useUser } from "../../API/AppLogic";
+import { getEntries, getJournals, useAlertBox, useUser } from "../../API/AppLogic";
 import ListJournals from './ListJournals';
 import { RouteMatchType } from '../../Types'
 import ListEntries from "./ListEntries";
@@ -12,8 +12,8 @@ export type JournalType = {
     id?: string,
     name?: string,
     color?: string,
-    dateCreated?: Date,
-    lastUpdated?: Date,
+    dateCreated?: Date | string,
+    lastUpdated?: Date | string,
     user_id?: string,
     idx?: number,
     numEntries?: number,
@@ -37,6 +37,7 @@ const Journal = () => {
     const [user] = useUser();
     const [isLoading, setIsLoading] = useState(true);
     const routeHistory = useHistory();
+    const [, addAlert] = useAlertBox();
 
     useEffect(() => {
         user.token && (async function () {
@@ -64,12 +65,16 @@ const Journal = () => {
                     setIsLoading(false);
                 });
             } catch (err) {
-                //    TODO: handle errors better than this
+                addAlert({
+                    key: `get-journals-attempt-${new Date()}`,
+                    text: 'Unable to Retrieve Journals.',
+                    timeout: 7,
+                    theme: 'error'
+                });
                 routeHistory.push("/error");
-                console.log("error", err);
             }
         })();
-    }, [routeHistory, user.token, user.username]);
+    }, [addAlert, routeHistory, user.token, user.username]);
 
     let journal : JournalType | undefined;
     journal = Object.values(journals).find((x: JournalType) => x?.id === match?.params?.id);

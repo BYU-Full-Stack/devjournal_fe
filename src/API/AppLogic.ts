@@ -8,6 +8,8 @@ import { useCallback } from 'react';
 import { userStateAction } from '../store/actions/user';
 import { JournalType } from '../pages/Journal/Journal';
 import { addAlertAction } from '../store/actions/alert';
+import { EntryType } from '../pages/Journal/ListEntries';
+
 const {
   REACT_APP_API_DOMAIN: API_URL,
   REACT_APP_API_BASE_PATH: API_BASE,
@@ -199,7 +201,100 @@ export const getEntries = async (
 ) => {
   const customOptions: typeof options = { ...options };
   customOptions.headers.Authorization = `Bearer ${token}`;
+
+  try {
+    const { data: entries = [] } = await GET(
+      `${API_URL}${API_BASE}${username}/${journalId}/entries`,
+      customOptions
+    );
+    return entries;
+  } catch (err) {
+    //    TODO: handle errors better than this
+    console.log(err);
+    return [];
+  }
 };
+
+export const getEntry = async (
+  username: string = '',
+  journalId: string,
+  entryId: string,
+  token: string = ''
+) => {
+  const customOptions: typeof options = { ...options };
+  customOptions.headers.Authorization = `Bearer ${token}`;
+  try {
+    // @ts-ignore
+    const { data: { one, two, three, four } = {} } = await GET(
+      `${API_URL}${API_BASE}${username}/${journalId}/entries/${entryId}`,
+      customOptions
+    );
+    return { one, two, three, four };
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const createEntry = async (
+  username: string,
+  createdEntry: EntryType,
+  token: string = ''
+) => {
+  const customOptions: typeof options = { ...options };
+  customOptions.headers.Authorization = `Bearer ${token}`;
+
+  try {
+    await POST(
+      `${API_URL}${API_BASE}${username}/entries`,
+      createdEntry,
+      customOptions
+    );
+  } catch (err) {
+    //    TODO: handle errors better than this
+    console.log(err);
+  }
+};
+
+export const updateEntry = async (
+  username: string,
+  updatedEntry: EntryType | undefined,
+  token: string = ''
+) => {
+  const customOptions: typeof options = { ...options };
+  customOptions.headers.Authorization = `Bearer ${token}`;
+
+  try {
+    await PUT(
+      `${API_URL}${API_BASE}${username}/entries`,
+      updatedEntry,
+      customOptions
+    );
+  } catch (err) {
+    //    TODO: handle errors better than this
+    throw err;
+  }
+};
+
+export const deleteEntry = async (
+  username: string,
+  journalId: string,
+  entryId: string,
+  token: string = ''
+) => {
+  const customOptions: typeof options = { ...options };
+  customOptions.headers.Authorization = `Bearer ${token}`;
+
+  try {
+    await DELETE(
+      `${API_URL}${API_BASE}${username}/${journalId}/entries/${entryId}`,
+      customOptions
+    );
+  } catch (err) {
+    //    TODO: handle errors better than this
+    console.log(err);
+  }
+};
+
 export const setEntry = async (
   username: string,
   journalId: string,

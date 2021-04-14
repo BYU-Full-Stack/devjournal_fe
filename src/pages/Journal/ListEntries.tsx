@@ -8,14 +8,15 @@ import Loading from '../../components/Loading';
 
 //////////////////  TYPES ///////////////////
 
-type EntryType = {
-  id: string;
-  journalId: string;
-  title: string;
-  markdown: string;
-  html: string;
-  dateCreated: Date;
-  lastUpdated: Date;
+export type EntryType = {
+  id?: string;
+  journalId?: string;
+  title?: string;
+  markdown?: string;
+  html?: string;
+  dateCreated?: Date;
+  lastUpdated?: Date;
+  idx?: number;
 };
 
 //////////////////  STYLED COMPONENTS ///////////////////
@@ -57,23 +58,28 @@ const ListEntries = (props: JournalType) => {
   };
 
   if (isLoading) {
-    return (
-      <Loading/>
-    )
+    return <Loading />;
   } else {
     return (
       <FlexContainer wrap='wrap' height='100%'>
         <LeftNav width='15%'>
           <PrettyH2>{props.name} Journal Entries</PrettyH2>
           {entries?.map(({ title, lastUpdated }, idx) => {
-            lastUpdated = new Date(lastUpdated);
-
+            let displayLastUpdated = new Date();
+            let checkDate: Date;
+            if (lastUpdated !== undefined) {
+              checkDate = new Date(lastUpdated.toString());
+            } else {
+              checkDate = new Date();
+            }
+            displayLastUpdated = checkDate;
             return (
               <div key={idx} onClick={() => changeEntry(idx)}>
                 <FlexCol>{title}</FlexCol>
                 <FlexCol>
                   <SmallText>
-                    Updated {lastUpdated.getMonth()}/{lastUpdated.getDay()}
+                    Updated {displayLastUpdated.getMonth()}/
+                    {displayLastUpdated.getDay()}
                   </SmallText>
                 </FlexCol>
               </div>
@@ -81,9 +87,18 @@ const ListEntries = (props: JournalType) => {
           })}
         </LeftNav>
         <FlexCol margin='auto'>
-          <H1>{visibleEntry?.title}</H1>
-          <div>{visibleEntry?.markdown}</div>
-          <Entry markdown={visibleEntry?.markdown} />
+          {visibleEntry !== undefined ? (
+            <>
+              <H1>{visibleEntry.title}</H1>
+              <div>{visibleEntry.markdown}</div>
+              <Entry entry={visibleEntry} setEntries={setEntries} />
+            </>
+          ) : (
+            <>
+              <H1>No entry selected</H1>
+              <div>-</div>
+            </>
+          )}
         </FlexCol>
       </FlexContainer>
     );

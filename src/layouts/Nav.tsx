@@ -42,35 +42,45 @@ export const TableCell = styled.div`
         let span = props.colSpan !== undefined ? props.colSpan : 1;
         return (
             props.col + " / span " + span
-        )}
+        )
+    }
     };
-    justify-self: ${({ justifySelf = 'unset'}: CellType) => justifySelf};
+    justify-self: ${({ justifySelf = 'unset' }: CellType) => justifySelf};
     padding: 0.75em 0.25em 0.75em 0.75em;
 `;
 
 export default function Nav() {
-    const [user] = useUser();
+    const [user, setUser] = useUser();
+    const logout = () =>
+        setUser({
+            username: '',
+            token: '',
+            role: ''
+        });
 
     return (
         <Wrapper>
             <TableCell col={1}><StyledLogo src={logo} /><LogoText>Dev<br></br>Journal</LogoText></TableCell>
             <TableCell col={2}>
-                <StyledLink to="/">Home</StyledLink>
-                {/* <StyledLink to="/about">About</StyledLink> */}
-                <StyledLink to="/journals">Journals</StyledLink>
-                <StyledLink to="/account">User Details</StyledLink>
-                {(user.role === "ADMIN") &&
-                    <StyledLink to="/user">All Users</StyledLink>
+                {user.token &&
+                    <>
+                        <StyledLink to="/">Home</StyledLink>
+                        <StyledLink to="/journals">Journals</StyledLink>
+                        <StyledLink to="/account">User Details</StyledLink>
+                        {user.role === "ADMIN" &&
+                            <StyledLink to="/user">All Users</StyledLink>
+                        }
+                    </>
                 }
             </TableCell>
             <TableCell col={3} justifySelf={"flex-end"}>
                 {(user.token)
-                ?
-                    <StyledLink to="/logout">Sign Out</StyledLink>
-                :
+                    ?
+                    <StyledLink onClick={logout} to="/logout">Sign Out</StyledLink>
+                    :
                     <>
-                    <StyledLink to="/login">Login</StyledLink>
-                    <StyledLink to="/register">Register</StyledLink>
+                        <StyledLink to="/login">Login</StyledLink>
+                        <StyledLink to="/register">Register</StyledLink>
                     </>
                 }
             </TableCell>

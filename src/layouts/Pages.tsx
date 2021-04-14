@@ -6,6 +6,7 @@ import Register from '../pages/newUser';
 import Journal from '../pages/Journal/Journal';
 import Error from '../pages/Error';
 import CreateJournal from '../pages/Journal/CreateJournal';
+import CreateEntry from '../pages/Entry/CreateEntry';
 
 export default function Pages() {
   return (
@@ -21,6 +22,9 @@ export default function Pages() {
       </Route>
       <Route path='/journals/create'>
         <CreateJournal />
+      </Route>
+      <Route path='/journals/:id/entries/create'>
+        <CreateEntry />
       </Route>
       <Route path='/journals'>
         <Journal />

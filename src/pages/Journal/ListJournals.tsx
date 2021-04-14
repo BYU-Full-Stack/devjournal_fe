@@ -22,7 +22,7 @@ type CellType = {
     paddingLeft?: string;
 }
 
-type dateType = {
+export type dateType = {
     weekday?: "short",
     year: 'numeric',
     month: 'long',

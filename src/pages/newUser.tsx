@@ -1,38 +1,45 @@
 import React, { useState } from 'react'
-import { registerUser, useUser, login } from '../API/AppLogic'
-import { FlexContainer, FlexCol, Button } from '../Styles'
+import styled from 'styled-components'
+import { registerUser, useUser } from '../API/AppLogic'
+import { Button } from '../Styles'
 
+const Label = styled.label`
+    color: white;
+`
 
 const Register = () => {
-    const [username, setUserName] = useState('username');
-    const [password, setPassword] = useState('password');
-    const [email, setEmail] = useState('test@gmail.com');
-    const [userState, setUser] = useUser();
+    const [username, setUserName] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [, setUser] = useUser();
 
     async function createUser () {
         try {
             const auth = await registerUser({ username, email, password });
-            
+
             setUser({
                 username,
                 token: auth.split(' ')[1]
             });
-            
+
             console.log(auth)
         } catch (err) {
             //    TODO: handle errors better than this
             console.log(err);
         }
     }
-    
+
     return (
         <div>
+            <Label>Username:</Label>
             <input type='text' value={username} onChange={({target:{value=''}={}}) => {
                 setUserName(value);
             }}/><br/>
+            <Label>Email:</Label>
             <input type='email' value={email} onChange={({target:{value=''}={}}) => {
                 setEmail(value);
             }}/><br/>
+            <Label>Password:</Label>
             <input type='password' value={password} onChange={({target:{value=''}={}}) => {
                 setPassword(value);
             }}/><br/>
@@ -42,7 +49,7 @@ const Register = () => {
                 border="transparent 2px solid"
                 hoverBorder="turq 2px solid"
                 onClick={() => createUser}
-            >Save</Button>
+            >Register</Button>
         </div>
     )
 }

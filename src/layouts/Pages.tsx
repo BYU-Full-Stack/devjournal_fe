@@ -22,6 +22,9 @@ export default function Pages() {
             <Route path="/register">
                 <Register />
             </Route>
+            <Route path="/login">
+                <Login />
+            </Route>
             <Route path="/journals/create">
                 <CreateJournal/>
             </Route>
@@ -32,7 +35,7 @@ export default function Pages() {
                 <Error/>
             </Route>
             <Route path="/">
-                <Login />
+                <Login/>
             </Route>
         </Switch>
     );

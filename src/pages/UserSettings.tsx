@@ -75,7 +75,7 @@ const UserSettings = () => {
                 });
             }
         })();
-    }, [user.token, setUser]);
+    }, [user.token, setUser, addAlert]);
 
     useEffect(() => setEditUser(user), [user])
 

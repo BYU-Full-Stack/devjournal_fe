@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react"
 import { Link, useHistory } from "react-router-dom";
-import { createJournal, useUser } from "../../API/AppLogic";
+import { createJournal, useAlertBox, useUser } from "../../API/AppLogic";
 import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput";
 import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles"
 import { JournalType } from "./Journal";
@@ -16,6 +16,7 @@ const CreateJournal = () => {
     const [user] = useUser();
     const [isLoading, setIsLoading] = useState(false);
     const routeHistory = useHistory();
+    const [, addAlert] = useAlertBox();
     const [journal, setJournal] = useState<JournalType>({
         name: "",
         color: "",
@@ -40,9 +41,20 @@ const CreateJournal = () => {
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
             setIsLoading(false);
             routeHistory.push("/journals");
+            addAlert({
+                key: `create-${journal.name}-attempt-${new Date()}`,
+                text: `Successfully created your ${journal.name} Journal`,
+                timeout: 4,
+                theme: 'success'
+            });
         } catch (err) {
-            //    TODO: handle errors better than this
-            console.log("error", err);
+            addAlert({
+                key: `create-journal-attempt-${new Date()}`,
+                text: 'Unable to Create Journal.',
+                timeout: 7,
+                theme: 'error'
+            });
+            routeHistory.push("/error");
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
         }
     }

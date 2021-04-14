@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store'
 import { useCallback } from 'react'
 import { userStateAction } from '../store/actions/user'
+import { JournalType } from '../pages/Journal/Journal'
 import { addAlertAction } from '../store/actions/alert'
 const { REACT_APP_API_DOMAIN: API_URL, REACT_APP_API_BASE_PATH: API_BASE } = process.env;
 
@@ -19,6 +20,30 @@ export const login = async (user: USER_STATE_TYPE) => {
         throw err;
     }
 };
+
+export const logout = async (user: USER_STATE_TYPE) => {
+    try {
+
+    }
+    catch (err) {
+        //    TODO: handle errors better than this
+        console.log(err)
+    }
+};
+
+export const registerUser = async (newUser: USER_STATE_TYPE) => {
+    const customOptions: typeof options = { ...options };
+    try {
+        const { headers: {
+            authorization: auth = 'Bearer '
+        } = {} } = await POST(`${API_URL}${API_BASE}user/signup`, newUser, customOptions);
+        
+        return auth;
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
 
 export const getUser = async (username: string = '', token: string = '') => {
 
@@ -71,7 +96,6 @@ export const deleteUser = async (username: string, userId: string, token: string
 };
 
 export const getJournals = async (username: string, token: string = '') => {
-
     const customOptions: typeof options = { ...options };
     customOptions.headers.Authorization = `Bearer ${token}`;
 
@@ -83,9 +107,45 @@ export const getJournals = async (username: string, token: string = '') => {
         console.log(err);
         return [];
     }
-}
+};
 
-export const getEntries = async (username: string,journalId: string, token: string = '') => {
+export const createJournal = async (username: string, createdJournal: JournalType, token: string = '') => {
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        await POST(`${API_URL}${API_BASE}${username}/journal`, createdJournal, customOptions);
+    } catch (err) {
+        //    TODO: handle errors better than this
+        console.log(err);
+    }
+};
+
+export const deleteJournal = async (username: string, journalId: string, token: string = '') => {
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        await DELETE(`${API_URL}${API_BASE}${username}/journal/${journalId}`, customOptions);
+    } catch (err) {
+        //    TODO: handle errors better than this
+        console.log(err);
+    }
+};
+
+export const updateJournal = async (username: string, token: string = '', updatedJournal: JournalType | undefined) => {
+    const customOptions: typeof options = { ...options };
+    customOptions.headers.Authorization = `Bearer ${token}`;
+
+    try {
+        await PUT(`${API_URL}${API_BASE}${username}/journal`, updatedJournal, customOptions);
+    } catch (err) {
+        //    TODO: handle errors better than this
+        throw err;
+    }
+};
+
+export const getEntries = async (username: string,journalId: string | undefined, token: string = '') => {
 
     const customOptions: typeof options = { ...options };
     customOptions.headers.Authorization = `Bearer ${token}`;
@@ -120,6 +180,9 @@ export const useUser = (): [userState: USER_STATE_TYPE, fun: Function] => {
     const setUser = useCallback((user: USER_STATE_TYPE) => {
         if (user.token) {
             window.localStorage.setItem('token', user.token);
+        }
+        if (user.username) {
+            window.localStorage.setItem('username', user.username);
         }
         dispatch(
             userStateAction(user)

@@ -74,6 +74,7 @@ export const FlexContainer = styled.section`
     flex-direction: ${(props: StyleProps) => props.direction || 'row'};
     margin: ${({ margin = '0' }: StyleProps) => margin};
     justify-content: ${({ justify = 'flex-start' }: StyleProps) => justify};
+    align-items: ${({ align = 'flex-start' }: StyleProps) => align};
     color: ${({ color = theme['white'] }: StyleProps) => color};
     height: ${({ height = '100%' }: StyleProps) => height};
 `;

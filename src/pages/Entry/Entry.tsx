@@ -17,20 +17,19 @@ export type SelectedEntryType = {
   setEntries: React.Dispatch<React.SetStateAction<EntryType[]>>;
 };
 
-const Entry = (props: SelectedEntryType) => {
+const Entry = ({ entry, setEntries }: SelectedEntryType) => {
   const [seeMarkdown, setSeeMarkdown] = useState(false);
-
   const updateEntryList = (editedEntry: EntryType) => {
-    props.setEntries((prevEntries: Array<EntryType>) => {
-      let editIdx = prevEntries.findIndex((x) => x.id === props.entry.id);
-      console.log(prevEntries[editIdx]);
-      console.log(prevEntries);
+
+    setEntries((prevEntries: Array<EntryType>) => {
+      const editIdx = prevEntries.findIndex((x) => x.id === entry.id);
       return [
         ...prevEntries.slice(0, editIdx),
         editedEntry,
         ...prevEntries.slice(editIdx + 1),
       ];
     });
+    setSeeMarkdown(true);
   };
 
   return (
@@ -39,18 +38,14 @@ const Entry = (props: SelectedEntryType) => {
       {seeMarkdown === false ? (
         <>
           <EditEntry
-            entry={props.entry}
-            saveEntry={(editedEntry: EntryType) => {
-              // setSeeMarkdown(true);
-              updateEntryList(editedEntry);
-              console.log('at saveEntry prop EditEntry', editedEntry);
-            }}
+            entry={entry}
+            saveEntry={updateEntryList}
           />
         </>
       ) : (
         <>
           <div>kaboom</div>
-          {/* <DisplayEntry entry={props.entry} saveEntry={setSeeMarkdown} /> */}
+          {/* <DisplayEntry entry={entry} saveEntry={setSeeMarkdown} /> */}
         </>
       )}
     </>

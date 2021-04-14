@@ -64,7 +64,7 @@ const ListEntries = (props: JournalType) => {
       <FlexContainer wrap='wrap' height='100%'>
         <LeftNav width='15%'>
           <PrettyH2>{props.name} Journal Entries</PrettyH2>
-          {entries?.map(({ title, lastUpdated }, idx) => {
+          {entries.map(({ title, lastUpdated }, idx) => {
             let displayLastUpdated = new Date();
             let checkDate: Date;
             if (lastUpdated !== undefined) {

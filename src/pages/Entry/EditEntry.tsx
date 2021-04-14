@@ -12,7 +12,7 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { Button } from '../../Styles';
 
 type Props = {
-  entry?: EntryType;
+  entry: EntryType;
   saveEntry: (editedEntry: EntryType) => void;
 };
 
@@ -25,8 +25,10 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
   const saveButtonRef = useRef<HTMLButtonElement>(null);
 
   const [user] = useUser();
-
   const [editEntry, setEditEntry] = useState(entry);
+
+  // watch for the entry from props to update and then update state
+  useEffect(() => setEditEntry(entry), [entry])
 
   const handleUpdateTextInput: OnChange = (value, e) => {
     setEditEntry({ ...editEntry, markdown: value });
@@ -35,9 +37,7 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
   const updateEntryDetails = async () => {
     try {
       await updateEntry(user.username, editEntry, user.token);
-      if (editEntry !== undefined) {
-        saveEntry(editEntry);
-      }
+      saveEntry(editEntry);
     } catch (err) {
       console.log(err);
     }

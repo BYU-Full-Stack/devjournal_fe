@@ -43,7 +43,7 @@ export const TableCell = styled.div`
     padding: 0.75em 0.25em 0.75em 0.75em;
     //padding-left: 0.75em;
     &:nth-child(n + 2) {
-        &:not(:nth-child(7)) {
+        &:not(:nth-child(8)) {
             border-top: 2px white solid;
         }
     }
@@ -59,7 +59,7 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
     const [user] = useUser();
     const routeHistory = useHistory();
 
-    const fieldNames = ["ID", "UserID", "Journal Name", "Color", "Date Created", "Last Updated"];
+    const fieldNames = ["ID", "UserID", "Journal Name", "Color", "Date Created", "Last Updated", "Number of Entries"];
 
     const deleteJournalHandler = async () => {
         try {
@@ -92,6 +92,7 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
 
     return (
         <Main>
+            <br/><br/>
             <FlexContainer  height="100%" border="2px white solid">
                 <FlexCol margin="auto" maxWidth={"100%"} width="40em">
                     <H1 self-align="center">Are You Sure You Want to Delete Your "{journal?.name}" Journal?</H1>

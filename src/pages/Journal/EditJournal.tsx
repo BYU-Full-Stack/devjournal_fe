@@ -47,6 +47,7 @@ const EditJournal = ({journal, setJournals = () => {} }: Props) => {
 
             setJournals((prevJournals: Array<JournalType>) => {
                 let editIdx = prevJournals.findIndex((x) => x.id === journal.id);
+                newJournal.numEntries = prevJournals[editIdx].numEntries;
 
                 return (
                     [...prevJournals.slice(0, editIdx),

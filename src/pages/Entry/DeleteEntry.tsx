@@ -10,15 +10,18 @@ type Props = {
 };
 
 const DeleteEntry = ({ entry, setEntries }: Props) => {
+  //user credentials
   const [user] = useUser();
 
   const handleEntryDelete = async () => {
     try {
-      console.log('delete');
+      //ensures that entry is actually deletable
       let journal_id = entry.journalId ? entry.journalId : '';
       let entry_id = entry.id ? entry.id : '';
+
       await deleteEntry(user.username, journal_id, entry_id, user.token);
 
+      // update list of entries displayed within journal
       setEntries((prevState: Array<EntryType>) => {
         let deleteIdx = prevState.findIndex((x) => x.id === entry.id);
         return [

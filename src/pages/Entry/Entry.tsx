@@ -23,6 +23,7 @@ const Entry = ({ entry, setEntries }: SelectedEntryType) => {
   const [seeMarkdown, setSeeMarkdown] = useState(true);
 
   const updateEntryList = (editedEntry: EntryType) => {
+    //reset displayed list of entries each time an entry changes
     setEntries((prevEntries: Array<EntryType>) => {
       const editIdx = prevEntries.findIndex((x) => x.id === entry.id);
       setSeeMarkdown(true);

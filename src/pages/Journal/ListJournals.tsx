@@ -1,4 +1,5 @@
 import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+import { faSort } from '@fortawesome/free-solid-svg-icons'
 
 import styled from 'styled-components';
 import { H1, theme, Button, Main } from './../../Styles';
@@ -6,7 +7,7 @@ import Icon from '../../components/Icon'
 import {JournalType, JournalArray} from './Journal'
 import React, { useEffect, useState } from 'react';
 import EditJournal from './EditJournal';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { RouteMatchType } from '../../Types';
 import DeleteJournal from './DeleteJournal';
 
@@ -105,6 +106,11 @@ const ListJournals = ({setJournals, journals}: JournalArray) => {
     const [journalBeingEdited, setJournalBeingEdited] = useState<JournalType>()
     const [journalBeingDeleted, setJournalBeingDeleted] = useState<JournalType>()
     const [listJournals, setListJournals] = useState(journals);
+    const [nameSort, setNameSort] = useState(false);
+    const [numEntriesSort, setNumEntriesSort] = useState(false);
+    const [dateCreatedSort, setDateCreatedSort] = useState(false);
+    const [lastUpdatedSort, setLastUpdatedSort] = useState(false);
+    const routeHistory = useHistory();
 
     useEffect(() => setListJournals(journals), [journals]);
 
@@ -119,6 +125,24 @@ const ListJournals = ({setJournals, journals}: JournalArray) => {
         journal = Object.values(journals).find((x: JournalType) => x?.id === deleteMatch?.params?.id);
         setJournalBeingDeleted(journal);
     }, [deleteMatch, journals])
+
+    const handleSort = (field: "name" | "numEntries" | "dateCreated" | "lastUpdated", sort: boolean) => {
+        console.log(sort);
+        setListJournals(
+            listJournals.sort((a, b) => (
+                ((a[field] || a[field] === 0) && (b[field] || b[field] === 0))
+                ?
+                    (sort)
+                    ?
+                        (a[field]! > b[field]!) ? 1 : -1
+                    :
+                        (a[field]! < b[field]!) ? 1 : -1
+                :
+                    -1
+            ))
+        );
+        routeHistory.push("/journals");
+    }
 
     const JournalRow = ({id, name, color, dateCreated, lastUpdated, numEntries, user_id, idx}: JournalType) => {
         lastUpdated = (lastUpdated !== undefined) ? new Date(lastUpdated) : undefined;
@@ -178,10 +202,10 @@ const ListJournals = ({setJournals, journals}: JournalArray) => {
                 </RowWrapper>
                 <HeaderRow>
                     <TableCell col={1}></TableCell>
-                    <TableCell col={2} paddingLeft={"1.75em"}>Journal Name</TableCell>
-                    <TableCell col={3} justifySelf={"center"}>Number of Entries</TableCell>
-                    <TableCell col={4}>Date Created</TableCell>
-                    <TableCell col={5}>Last Updated</TableCell>
+                    <TableCell col={2} paddingLeft={"1.75em"}>Journal Name<Icon size={"lg"} icon={faSort} onClick={() => {setNameSort(!nameSort); handleSort("name", nameSort);}} paddingLeft={"inherit"}/></TableCell>
+                    <TableCell col={3} justifySelf={"center"}>Number of Entries<Icon size={"lg"} icon={faSort} onClick={() => {setNumEntriesSort(!numEntriesSort); handleSort("numEntries", numEntriesSort);}} paddingLeft={"inherit"}/></TableCell>
+                    <TableCell col={4}>Date Created<Icon size={"lg"} icon={faSort} onClick={() => {setDateCreatedSort(!dateCreatedSort); handleSort("dateCreated", dateCreatedSort);}} paddingLeft={"inherit"}/></TableCell>
+                    <TableCell col={5}>Last Updated<Icon size={"lg"} icon={faSort} onClick={() => {setLastUpdatedSort(!lastUpdatedSort); handleSort("lastUpdated", lastUpdatedSort);}} paddingLeft={"inherit"}/></TableCell>
                     <TableCell col={6} justifySelf={"center"}>Edit Journal</TableCell>
                     <TableCell col={7} justifySelf={"center"}>Delete Journal</TableCell>
                 </HeaderRow>

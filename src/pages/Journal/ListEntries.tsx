@@ -1,21 +1,30 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getEntries, useUser } from '../../API/AppLogic';
-import { FlexCol, FlexContainer, LeftNav, PrettyH2, H1 } from '../../Styles';
+import {
+  FlexCol,
+  FlexContainer,
+  LeftNav,
+  PrettyH2,
+  H1,
+  Button,
+} from '../../Styles';
 import Entry from '../Entry/Entry';
 import { JournalType } from './Journal';
 import Loading from '../../components/Loading';
+import { Link } from 'react-router-dom';
 
 //////////////////  TYPES ///////////////////
 
-type EntryType = {
-  id: string;
-  journalId: string;
-  title: string;
-  markdown: string;
-  html: string;
-  dateCreated: Date;
-  lastUpdated: Date;
+export type EntryType = {
+  id?: string;
+  journalId?: string;
+  title?: string;
+  markdown?: string;
+  html?: string;
+  dateCreated?: Date;
+  lastUpdated?: Date | number;
+  idx?: number;
 };
 
 //////////////////  STYLED COMPONENTS ///////////////////
@@ -42,7 +51,12 @@ const ListEntries = (props: JournalType) => {
             props.id,
             user.token
           );
-          setEntries(allEntries);
+          setEntries(allEntries.sort((a,b) =>
+            (a.lastUpdated && b.lastUpdated)
+            ?
+              a.lastUpdated < b.lastUpdated ? 1 : -1
+            : -1
+          ));
           setVisibleEntry(allEntries[0]);
           setIsLoading(false);
         } catch (err) {
@@ -51,39 +65,56 @@ const ListEntries = (props: JournalType) => {
       })();
   }, [user.token, user.username, props.id]);
 
+  useEffect(() => {
+    const idx = entries.findIndex(
+      ({ id = '' }: EntryType) => id === visibleEntry?.id
+    );
+    setVisibleEntry(entries[idx]);
+  }, [entries]);
+
   const changeEntry = (props: number) => {
     let entry = entries[props];
     setVisibleEntry(entry);
   };
 
   if (isLoading) {
-    return (
-      <Loading/>
-    )
+    return <Loading />;
   } else {
     return (
       <FlexContainer wrap='wrap' height='100%'>
         <LeftNav width='15%'>
           <PrettyH2>{props.name} Journal Entries</PrettyH2>
-          {entries?.map(({ title, lastUpdated }, idx) => {
-            lastUpdated = new Date(lastUpdated);
+          {entries.map(({ title, lastUpdated }, idx) => {
+            lastUpdated = (lastUpdated !== undefined) ? new Date(lastUpdated) : undefined;
+            lastUpdated?.setHours(lastUpdated.getHours() - 6);
 
             return (
               <div key={idx} onClick={() => changeEntry(idx)}>
                 <FlexCol>{title}</FlexCol>
                 <FlexCol>
                   <SmallText>
-                    Updated {lastUpdated.getMonth()}/{lastUpdated.getDay()}
+                    Updated {lastUpdated?.toLocaleDateString([], {month: 'long', day: 'numeric'})}
                   </SmallText>
                 </FlexCol>
               </div>
             );
           })}
+          <Link to={`/journals/${props.id}/entries/create`}>
+            <Button>Create New Entry</Button>
+          </Link>
         </LeftNav>
-        <FlexCol margin='auto'>
-          <H1>{visibleEntry?.title}</H1>
-          <div>{visibleEntry?.markdown}</div>
-          <Entry markdown={visibleEntry?.markdown} />
+        <FlexCol width='80%' margin='1em'>
+          {visibleEntry !== undefined ? (
+            <>
+              <H1>{visibleEntry.title}</H1>
+              <Entry entry={visibleEntry} setEntries={setEntries} />
+            </>
+          ) : (
+            <>
+              <H1>No entry selected</H1>
+              <div>-</div>
+            </>
+          )}
         </FlexCol>
       </FlexContainer>
     );

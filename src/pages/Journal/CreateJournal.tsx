@@ -29,14 +29,14 @@ const CreateJournal = () => {
     }
 
     const setJournalColor = (hex: string) => {
-        setJournal({...journal, color: hex})
+        setJournal({ ...journal, color: hex })
     }
 
     const createJournalHandler = async () => {
         try {
             saveButtonRef!.current && (saveButtonRef!.current.disabled = true);
             setIsLoading(true);
-            console.log(journal);
+
             await createJournal(user.username, journal, user.token)
             saveButtonRef!.current && (saveButtonRef!.current.disabled = false);
             setIsLoading(false);
@@ -86,7 +86,7 @@ const CreateJournal = () => {
                         editableText={journal?.color}
                         maxLength={20}
                         handleInputUpdate={handleUpdateTextInput}
-                        setVisibleObject={setDisplayColorPicker}/>
+                        setVisibleObject={setDisplayColorPicker} />
 
                     <FlexContainer justify="space-between" margin="1em 0em">
                         <ColorPicker visible={displayColorPicker} color={journal?.color} setColor={setJournalColor}></ColorPicker>
@@ -101,7 +101,7 @@ const CreateJournal = () => {
                         >Create</Button>
                     </FlexContainer>
                     {(isLoading) &&
-                        <Loading height={"100%"}/>
+                        <Loading height={"100%"} />
                     }
                 </FlexCol>
             </FlexContainer>

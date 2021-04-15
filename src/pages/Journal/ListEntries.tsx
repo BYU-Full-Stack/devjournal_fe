@@ -61,9 +61,11 @@ const ListEntries = (props: JournalType) => {
   }, [user.token, user.username, props.id]);
 
   useEffect(() => {
-    const idx = entries.findIndex(({ id = '' }: EntryType) => id === visibleEntry?.id);
-    setVisibleEntry(entries[idx])
-  }, [entries])
+    const idx = entries.findIndex(
+      ({ id = '' }: EntryType) => id === visibleEntry?.id
+    );
+    setVisibleEntry(entries[idx]);
+  }, [entries]);
 
   const changeEntry = (props: number) => {
     let entry = entries[props];

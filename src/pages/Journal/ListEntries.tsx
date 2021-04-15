@@ -23,7 +23,7 @@ export type EntryType = {
   markdown?: string;
   html?: string;
   dateCreated?: Date;
-  lastUpdated?: Date;
+  lastUpdated?: Date | number;
   idx?: number;
 };
 
@@ -51,7 +51,12 @@ const ListEntries = (props: JournalType) => {
             props.id,
             user.token
           );
-          setEntries(allEntries);
+          setEntries(allEntries.sort((a,b) =>
+            (a.lastUpdated && b.lastUpdated)
+            ?
+              a.lastUpdated < b.lastUpdated ? 1 : -1
+            : -1
+          ));
           setVisibleEntry(allEntries[0]);
           setIsLoading(false);
         } catch (err) {
@@ -80,21 +85,15 @@ const ListEntries = (props: JournalType) => {
         <LeftNav width='15%'>
           <PrettyH2>{props.name} Journal Entries</PrettyH2>
           {entries.map(({ title, lastUpdated }, idx) => {
-            let displayLastUpdated = new Date();
-            let checkDate: Date;
-            if (lastUpdated !== undefined) {
-              checkDate = new Date(lastUpdated.toString());
-            } else {
-              checkDate = new Date();
-            }
-            displayLastUpdated = checkDate;
+            lastUpdated = (lastUpdated !== undefined) ? new Date(lastUpdated) : undefined;
+            lastUpdated?.setHours(lastUpdated.getHours() - 6);
+
             return (
               <div key={idx} onClick={() => changeEntry(idx)}>
                 <FlexCol>{title}</FlexCol>
                 <FlexCol>
                   <SmallText>
-                    Updated {displayLastUpdated.getMonth()}/
-                    {displayLastUpdated.getDay()}
+                    Updated {lastUpdated?.toLocaleDateString([], {month: 'long', day: 'numeric'})}
                   </SmallText>
                 </FlexCol>
               </div>

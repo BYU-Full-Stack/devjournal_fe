@@ -1,34 +1,51 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { theme } from './../../Styles';
+import { Button, theme } from './../../Styles';
 import { getJournals, useUser } from '../../API/AppLogic';
 import { RouteMatchType } from '../../Types';
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 import ReactMarkdown from 'react-markdown';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
+import { EntryType } from '../Journal/ListEntries';
+import EditEntry from './EditEntry';
+import DisplayEntry from './DisplayEntry';
+import DeleteEntry from './DeleteEntry';
+import { propTypes } from 'react-bootstrap/esm/Image';
 
-export type EntryType = {
-  markdown: string | undefined;
+export type SelectedEntryType = {
+  entry: EntryType;
+  setEntries: React.Dispatch<React.SetStateAction<EntryType[]>>;
 };
 
-const Entry = (props: EntryType) => {
-  const [seeMarkdown, setSeeMarkdown] = useState(false);
+const Entry = ({ entry, setEntries }: SelectedEntryType) => {
+  const [seeMarkdown, setSeeMarkdown] = useState(true);
+
+  const updateEntryList = (editedEntry: EntryType) => {
+    //reset displayed list of entries each time an entry changes
+    setEntries((prevEntries: Array<EntryType>) => {
+      const editIdx = prevEntries.findIndex((x) => x.id === entry.id);
+      setSeeMarkdown(true);
+      return [
+        ...prevEntries.slice(0, editIdx),
+        editedEntry,
+        ...prevEntries.slice(editIdx + 1),
+      ];
+    });
+  };
+
   return (
     <>
-      <button onClick={() => setSeeMarkdown(!seeMarkdown)}>switch</button>
+      <DeleteEntry entry={entry} setEntries={setEntries} />
       {seeMarkdown === false ? (
-        <Editor
-          height='90vh'
-          defaultLanguage='markdown'
-          defaultValue={'### what'}
-          theme='vs-dark'
-        />
+        <>
+          <EditEntry entry={entry} saveEntry={updateEntryList} />
+        </>
       ) : (
-        <ReactMarkdown
-          source={typeof props.markdown === 'string' ? '### goo' : ''}
-        />
+        <>
+          <DisplayEntry entry={entry} saveEntry={setSeeMarkdown} />
+        </>
       )}
     </>
   );

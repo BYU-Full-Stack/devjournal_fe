@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { registerUser, useUser } from '../API/AppLogic'
-import { Button } from '../Styles'
+import { Wrapper, StyledButton, StyledInput } from './login'
+import { Button, PrettyH2 } from '../Styles'
+import { useHistory } from 'react-router-dom'
 
 const Label = styled.label`
     color: white;
@@ -12,6 +14,7 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [, setUser] = useUser();
+    const history = useHistory();
 
     async function createUser () {
         try {
@@ -22,6 +25,7 @@ const Register = () => {
                 token: auth.split(' ')[1]
             });
 
+            history.push('/journals')
             console.log(auth)
         } catch (err) {
             //    TODO: handle errors better than this
@@ -30,27 +34,31 @@ const Register = () => {
     }
 
     return (
-        <div>
-            <Label>Username:</Label>
-            <input type='text' value={username} onChange={({target:{value=''}={}}) => {
-                setUserName(value);
-            }}/><br/>
-            <Label>Email:</Label>
-            <input type='email' value={email} onChange={({target:{value=''}={}}) => {
-                setEmail(value);
-            }}/><br/>
-            <Label>Password:</Label>
-            <input type='password' value={password} onChange={({target:{value=''}={}}) => {
-                setPassword(value);
-            }}/><br/>
-            <Button
-                bgColor="bg-dark"
-                padding=".4em 1em"
-                border="transparent 2px solid"
-                hoverBorder="turq 2px solid"
-                onClick={() => createUser}
-            >Register</Button>
-        </div>
+        <Wrapper>
+            <div style={{
+                fontSize: '2rem'
+            }}>
+                <PrettyH2 align='center'>Register</PrettyH2>
+            </div>
+            <div>
+                <StyledInput type='text' placeholder='username' onChange={({target:{value=''}={}}) => {
+                    setUserName(value);
+                }}/><br />
+                <StyledInput type='email' placeholder='email' onChange={({target:{value=''}={}}) => {
+                    setUserName(value);
+                }}/><br/>
+                <StyledInput type='password' placeholder='password' onChange={({target:{value=''}={}}) => {
+                    setUserName(value);
+                }}/><br/><br />
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <StyledButton onClick={() => createUser()}>Sign up</StyledButton>
+                </div>
+            </div>
+        </Wrapper>
     )
 }
 

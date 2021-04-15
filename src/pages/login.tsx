@@ -65,7 +65,6 @@ const Login = () => {
             console.log(err);
         }
     }
-  }
   
     return (
         <Wrapper>

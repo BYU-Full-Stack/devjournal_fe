@@ -24,7 +24,6 @@ const CreateEntry = () => {
     html: '',
   });
 
-  console.log(routeHistory);
   const titlePlace = ['title'];
 
   const handleUpdateTextInput: OnChange = (value, e) => {
@@ -42,7 +41,7 @@ const CreateEntry = () => {
         { ...entry, journalId: journalId ? journalId.id : '' },
         user.token
       );
-      routeHistory.push('/journals/:id');
+      routeHistory.push(`/journals/${journalId.id}`);
     } catch (err) {
       console.log(err);
     }

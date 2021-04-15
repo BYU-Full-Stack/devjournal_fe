@@ -37,6 +37,9 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
   const updateEntryDetails = async () => {
     try {
       await updateEntry(user.username, editEntry, user.token);
+      let date = new Date();
+      setEditEntry({...editEntry, lastUpdated: date.setHours(date.getHours() + 6)})
+      console.log(editEntry);
       saveEntry(editEntry);
     } catch (err) {
       console.log(err);

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { registerUser, useUser } from '../API/AppLogic'
+import { registerUser, useUser, login, getUser, useAlertBox } from '../API/AppLogic'
 import { Wrapper, StyledButton, StyledInput } from './login'
-import { Button, PrettyH2 } from '../Styles'
+import { PrettyH2 } from '../Styles'
 import { useHistory } from 'react-router-dom'
 
 const Label = styled.label`
@@ -13,16 +13,28 @@ const Register = () => {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [, addAlert] = useAlertBox();
     const [, setUser] = useUser();
     const history = useHistory();
 
     async function createUser () {
         try {
-            const auth = await registerUser({ username, email, password });
+            const user = await registerUser({ username, email, password });
 
+            const auth = await login({ username, password }) || '';
+            const { role } = await getUser(username, auth.split(' ')[1])
+            
             setUser({
                 username,
-                token: auth.split(' ')[1]
+                token: auth.split(' ')[1],
+                role: role
+            });
+
+            addAlert({
+                key: `create-${username}-attempt-${new Date()}`,
+                text: `Successfully created your new account, ${username}!`,
+                timeout: 4,
+                theme: 'success'
             });
 
             history.push('/journals')
@@ -30,6 +42,14 @@ const Register = () => {
         } catch (err) {
             //    TODO: handle errors better than this
             console.log(err);
+            addAlert({
+                key: `create-user-attempt-${new Date()}`,
+                text: 'Unable to Register',
+                timeout: 7,
+                theme: 'error'
+            });
+
+            history.push('/error')
         }
     }
 
@@ -45,10 +65,10 @@ const Register = () => {
                     setUserName(value);
                 }}/><br />
                 <StyledInput type='email' placeholder='email' onChange={({target:{value=''}={}}) => {
-                    setUserName(value);
+                    setEmail(value);
                 }}/><br/>
                 <StyledInput type='password' placeholder='password' onChange={({target:{value=''}={}}) => {
-                    setUserName(value);
+                    setPassword(value);
                 }}/><br/><br />
                 <div style={{
                     display: 'flex',

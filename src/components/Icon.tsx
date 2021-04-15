@@ -21,6 +21,7 @@ type IconStyleProps = {
     hcolor?: string;
     margin?: string;
     color?: string;
+    paddingLeft?: string;
 
     fontSize?: string;
     position?: string;
@@ -33,6 +34,7 @@ const StyledIcon = styled(FontAwesomeIcon)`
     cursor: pointer;
     vertical-align: ${({ vAlign = 'middle' }: IconStyleProps) => vAlign};
     margin: ${({ margin = '0 4px' }: IconStyleProps) => margin};
+    padding-left: ${({ paddingLeft = 'unset' }: IconStyleProps) => paddingLeft};
     transition: color .3s ease-out;
     color: ${({ color = 'white' }: IconStyleProps) => theme[color]};
     z-index: 1;

@@ -18,7 +18,9 @@ export type SelectedEntryType = {
 };
 
 const Entry = ({ entry, setEntries }: SelectedEntryType) => {
+
   const [seeMarkdown, setSeeMarkdown] = useState(false);
+
   const updateEntryList = (editedEntry: EntryType) => {
     setEntries((prevEntries: Array<EntryType>) => {
       const editIdx = prevEntries.findIndex((x) => x.id === entry.id);
@@ -30,20 +32,6 @@ const Entry = ({ entry, setEntries }: SelectedEntryType) => {
       ];
     });
   };
-
-  useEffect(
-    () =>
-      setEntries((prevEntries: Array<EntryType>) => {
-        const editIdx = prevEntries.findIndex((x) => x.id === entry.id);
-        setSeeMarkdown(true);
-        return [
-          ...prevEntries.slice(0, editIdx),
-          entry,
-          ...prevEntries.slice(editIdx + 1),
-        ];
-      }),
-    [entry]
-  );
 
   return (
     <>

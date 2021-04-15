@@ -44,7 +44,7 @@ const CreateEntry = () => {
       );
       routeHistory.push('/journals/:id');
     } catch (err) {
-      console.log();
+      console.log(err);
     }
   };
   return (

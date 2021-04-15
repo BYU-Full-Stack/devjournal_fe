@@ -9,11 +9,7 @@ type Props = {
 };
 
 const DisplayEntry = ({ entry, saveEntry }: Props) => {
-  const [markdown, setMarkdown] = useState(
-    entry?.markdown ? entry?.markdown : ''
-  );
 
-  useEffect(() => setMarkdown(markdown), [entry]);
   return (
     <>
       <Button
@@ -25,7 +21,7 @@ const DisplayEntry = ({ entry, saveEntry }: Props) => {
       >
         Edit Entry
       </Button>
-      <ReactMarkdown source={markdown} />
+      <ReactMarkdown source={entry?.markdown || ''} />
     </>
   );
 };

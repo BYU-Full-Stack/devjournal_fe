@@ -54,7 +54,7 @@ const Alert: React.FC<AlertProps> = ({ text, dismissable = true, dismiss, timeou
         // Using setTimeout agaian to achieve css transition
         setTimeout(() => setIsVisible(false), (timeout * 1000) - 200);
         setTimeout(() => dismiss(), timeout * 1000);
-    }, []);
+    }, [dismiss, timeout]);
 
     const hide = () => {
         // Using setTimeout agaian to achieve css transition

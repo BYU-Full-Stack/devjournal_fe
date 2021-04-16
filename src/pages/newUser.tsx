@@ -1,13 +1,8 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { registerUser, useUser, login, getUser, useAlertBox } from '../API/AppLogic'
 import { Wrapper, StyledButton, StyledInput } from './login'
 import { PrettyH2 } from '../Styles'
 import { useHistory } from 'react-router-dom'
-
-const Label = styled.label`
-    color: white;
-`
 
 const Register = () => {
     const [username, setUserName] = useState('');
@@ -19,11 +14,11 @@ const Register = () => {
 
     async function createUser () {
         try {
-            const user = await registerUser({ username, email, password });
+            await registerUser({ username, email, password });
 
             const auth = await login({ username, password }) || '';
             const { role } = await getUser(username, auth.split(' ')[1])
-            
+
             setUser({
                 username,
                 token: auth.split(' ')[1],
@@ -40,16 +35,12 @@ const Register = () => {
             history.push('/journals')
             console.log(auth)
         } catch (err) {
-            //    TODO: handle errors better than this
-            console.log(err);
             addAlert({
                 key: `create-user-attempt-${new Date()}`,
-                text: 'Unable to Register',
+                text: 'Unable to Register. Please try again with different username.',
                 timeout: 7,
                 theme: 'error'
             });
-
-            history.push('/error')
         }
     }
 

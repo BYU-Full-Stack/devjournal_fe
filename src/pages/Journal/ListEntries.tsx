@@ -70,7 +70,7 @@ const ListEntries = (props: JournalType) => {
       ({ id = '' }: EntryType) => id === visibleEntry?.id
     );
     setVisibleEntry(entries[idx]);
-  }, [entries]);
+  }, [entries, visibleEntry?.id]);
 
   const changeEntry = (props: number) => {
     let entry = entries[props];

@@ -82,7 +82,7 @@ const Login = () => {
             <div style={{
                 fontSize: '2rem'
             }}>
-                <PrettyH2 align='center'>Login Test Actions</PrettyH2>
+                <PrettyH2 align='center'>Login</PrettyH2>
             </div>
             <div>
                 <StyledInput type='text' placeholder='username' onChange={({target:{value=''}={}}) => {

@@ -18,10 +18,10 @@ const Alerts = () => {
     const alerts = useSelector((state: RootState) => state.alertsReducer);
     const dispatch = useDispatch();
 
-    const removeAlert = (key: string) => {
+    const removeAlert = (id: string) => {
 
         dispatch(
-            deleteAlertAction({ key, alerts })
+            deleteAlertAction({ id, alerts })
         )
     };
 
@@ -29,15 +29,14 @@ const Alerts = () => {
         <AlertsContainer>
             {
                 // @ts-ignore
-                alerts.map(({ text, timeout, dismissable, key, theme = 'error' }: ALERT_STATE_TYPE, idx: number) =>
+                alerts.map(({ id, theme = 'error', ...rest }: ALERT_STATE_TYPE, idx: number) =>
                     <Alert
                         top={`${50 * (idx + 1) + 50 * (idx)}px`}
-                        theme={theme}
-                        text={text}
                         key={idx}
-                        timeout={timeout}
-                        dismissable={dismissable}
-                        dismiss={() => removeAlert(key)} />
+                        id={id}
+                        dismiss={() => removeAlert(id)}
+                        {...rest}
+                    />
                 )
             }
         </AlertsContainer>

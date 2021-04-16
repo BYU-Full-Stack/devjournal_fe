@@ -1,18 +1,9 @@
-import { SetStateAction, useEffect, useState } from 'react';
-import { useRouteMatch } from 'react-router-dom';
-import styled from 'styled-components';
+import { useState } from 'react';
 
-import { Button, theme } from './../../Styles';
-import { getJournals, useUser } from '../../API/AppLogic';
-import { RouteMatchType } from '../../Types';
-import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
-import ReactMarkdown from 'react-markdown';
-import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import { EntryType } from '../Journal/ListEntries';
 import EditEntry from './EditEntry';
 import DisplayEntry from './DisplayEntry';
 import DeleteEntry from './DeleteEntry';
-import { propTypes } from 'react-bootstrap/esm/Image';
 
 export type SelectedEntryType = {
   entry: EntryType;

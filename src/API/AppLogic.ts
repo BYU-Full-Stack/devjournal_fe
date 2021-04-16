@@ -27,14 +27,6 @@ export const login = async (user: USER_STATE_TYPE) => {
   }
 };
 
-export const logout = async (user: USER_STATE_TYPE) => {
-  try {
-  } catch (err) {
-    //    TODO: handle errors better than this
-    console.log(err);
-  }
-};
-
 export const registerUser = async (newUser: USER_STATE_TYPE) => {
   const customOptions: typeof options = { ...options };
   try {
@@ -46,7 +38,7 @@ export const registerUser = async (newUser: USER_STATE_TYPE) => {
 
     return auth;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -316,12 +308,11 @@ export const setEntry = async (
   customOptions.headers.Authorization = `Bearer ${token}`;
 
   try {
-    const { data: entries = [] } = await PUT(
+    await PUT(
       `${API_URL}${API_BASE}${username}/entries`,
       customOptions
     );
   } catch (err) {
-    //    TODO: handle errors better than this
     throw err;
   }
 };

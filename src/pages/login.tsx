@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { PrettyH2, theme } from '../Styles'
 import { useHistory } from 'react-router-dom'
-import { getUser, login, useUser } from '../API/AppLogic'
+import { getUser, login, useAlertBox, useUser } from '../API/AppLogic'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -46,8 +46,9 @@ export const StyledButton = styled.button`
 const Login = () => {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [userState, setUser] = useUser();
+    const [, setUser] = useUser();
     const routerHistory = useHistory();
+    const [, addAlert] = useAlertBox();
 
     async function loginUser() {
         try {
@@ -58,14 +59,24 @@ const Login = () => {
                 token: auth.split(' ')[1],
                 role: role
             });
+            addAlert({
+                key: `login-${username}-attempt-${new Date()}`,
+                text: `Successfully logged in as ${username}!`,
+                timeout: 4,
+                theme: 'success'
+            });
             console.log(auth)
             routerHistory.push('/journals')
         } catch (err) {
-            //    TODO: handle errors better than this
-            console.log(err);
+            addAlert({
+                key: `login-user-attempt-${new Date()}`,
+                text: 'Unable to login. Please try again.',
+                timeout: 7,
+                theme: 'error'
+            });
         }
     }
-  
+
     return (
         <Wrapper>
             <div style={{
@@ -98,7 +109,7 @@ const Login = () => {
                     </Link>
 
                 </div>
-            </div>   
+            </div>
         </Wrapper>
     );
 }

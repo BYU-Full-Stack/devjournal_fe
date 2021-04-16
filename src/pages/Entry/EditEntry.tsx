@@ -1,12 +1,6 @@
-import { faLastfmSquare } from '@fortawesome/free-brands-svg-icons';
-import Editor, {
-  DiffEditor,
-  useMonaco,
-  loader,
-  Monaco,
-} from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import { useEffect, useRef, useState } from 'react';
-import { updateEntry, useAlertBox, useUser } from '../../API/AppLogic';
+import { updateEntry, useUser } from '../../API/AppLogic';
 import { EntryType } from '../Journal/ListEntries';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { Button, FlexCol, FlexContainer, H3 } from '../../Styles';
@@ -27,7 +21,7 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
 
   const [user] = useUser();
   const [editEntry, setEditEntry] = useState(entry);
-  const [canUserSave, setCanUserSave] = useState(false);
+  const [, setCanUserSave] = useState(false);
   const titlePlace = ['title'];
 
   // watch for the entry from props to update and then update state

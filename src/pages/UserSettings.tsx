@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { getUser, updateUser, login, useUser, useAlertBox } from '../API/AppLogic'
+import { getUser, updateUser, useUser, useAlertBox } from '../API/AppLogic'
 import { PrettyH2, H3 } from '../Styles'
 
 // Test component to ensure store state is updating correctly
@@ -7,7 +7,6 @@ import ConfirmableInput from '../components/ConfirmableInput/ConfirmableInput'
 import { FlexContainer, FlexCol, Button, theme } from '../Styles'
 import styled from 'styled-components'
 import { USER_STATE_TYPE } from '../store/reducers/user'
-import { ALERT_STATE_TYPE } from '../store/reducers/alert'
 
 
 const LeftNav = styled(FlexCol)`

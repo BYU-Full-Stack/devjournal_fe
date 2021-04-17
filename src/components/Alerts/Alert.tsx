@@ -36,7 +36,7 @@ const StyledAlert = styled.div`
             top: ${top};
         `}
 
-    ${({ themecol = '' }: StyledAlertProps) => (themecol = (themecol === 'error') ? 'red-deep' : 'green-deep') && css`
+    ${({ themecol = '' }: StyledAlertProps) => css`
         border: 2px solid ${theme[themecol]};
         box-shadow: ${theme[themecol]} 0px 0px 10px;
     `}
@@ -46,7 +46,6 @@ const Alert: React.FC<AlertProps> = ({ id, text, dismissable = true, dismiss, ti
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        console.log('id', id)
         // set isVisible to true 100 milliseconds later to achieve css transition
         setTimeout(() => setIsVisible(true), 100);
 
@@ -54,13 +53,14 @@ const Alert: React.FC<AlertProps> = ({ id, text, dismissable = true, dismiss, ti
         setTimeout(() => setIsVisible(false), (timeout * 1000) - 200);
         setTimeout(() => dismiss(), timeout * 1000);
     }, [id]);
+    // }, [dismiss, timeout]);
 
     const hide = () => {
         // Using setTimeout agaian to achieve css transition
         setIsVisible(false);
         setTimeout(dismiss, 100);
     };
-
+    console.log(theme)
     return <StyledAlert top={top} themecol={theme} visible={isVisible}>
         {text}
         {dismissable && <Icon hcolor={theme === 'success' ? 'green-deep' : 'red-deep'} position="absolute" top="1px" right="1px" fontSize="18px" icon={faTimes} onClick={hide} />}

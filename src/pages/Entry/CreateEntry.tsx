@@ -1,10 +1,5 @@
 import { OnChange } from '@monaco-editor/react';
-import Editor, {
-  DiffEditor,
-  useMonaco,
-  loader,
-  Monaco,
-} from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import { useState } from 'react';
 import { createEntry, useUser } from '../../API/AppLogic';
 import ConfirmableInput from '../../components/ConfirmableInput/ConfirmableInput';

@@ -1,5 +1,3 @@
-import { SetStateAction } from 'react';
-import { useHistory, useParams } from 'react-router';
 import { deleteEntry, useUser } from '../../API/AppLogic';
 import { Button } from '../../Styles';
 import { EntryType } from '../Journal/ListEntries';

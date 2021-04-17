@@ -64,7 +64,7 @@ export default function Users() {
           });
         }
       })();
-  }, [user.token]);
+  }, [addAlert, user.token]);
 
   const handleDelete = async (
     username: string,

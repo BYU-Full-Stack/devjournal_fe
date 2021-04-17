@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '../../Styles';
 import { EntryType } from '../Journal/ListEntries';

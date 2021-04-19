@@ -29,7 +29,7 @@ const Alerts = () => {
         <AlertsContainer>
             {
                 // @ts-ignore
-                alerts.map(({ id, theme = 'error', ...rest }: ALERT_STATE_TYPE, idx: number) =>
+                alerts.map(({ id, ...rest }: ALERT_STATE_TYPE, idx: number) =>
                     <Alert
                         top={`${50 * (idx + 1) + 50 * (idx)}px`}
                         key={idx}

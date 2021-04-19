@@ -51,9 +51,7 @@ const CreateEntry = () => {
   };
   return (
     <main>
-      <Link to=''>
-        <Button>Back</Button>
-      </Link>
+      <Button onClick={() => routeHistory.goBack()}>Back</Button>
       <H1>Create a New Entry</H1>
       <FlexContainer wrap='wrap' height='100%'>
         <FlexCol margin='auto'>

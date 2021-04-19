@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { theme, Input, StyleProps } from '../../Styles'
 import Icon from '../Icon'
@@ -46,6 +46,7 @@ export default function ConfirmableInput({ myKey, label, editableText = '', maxL
     const [isBeingEdited, setIsBeingEdited] = useState(false);
     const [isFirstFocus, setIsFirstFocus] = useState(true);
     const [toggleType, setToggleType] = useState(type);
+    const confirmableInput = useRef<HTMLInputElement>(null);
     const displayText = (type === 'password') ? editableText.slice(0, 30).replace(/./g, '&bull;') : '';
 
     const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +66,11 @@ export default function ConfirmableInput({ myKey, label, editableText = '', maxL
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [myKey]);
 
+    useEffect(() => {
+        // focus in on the input box when beginning to edit
+        isBeingEdited && confirmableInput.current?.focus();
+    }, [confirmableInput, isBeingEdited])
+
     const toggleIsBeingEdited = () => {
         setCanUserSave && setCanUserSave(!isBeingEdited);
         setIsBeingEdited(isBeingEdited => !isBeingEdited);
@@ -77,8 +83,9 @@ export default function ConfirmableInput({ myKey, label, editableText = '', maxL
                 <>
                     <section>
                         <label hidden>{label}</label>
-                        <Input type={toggleType} value={editableText} onChange={handleChange} onFocus={handleFocus} maxLength={maxLength} data-testid="custom-input" />
-                        <Icon icon={faCheckCircle} onClick={toggleIsBeingEdited} testid="toggle-custom-input"></Icon>
+                        <Input ref={confirmableInput} type={toggleType} value={editableText} onChange={handleChange} onFocus={handleFocus} maxLength={maxLength} data-testid="custom-input" />
+                        {/* Begin Editing Icon */}
+                        <Icon tabindex={0} keyDownData={{ cb: toggleIsBeingEdited }} icon={faCheckCircle} onClick={toggleIsBeingEdited} testid="toggle-custom-input"></Icon>
                     </section>
 
                     {type === 'password' && !isFirstFocus &&
@@ -96,7 +103,8 @@ export default function ConfirmableInput({ myKey, label, editableText = '', maxL
                         :
                         <Span color="purple" data-testid="editable-text">{editableText.slice(0, 30)}</Span>
                     }
-                    <Icon size="2x" icon={faEdit} onClick={toggleIsBeingEdited} testid="toggle-custom-input" />
+                    {/* Confirm/Save Icon */}
+                    <Icon tabindex={0} keyDownData={{ cb: toggleIsBeingEdited }} size="2x" icon={faEdit} onClick={toggleIsBeingEdited} testid="toggle-custom-input" />
                 </>
             }
 

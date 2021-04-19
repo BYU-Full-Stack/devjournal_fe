@@ -60,7 +60,7 @@ const Alert: React.FC<AlertProps> = ({ id, text, dismissable = true, dismiss, ti
         setIsVisible(false);
         setTimeout(dismiss, 100);
     };
-    console.log(theme)
+
     return <StyledAlert top={top} themecol={theme} visible={isVisible}>
         {text}
         {dismissable && <Icon hcolor={theme === 'success' ? 'green-deep' : 'red-deep'} position="absolute" top="1px" right="1px" fontSize="18px" icon={faTimes} onClick={hide} />}

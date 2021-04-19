@@ -9,7 +9,7 @@ type CellType = {
     col?: number;
     colSpan?: number;
     justifySelf?: string;
-    paddingLeft?: string;
+    paddingleft?: string;
 }
 
 const StyledLogo = styled.img`
@@ -54,6 +54,7 @@ export default function Nav() {
     const logout = () =>
         setUser({
             username: '',
+            email: '',
             token: '',
             role: ''
         });
@@ -64,11 +65,10 @@ export default function Nav() {
             <TableCell col={2}>
                 {user.token &&
                     <>
-                        <StyledLink to="/">Home</StyledLink>
-                        <StyledLink to="/journals">Journals</StyledLink>
-                        <StyledLink to="/account">User Details</StyledLink>
+                        <StyledLink to="/">Journals</StyledLink>
+                        <StyledLink to="/account">Account Settings</StyledLink>
                         {user.role === "ADMIN" &&
-                            <StyledLink to="/user">All Users</StyledLink>
+                            <StyledLink to="/user">Admin Panel</StyledLink>
                         }
                     </>
                 }

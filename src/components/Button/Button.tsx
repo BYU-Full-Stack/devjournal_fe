@@ -27,7 +27,6 @@ const SyledButton = styled.button`
 
 const Button = (props: StyleProps & React.HTMLProps<HTMLButtonElement>, ref: React.Ref<HTMLButtonElement>) => {
     const { children, ...rest } = props;
-    console.log('children', children)
     return <SyledButton ref={ref}>dd</SyledButton>
 };
 

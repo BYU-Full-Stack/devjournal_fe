@@ -7,38 +7,52 @@ import Journal from '../pages/Journal/Journal';
 import Error from '../pages/Error';
 import CreateJournal from '../pages/Journal/CreateJournal';
 import CreateEntry from '../pages/Entry/CreateEntry';
+import { useUser } from '../API/AppLogic'
 
 export default function Pages() {
-  return (
-    <Switch>
-      <Route path='/user'>
-        <Users />
-      </Route>
-      <Route path='/account'>
-        <UserSettings />
-      </Route>
-      <Route path='/register'>
-        <Register />
-      </Route>
-      <Route path='/login'>
-        <Login />
-      </Route>
-      <Route path='/journals/create'>
-        <CreateJournal />
-      </Route>
-      <Route path='/journals/:id/entries/create'>
-        <CreateEntry />
-      </Route>
-      <Route path='/journals'>
-        <Journal />
-      </Route>
+  const [user] = useUser();
 
-      <Route path='/error'>
-        <Error />
-      </Route>
-      <Route path='/'>
-        <Login />
-      </Route>
-    </Switch>
+  return (
+    user.username ?
+      <Switch>
+        <Route path='/user'>
+          <Users />
+        </Route>
+        <Route path='/account'>
+          <UserSettings />
+        </Route>
+        <Route path='/journals/create'>
+          <CreateJournal />
+        </Route>
+        <Route path='/journals/:id/entries/create'>
+          <CreateEntry />
+        </Route>
+        <Route path='/journals'>
+          <Journal />
+        </Route>
+
+        <Route path='/error'>
+          <Error />
+        </Route>
+        <Route path='/'>
+          <Journal />
+        </Route>
+
+      </Switch>
+      :
+      <Switch>
+        <Route path='/register'>
+          <Register />
+        </Route>
+        <Route path='/login'>
+          <Login />
+        </Route>
+        <Route path='/error'>
+          <Error />
+        </Route>
+        <Route path='/'>
+          <Login />
+        </Route>
+      </Switch>
   );
 }

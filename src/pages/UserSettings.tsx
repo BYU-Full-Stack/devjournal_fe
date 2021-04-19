@@ -73,8 +73,13 @@ const UserSettings = () => {
                 });
             }
         })();
+        // eslint-disable-next-line
     }, [user.token]);
 
+    useEffect(() => {
+        // When the user is done editing the field, focus on the save button
+        !canUserSave && saveButtonRef.current?.focus();
+    }, [canUserSave])
     useEffect(() => setEditUser(user), [user])
 
     const updateUserSettings = async () => {

@@ -52,8 +52,8 @@ const Alert: React.FC<AlertProps> = ({ id, text, dismissable = true, dismiss, ti
         // Using setTimeout agaian to achieve css transition
         setTimeout(() => setIsVisible(false), (timeout * 1000) - 200);
         setTimeout(() => dismiss(), timeout * 1000);
+        // eslint-disable-next-line
     }, [id]);
-    // }, [dismiss, timeout]);
 
     const hide = () => {
         // Using setTimeout agaian to achieve css transition

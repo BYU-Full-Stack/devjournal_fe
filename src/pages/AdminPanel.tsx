@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { getUsers, useUser, deleteUser, useAlertBox } from '../../API/AppLogic';
-import Icon from '../../components/Icon';
+import { getUsers, useUser, deleteUser, useAlertBox } from '../API/AppLogic';
+import Icon from '../components/Icon';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 
-import { USER_STATE_TYPE } from '../../store/reducers/user';
-import { FlexCol, FlexContainer, theme, PrettyH2, H3 } from '../../Styles';
+import { USER_STATE_TYPE } from '../store/reducers/user';
+import { FlexCol, FlexContainer, theme, PrettyH2, H3 } from '../Styles';
 import styled from 'styled-components';
 
 const SharedFlexStyles = styled(FlexContainer)`

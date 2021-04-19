@@ -1,22 +1,22 @@
 import { Switch, Route } from 'react-router-dom';
-import Users from '../pages/User/Index';
+import AdminPanel from '../pages/AdminPanel';
 import UserSettings from '../pages/UserSettings';
-import Login from '../pages/login';
-import Register from '../pages/newUser';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
 import Journal from '../pages/Journal/Journal';
 import Error from '../pages/Error';
 import CreateJournal from '../pages/Journal/CreateJournal';
 import CreateEntry from '../pages/Entry/CreateEntry';
 import { useUser } from '../API/AppLogic'
 
-export default function Pages() {
+export default function Router() {
   const [user] = useUser();
 
   return (
     user.username ?
       <Switch>
         <Route path='/user'>
-          <Users />
+          <AdminPanel />
         </Route>
         <Route path='/account'>
           <UserSettings />

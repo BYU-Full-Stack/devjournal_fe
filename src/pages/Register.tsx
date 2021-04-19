@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react'
 import { registerUser, useUser, login, getUser, useAlertBox } from '../API/AppLogic'
-import { Wrapper, StyledButton, StyledInput } from './login'
+import { Wrapper, StyledButton, StyledInput } from './Login'
 import { PrettyH2 } from '../Styles'
 import { useHistory } from 'react-router-dom'
 

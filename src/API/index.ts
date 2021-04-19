@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { createBrowserHistory } from 'history';
 const UNAUTHENTICATED = 401;
-const OK = 200;
 
 type options = {
   headers: {

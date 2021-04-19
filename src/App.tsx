@@ -2,8 +2,8 @@ import { Provider } from 'react-redux';
 import { GlobalStyles } from './Styles';
 import store from './store';
 import Nav from './layouts/Nav';
-import Pages from './layouts/Pages'
-import Alerts from './components/Alerts/Index'
+import MyRouter from './layouts/Router'
+import Alerts from './components/Alerts/AlertsContainer'
 import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
         <Alerts />
         <Router>
           <Nav />
-          <Pages />
+          <MyRouter />
         </Router>
       </Provider>
     </>

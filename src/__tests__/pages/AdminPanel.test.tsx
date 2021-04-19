@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node'
 import { render, waitFor, screen } from '../TestUtils/RenderWithRedux'
 import { act } from 'react-dom/test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import AllUsers from '../../pages/User/Index'
+import AdminPanel from '../../pages/AdminPanel'
 
 const numberOfUsers = 20;
 const server = setupServer(
@@ -47,7 +47,7 @@ const initialState = {
 };
 
 test('Renders the page title', async () => {
-    await waitFor(() => render(<AllUsers />, { initialState }));
+    await waitFor(() => render(<AdminPanel />, { initialState }));
     const PageTitle = screen.getByText(/Admin Panel/i);
     expect(PageTitle).toBeInTheDocument();
 });
@@ -55,7 +55,7 @@ test('Renders the page title', async () => {
 test('Renders all users', async () => {
     await waitFor(() => {
         act(() => {
-            render(<AllUsers />, { initialState })
+            render(<AdminPanel />, { initialState })
         })
     });
 

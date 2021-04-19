@@ -59,7 +59,7 @@ const Login = () => {
             setUser({
                 username,
                 token: auth.split(' ')[1],
-                role: role
+                role
             });
             addAlert({
                 key: `login-${username}-attempt-${new Date()}`,

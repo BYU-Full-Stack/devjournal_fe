@@ -23,7 +23,7 @@ axios.interceptors.response.use(
     let flag = false;
     // If connection refused error
     if (statusCode === -1 && status === -1) {
-      // history.push('/error');
+      history.push('/error');
       flag = true;
     }
     // the user's JWT may have expired
@@ -37,7 +37,7 @@ axios.interceptors.response.use(
     if (flag) {
       window.localStorage.removeItem('token');
       window.localStorage.removeItem('username');
-      // window.location.reload();
+      window.location.reload();
     }
 
     return Promise.reject(error);

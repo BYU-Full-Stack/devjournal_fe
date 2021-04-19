@@ -16,7 +16,8 @@ const userState: USER_STATE_TYPE = {
     token: window.localStorage.getItem('token') || '',
     email: '',
     created_date: '',
-    user_id: ''
+    user_id: '',
+    role: ''
 };
 
 type ACTION_TYPE = {

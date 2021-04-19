@@ -5,7 +5,7 @@ import { createEntry, useUser } from '../../API/AppLogic';
 import ConfirmableInput from '../../components/ConfirmableInput/ConfirmableInput';
 import { Button, FlexCol, FlexContainer, H1, H3 } from '../../Styles';
 import { EntryType } from '../Journal/ListEntries';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 const CreateEntry = () => {
   //bring in user credentials
@@ -51,9 +51,7 @@ const CreateEntry = () => {
   };
   return (
     <main>
-      <Link to=''>
-        <Button>Back</Button>
-      </Link>
+      <Button onClick={() => routeHistory.goBack()}>Back</Button>
       <H1>Create a New Entry</H1>
       <FlexContainer wrap='wrap' height='100%'>
         <FlexCol margin='auto'>

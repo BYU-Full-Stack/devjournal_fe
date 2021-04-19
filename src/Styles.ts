@@ -16,7 +16,9 @@ export const theme: { [key: string]: string } = {
     'red-deep': '#fc4422',
     'red-hover': '#fe8062',
     'white': '#f7f7f7',
-    'gray-light': '#e5e5e5'
+    'gray-light': '#e5e5e5',
+    'success': '#00b589',
+    'error': '#fc4422',
 };
 
 export const GlobalStyles = createGlobalStyle`
@@ -36,8 +38,10 @@ export const GlobalStyles = createGlobalStyle`
 
     html, body {
         min-height: 100% !important;
-        height: 100%;
+    }
+    html {
         overflow-x: hidden;
+        height: 100%;
     }
 
 `;
@@ -167,11 +171,14 @@ export const Button = styled.button`
     padding: ${({ padding = 'unset' }: StyleProps) => padding};
     transition: all .4s ease-out;
     cursor: pointer;
-    &:hover {
+    &:hover,:focus {
         border: ${({ hoverBorder = '' }: StyleProps) => {
         const borderParts = hoverBorder.split(' ');
         return hoverBorder ? `${theme[borderParts[0]]} ${borderParts[1]} ${borderParts[2]}` : '';
     }}
+    }
+    &:focus {
+        outline: none;
     }
     :disabled {
         border-color: ${theme['red-deep']};

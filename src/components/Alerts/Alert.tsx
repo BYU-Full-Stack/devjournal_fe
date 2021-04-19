@@ -5,14 +5,12 @@ import { theme } from '../../Styles'
 
 import Icon from '../Icon'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { ALERT_STATE_TYPE } from '../../store/reducers/alert'
+
 type AlertProps = {
-    text: string;
-    dismissable?: boolean;
-    timeout?: number;
     dismiss: Function;
     top: string;
-    theme: string;
-}
+} & ALERT_STATE_TYPE;
 
 type StyledAlertProps = {
     visible?: boolean;
@@ -38,13 +36,13 @@ const StyledAlert = styled.div`
             top: ${top};
         `}
 
-    ${({ themecol = '' }: StyledAlertProps) => (themecol = (themecol === 'error') ? 'red-deep' : 'green-deep') && css`
+    ${({ themecol = '' }: StyledAlertProps) => css`
         border: 2px solid ${theme[themecol]};
         box-shadow: ${theme[themecol]} 0px 0px 10px;
     `}
 `;
 
-const Alert: React.FC<AlertProps> = ({ text, dismissable = true, dismiss, timeout = 4, top = '', theme = 'error' }) => {
+const Alert: React.FC<AlertProps> = ({ id, text, dismissable = true, dismiss, timeout = 4, top = '', theme = 'error' }) => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -54,7 +52,8 @@ const Alert: React.FC<AlertProps> = ({ text, dismissable = true, dismiss, timeou
         // Using setTimeout agaian to achieve css transition
         setTimeout(() => setIsVisible(false), (timeout * 1000) - 200);
         setTimeout(() => dismiss(), timeout * 1000);
-    }, [dismiss, timeout]);
+        // eslint-disable-next-line
+    }, [id]);
 
     const hide = () => {
         // Using setTimeout agaian to achieve css transition

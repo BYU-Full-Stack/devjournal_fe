@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import { useState, FormEvent } from 'react'
 import { PrettyH2, theme } from '../Styles'
 import { useHistory } from 'react-router-dom'
 import { getUser, login, useAlertBox, useUser } from '../API/AppLogic'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { FlexContainer } from '../Styles'
 
 export const Wrapper = styled.div`
     display: flex;
@@ -37,7 +37,7 @@ export const StyledButton = styled.button`
     transition: all .4s ease-out;
     font-size: 0.8rem;
     padding: 0.4em 1em;
-    &:hover {
+    &:hover,:focus {
         border: 2px solid ${theme['turq']};
         color: ${theme['turq']}
     }
@@ -47,30 +47,36 @@ const Login = () => {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [, setUser] = useUser();
-    const routerHistory = useHistory();
+    const history = useHistory();
     const [, addAlert] = useAlertBox();
 
-    async function loginUser() {
+    async function loginUser(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
         try {
             const auth = await login({ username, password }) || '';
             const { role } = await getUser(username, auth.split(' ')[1])
             setUser({
                 username,
                 token: auth.split(' ')[1],
-                role: role
+                role
             });
             addAlert({
                 key: `login-${username}-attempt-${new Date()}`,
-                text: `Successfully logged in as ${username}!`,
+                text: `Welcome back, ${username}!`,
                 timeout: 4,
                 theme: 'success'
             });
-            console.log(auth)
-            routerHistory.push('/journals')
+
+            history.push('/journals')
         } catch (err) {
+            let { message = '' } = err?.response?.data || {};
+            if (!message) {
+                message = 'Invalid login credentials. Please try again.'
+            }
             addAlert({
                 key: `login-user-attempt-${new Date()}`,
-                text: 'Unable to login. Please try again.',
+                text: message,
                 timeout: 7,
                 theme: 'error'
             });
@@ -85,30 +91,26 @@ const Login = () => {
                 <PrettyH2 align='center'>Login</PrettyH2>
             </div>
             <div>
-                <StyledInput type='text' placeholder='username' onChange={({target:{value=''}={}}) => {
-                    setUserName(value)
-                }} /><br />
-                <StyledInput type='password' placeholder='password' onChange={({target:{value=''}={}}) => {
-                    setPassword(value)
-                }} /><br /><br />
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                    <StyledButton onClick={() => loginUser()}>Login</StyledButton>
-                    <p style={{
-                        textAlign: 'center',
-                        color: 'white'
-                    }}>or</p>
-                    <Link to='/register'>
-                        <StyledButton>
+                <form onSubmit={(e: FormEvent<HTMLFormElement>) => loginUser(e)}>
+                    <StyledInput type='text' placeholder='username' onChange={({ target: { value = '' } = {} }) => {
+                        setUserName(value)
+                    }} /><br />
+                    <StyledInput type='password' placeholder='password' onChange={({ target: { value = '' } = {} }) => {
+                        setPassword(value)
+                    }} /><br /><br />
+
+                    <FlexContainer direction="column" justify="center" align="center">
+                        <StyledButton>Login</StyledButton>
+                        <p style={{
+                            textAlign: 'center',
+                            color: 'white'
+                        }}>or</p>
+                        <StyledButton onClick={() => history.replace('/register')} >
                             Sign Up
                         </StyledButton>
-                    </Link>
 
-                </div>
+                    </FlexContainer>
+                </form>
             </div>
         </Wrapper>
     );

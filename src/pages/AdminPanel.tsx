@@ -6,6 +6,7 @@ import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { USER_STATE_TYPE } from '../store/reducers/user';
 import { FlexCol, FlexContainer, theme, PrettyH2, H3 } from '../Styles';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom'
 
 const SharedFlexStyles = styled(FlexContainer)`
   cursor: default;
@@ -48,6 +49,7 @@ export default function Users() {
   const [users, setUsers] = useState<USER_STATE_TYPE[]>([]);
   const [user] = useUser();
   const [, addAlert] = useAlertBox();
+  const history = useHistory();
 
   useEffect(() => {
     user.token &&
@@ -112,7 +114,7 @@ export default function Users() {
           onClick={() => handleDelete(username, user_id, idx)}
         ></Icon>
       </FlexCol>
-      <FlexCol data-testid='user-username'>{username}</FlexCol>
+      <FlexCol data-testid='user-username' onClick={() => history.push(`/journals?u=${username}`)}>{username}</FlexCol>
       <FlexCol data-testid='user-email'>{email}</FlexCol>
       <FlexCol data-testid='user-role'>{role}</FlexCol>
       <FlexCol data-testid='user-created-date'>{created_date}</FlexCol>

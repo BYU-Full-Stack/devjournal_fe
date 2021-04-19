@@ -366,3 +366,7 @@ export const useUser = (): [userState: USER_STATE_TYPE, fun: Function] => {
   );
   return [userState, setUser];
 };
+
+export const useQuery = (search: any) => {
+  return new URLSearchParams(search);
+}

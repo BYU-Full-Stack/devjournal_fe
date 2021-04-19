@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory, useRouteMatch, useLocation } from 'react-router-dom';
 
 import {
   getEntries,
   getJournals,
   useAlertBox,
   useUser,
+  useQuery
 } from '../../API/AppLogic';
 import ListJournals from './ListJournals';
 import { RouteMatchType } from '../../Types';
@@ -23,9 +24,10 @@ export type JournalType = {
   numEntries?: number;
 };
 
-export type JournalArray = {
+export type ListJournalsProps = {
   journals: JournalType[];
   setJournals: Function;
+  username: string;
 };
 
 //////////////////  COMPONENT ///////////////////
@@ -36,9 +38,10 @@ const Journal = () => {
     strict: true,
     sensitive: true,
   });
-
-  const [journals, setJournals] = useState<JournalType[]>([]);
+  const query = useQuery(useLocation().search);
   const [user] = useUser();
+  const [journals, setJournals] = useState<JournalType[]>([]);
+  const [username, setUsername] = useState(query.get('u') || user.username);
   const [isLoading, setIsLoading] = useState(true);
   const routeHistory = useHistory();
   const [, addAlert] = useAlertBox();
@@ -48,15 +51,12 @@ const Journal = () => {
       (async function () {
         try {
           setIsLoading(true);
-          let promises: any[] = [];
+          const allJournals = await getJournals(username, user.token);
 
-          let allJournals = await getJournals(user.username, user.token);
+          const promises: any[] = allJournals.map(async ({ id = '' }: JournalType) =>
+            getEntries(username, id, user.token));
 
-          promises = allJournals.map(async (x: JournalType) => {
-            return getEntries(user.username, x.id, user.token);
-          });
-
-          Promise.all(promises).then((values) => {
+          Promise.all(promises).then((values: any[]) => {
             const newJournals = allJournals.map((journal: any, idx: number) => {
               return {
                 ...journal,
@@ -77,7 +77,11 @@ const Journal = () => {
           routeHistory.push('/error');
         }
       })();
-  }, [addAlert, routeHistory, user.token, user.username]);
+  }, [addAlert, routeHistory, user.token, query, username]);
+
+  useEffect(() => {
+    setUsername(query.get('u') || user.username)
+  }, [query, user.username]);
 
   let journal: JournalType | undefined;
   journal = Object.values(journals).find(
@@ -88,9 +92,9 @@ const Journal = () => {
     return <Loading />;
   } else {
     if (journal === undefined) {
-      return <ListJournals setJournals={setJournals} journals={journals} />;
+      return <ListJournals username={username} setJournals={setJournals} journals={journals} />;
     } else {
-      return <ListEntries {...journal} />;
+      return <ListEntries username={username} {...journal} />;
     }
   }
 };

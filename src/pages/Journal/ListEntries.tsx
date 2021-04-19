@@ -27,6 +27,9 @@ export type EntryType = {
   idx?: number;
 };
 
+type ListeEntriesProps = {
+  username: string;
+} & JournalType;
 //////////////////  STYLED COMPONENTS ///////////////////
 
 const SmallText = styled.span`
@@ -35,7 +38,7 @@ const SmallText = styled.span`
 
 //////////////////  COMPONENT ///////////////////
 
-const ListEntries = (props: JournalType) => {
+const ListEntries = ({ username, id, name }: ListeEntriesProps) => {
   const [entries, setEntries] = useState<EntryType[]>([]);
   const [visibleEntry, setVisibleEntry] = useState<EntryType>();
   const [user] = useUser();
@@ -47,15 +50,15 @@ const ListEntries = (props: JournalType) => {
         try {
           setIsLoading(true);
           const allEntries: EntryType[] = await getEntries(
-            user.username,
-            props.id,
+            username,
+            id,
             user.token
           );
-          setEntries(allEntries.sort((a,b) =>
+          setEntries(allEntries.sort((a, b) =>
             (a.lastUpdated && b.lastUpdated)
-            ?
+              ?
               a.lastUpdated < b.lastUpdated ? 1 : -1
-            : -1
+              : -1
           ));
           setVisibleEntry(allEntries[0]);
           setIsLoading(false);
@@ -63,7 +66,7 @@ const ListEntries = (props: JournalType) => {
           console.log(err);
         }
       })();
-  }, [user.token, user.username, props.id]);
+  }, [user.token, username, id]);
 
   useEffect(() => {
     const idx = entries.findIndex(
@@ -72,8 +75,8 @@ const ListEntries = (props: JournalType) => {
     setVisibleEntry(entries[idx]);
   }, [entries, visibleEntry?.id]);
 
-  const changeEntry = (props: number) => {
-    let entry = entries[props];
+  const changeEntry = (idx: number) => {
+    let entry = entries[idx];
     setVisibleEntry(entry);
   };
 
@@ -83,7 +86,7 @@ const ListEntries = (props: JournalType) => {
     return (
       <FlexContainer wrap='wrap' height='100%'>
         <LeftNav width='15%'>
-          <PrettyH2>{props.name} Journal Entries</PrettyH2>
+          <PrettyH2>{name} Journal Entries</PrettyH2>
           {entries.map(({ title, lastUpdated }, idx) => {
             lastUpdated = (lastUpdated !== undefined) ? new Date(lastUpdated) : undefined;
             lastUpdated?.setHours(lastUpdated.getHours() - 6);
@@ -93,13 +96,13 @@ const ListEntries = (props: JournalType) => {
                 <FlexCol>{title}</FlexCol>
                 <FlexCol>
                   <SmallText>
-                    Updated {lastUpdated?.toLocaleDateString([], {month: 'long', day: 'numeric'})}
+                    Updated {lastUpdated?.toLocaleDateString([], { month: 'long', day: 'numeric' })}
                   </SmallText>
                 </FlexCol>
               </div>
             );
           })}
-          <Link to={`/journals/${props.id}/entries/create`}>
+          <Link to={`/journals/${id}/entries/create${username ? `?u=${username}` : ''}`}>
             <Button>Create New Entry</Button>
           </Link>
         </LeftNav>
@@ -107,7 +110,7 @@ const ListEntries = (props: JournalType) => {
           {visibleEntry !== undefined ? (
             <>
               <H1>{visibleEntry.title}</H1>
-              <Entry entry={visibleEntry} setEntries={setEntries} />
+              <Entry username={username} entry={visibleEntry} setEntries={setEntries} />
             </>
           ) : (
             <>

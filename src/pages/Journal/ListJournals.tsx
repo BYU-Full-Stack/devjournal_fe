@@ -4,7 +4,7 @@ import { faSort } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components';
 import { H1, theme, Button, Main } from './../../Styles';
 import Icon from '../../components/Icon'
-import { JournalType, JournalArray } from './Journal'
+import { JournalType, ListJournalsProps } from './Journal'
 import React, { useEffect, useState } from 'react';
 import EditJournal from './EditJournal';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
@@ -88,7 +88,7 @@ const JournalLink = styled(Link)`
 
 //////////////////  COMPONENT ///////////////////
 
-const ListJournals = ({ setJournals, journals }: JournalArray) => {
+const ListJournals = ({ username, setJournals, journals }: ListJournalsProps) => {
     let editMatch: RouteMatchType | null;
     editMatch = useRouteMatch({
         path: "/journals/edit/:id",
@@ -140,7 +140,6 @@ const ListJournals = ({ setJournals, journals }: JournalArray) => {
                     -1
             ))
         );
-        routeHistory.push("/journals");
     }
 
     const JournalRow = ({ id, name, color, dateCreated, lastUpdated, numEntries, user_id, idx }: JournalType) => {
@@ -157,16 +156,16 @@ const ListJournals = ({ setJournals, journals }: JournalArray) => {
                 <RowWrapper>
                     <TableCell col={1} pointOnHover={true} backgroundColor={color} alignSelf={"normal"} onClick={() => routeHistory.push(`/journals/${id}`)}></TableCell>
                     <TableCell col={2} paddingleft={"1.75em"}>
-                        <JournalLink to={`/journals/${id}`}>{name}</JournalLink>
+                        <JournalLink to={`/journals/${id}${username ? `?u=${username}` : ''}`}>{name}</JournalLink>
                     </TableCell>
                     <TableCell col={3} justifySelf={"center"}>{numEntries}</TableCell>
                     <TableCell col={4}>{dateCreated?.toLocaleString([], createdDateOptions)}</TableCell>
                     <TableCell col={5}>{lastUpdated?.toLocaleString([], updatedDateOptions)}</TableCell>
                     <TableCell col={6} justifySelf={"center"}>
-                        <Icon onClick={() => routeHistory.push(`/journals/edit/${id}`)} size="2x" icon={faEdit} />
+                        <Icon onClick={() => routeHistory.push(`/journals/edit/${id}${username ? `?u=${username}` : ''}`)} size="2x" icon={faEdit} />
                     </TableCell>
                     <TableCell col={7} justifySelf={"center"}>
-                        <Icon onClick={() => routeHistory.push(`/journals/delete/${id}`)} size="2x" icon={faTrashAlt} />
+                        <Icon onClick={() => routeHistory.push(`/journals/delete/${id}${username ? `?u=${username}` : ''}`)} size="2x" icon={faTrashAlt} />
                     </TableCell>
                 </RowWrapper>
             </section >
@@ -175,11 +174,11 @@ const ListJournals = ({ setJournals, journals }: JournalArray) => {
 
     if (journalBeingEdited) {
         return (
-            <EditJournal journal={journalBeingEdited} setJournals={setJournals} />
+            <EditJournal username={username} journal={journalBeingEdited} setJournals={setJournals} />
         )
     } else if (journalBeingDeleted) {
         return (
-            <DeleteJournal journal={journalBeingDeleted} setJournals={setJournals} />
+            <DeleteJournal username={username} journal={journalBeingDeleted} setJournals={setJournals} />
         )
     } else {
         return (

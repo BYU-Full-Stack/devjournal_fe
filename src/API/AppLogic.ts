@@ -21,22 +21,24 @@ export const login = async (user: USER_STATE_TYPE) => {
       `${API_URL}login`,
       user
     );
-    return auth;
+    const token = auth.split(' ')?.[1] || '';
+    const { role } = await getUser(user?.username, token);
+    return { token, role };
   } catch (err) {
     throw err;
   }
 };
 
-export const registerUser = async (newUser: USER_STATE_TYPE) => {
+export const registerUser = async (user: USER_STATE_TYPE) => {
   const customOptions: typeof options = { ...options };
   try {
-    const { headers: { authorization: auth = 'Bearer ' } = {} } = await POST(
+    await POST(
       `${API_URL}${API_BASE}user/signup`,
-      newUser,
+      user,
       customOptions
     );
 
-    return auth;
+    return await login(user);
   } catch (err) {
     throw err;
   }
@@ -360,9 +362,16 @@ export const useUser = (): [userState: USER_STATE_TYPE, fun: Function] => {
       if (user.username !== undefined) {
         window.localStorage.setItem('username', user.username);
       }
+      if (user.role !== undefined) {
+        window.localStorage.setItem('role', user.role)
+      }
       dispatch(userStateAction(user));
     },
     [dispatch]
   );
   return [userState, setUser];
 };
+
+export const useQuery = (search: any) => {
+  return new URLSearchParams(search);
+}

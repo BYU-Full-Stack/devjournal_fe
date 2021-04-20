@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { deleteJournal, useAlertBox, useUser } from "../../API/AppLogic";
 import Loading from "../../components/Loading";
@@ -10,8 +10,9 @@ import { dateType } from "./ListJournals";
 //////////////////  TYPES ///////////////////
 
 type Props = {
-    journal: JournalType,
-    setJournals: Function,
+    journal: JournalType;
+    setJournals: Function;
+    username: string;
 }
 
 type CellType = {
@@ -33,13 +34,15 @@ export const TableCell = styled.div`
         let span = props.colSpan !== undefined ? props.colSpan : 1;
         return (
             props.col + " / span " + span
-        )}
+        )
+    }
     };
     grid-row: ${(props: CellType) => {
         let span = props.rowSpan !== undefined ? props.rowSpan : 1;
         return (
             props.row + " / span " + span
-        )}
+        )
+    }
     };
     padding: 0.75em 0.25em 0.75em 0.75em;
     //padding-left: 0.75em;
@@ -52,7 +55,7 @@ export const TableCell = styled.div`
 
 //////////////////  COMPONENT ///////////////////
 
-const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
+const DeleteJournal = ({ username, journal, setJournals = () => { } }: Props) => {
     const saveButtonRef = useRef<HTMLButtonElement>(null)
 
     const [isLoading, setIsLoading] = useState(false);
@@ -67,14 +70,14 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
         journal.lastUpdated = (journal.lastUpdated !== undefined) ? new Date(journal.lastUpdated) : undefined;
         journal.dateCreated = (journal.dateCreated !== undefined) ? new Date(journal.dateCreated) : undefined;
 
-        let dateOptions: dateType = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+        let dateOptions: dateType = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 
         journal.lastUpdated?.setHours(journal.lastUpdated.getHours() - 6);
         journal.dateCreated?.setHours(journal.dateCreated.getHours() - 6);
 
         journal.lastUpdated = journal.lastUpdated?.toLocaleString([], dateOptions);
         journal.dateCreated = journal.dateCreated?.toLocaleString([], dateOptions);
-    },[journal]);
+    }, [journal]);
 
     const deleteJournalHandler = async () => {
         try {
@@ -82,7 +85,7 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
             //show loading
             setIsLoading(true);
             setUserDeleting(true);
-            await deleteJournal(user.username, journal.id, user.token)
+            await deleteJournal(username, journal.id, user.token)
 
             setJournals((prevState: Array<JournalType>) => {
                 let deleteIdx = prevState.findIndex((x) => x.id === journal.id);
@@ -97,7 +100,7 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
             //take off loading
             setIsLoading(false);
             setUserDeleting(false);
-            routeHistory.push("/journals");
+            routeHistory.goBack();
             addAlert({
                 key: `delete-${journal.name}-attempt-${new Date()}`,
                 text: `Successfully deleted your ${journal.name} Journal`,
@@ -118,8 +121,8 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
 
     return (
         <Main>
-            <br/><br/>
-            <FlexContainer  height="100%" border="2px white solid">
+            <br /><br />
+            <FlexContainer height="100%" border="2px white solid">
                 <FlexCol margin="auto" maxWidth={"100%"} width="40em">
                     <H1 self-align="center">Are You Sure You Want to Delete Your "{journal?.name}" Journal?</H1>
                     <Wrapper>
@@ -139,14 +142,13 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
                         })}
                     </Wrapper>
                     <FlexContainer justify="space-evenly" margin="1em 10em">
-                        <Link to="/journals">
-                            <Button
-                                bgColor="bg-dark"
-                                padding=".4em 1em"
-                                border="transparent 2px solid"
-                                hoverBorder="turq 2px solid"
-                            >Back to Journals</Button>
-                        </Link>
+                        <Button
+                            bgColor="bg-dark"
+                            padding=".4em 1em"
+                            border="transparent 2px solid"
+                            hoverBorder="turq 2px solid"
+                            onClick={() => routeHistory.goBack()}
+                        >Back to Journals</Button>
                         <Button
                             ref={saveButtonRef}
                             bgColor="bg-dark"
@@ -158,7 +160,7 @@ const DeleteJournal = ({journal, setJournals = () => {} }: Props) => {
                         >Yes, Delete</Button>
                     </FlexContainer>
                     {(isLoading) &&
-                        <Loading height={"100%"}/>
+                        <Loading height={"100%"} />
                     }
                 </FlexCol>
             </FlexContainer>

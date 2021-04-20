@@ -147,8 +147,8 @@ const ListJournals = ({ username, setJournals, journals }: ListJournalsProps) =>
                     <TableCell col={1} pointOnHover={true} backgroundColor={color} alignSelf={"normal"} onClick={() => routeHistory.push(`/journals/${id}`)}></TableCell>
                     <TableCell col={2} paddingleft={"1.75em"}>
                         <StyledLink to={`/${username}/journals/${id}`}>
-                            {name}
-                            <Icon size='1x' color='blue-hover' hcolor='blue-hover' icon={faExternalLinkSquareAlt}></Icon>
+                            {name}&nbsp;
+                            <Icon size='xs' color='blue-hover' hcolor='blue-hover' icon={faExternalLinkSquareAlt}></Icon>
                         </StyledLink>
                     </TableCell>
                     <TableCell col={3} justifySelf={"center"}>{numEntries}</TableCell>

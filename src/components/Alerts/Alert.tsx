@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from '../../Styles'
 
-import Icon from '../Icon'
+import Icon from '../Icon/Icon'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { ALERT_STATE_TYPE } from '../../store/reducers/alert'
 

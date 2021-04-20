@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getUsers, useUser, deleteUser, useAlertBox } from '../API/AppLogic';
-import Icon from '../components/Icon';
+import Icon from '../components/Icon/Icon';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faExternalLinkSquareAlt } from '@fortawesome/free-solid-svg-icons'
 import { USER_STATE_TYPE } from '../store/reducers/user';

@@ -3,7 +3,7 @@ import { faSort } from '@fortawesome/free-solid-svg-icons'
 
 import styled from 'styled-components';
 import { H1, theme, Button, Main, StyledLink } from './../../Styles';
-import Icon from '../../components/Icon'
+import Icon from '../../components/Icon/Icon'
 import { faExternalLinkSquareAlt } from '@fortawesome/free-solid-svg-icons'
 import { JournalType, ListJournalsProps } from './Journal'
 import { useEffect, useState } from 'react';

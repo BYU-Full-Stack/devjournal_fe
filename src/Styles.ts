@@ -187,7 +187,7 @@ export const Button = styled.button`
     }
 `;
 
-export const StyledLink = styled(Link)`
+export const NavLink = styled(Link)`
     display: inline-block;
     color: inherit;
     color: ${theme['turq']};
@@ -198,6 +198,17 @@ export const StyledLink = styled(Link)`
         border-bottom: ${theme['orange-deep']} 4px solid;
     }
     text-decoration: none;
+`;
+
+export const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: ${theme['white']};
+    &:hover {
+        color: ${theme['blue-hover']};
+        border-bottom: ${theme['white']} 2px solid;
+    }
+    display: initial;
+    margin: 0;
 `;
 
 export const Main = styled.main`

@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react'
-import { registerUser, useUser, login, getUser, useAlertBox } from '../API/AppLogic'
+import { registerUser, useUser, useAlertBox } from '../API/AppLogic'
 import { Wrapper, StyledButton, StyledInput } from './Login'
 import { PrettyH2 } from '../Styles'
 import { useHistory } from 'react-router-dom'
@@ -17,15 +17,11 @@ const Register = () => {
     async function createUser(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
-            await registerUser({ username, email, password });
-
-            const auth = await login({ username, password }) || '';
-            const { role } = await getUser(username, auth.split(' ')[1])
-
+            const { token, role } = await registerUser({ username, email, password });
             setUser({
                 username,
-                token: auth.split(' ')[1],
-                role: role
+                token,
+                role
             });
 
             addAlert({

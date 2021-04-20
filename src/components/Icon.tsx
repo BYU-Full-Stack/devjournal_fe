@@ -35,7 +35,7 @@ type IconStyleProps = {
 };
 
 const StyledIcon = styled(FontAwesomeIcon)`
-    cursor: pointer;
+    cursor: ${({ hcolor = '', color = '' }: IconStyleProps) => hcolor === color ? 'default' : 'pointer'};
     vertical-align: ${({ vertalign = 'middle' }: IconStyleProps) => vertalign};
     margin: ${({ margin = '0 4px' }: IconStyleProps) => margin};
     padding-left: ${({ paddingleft = 'unset' }: IconStyleProps) => paddingleft};

@@ -1,4 +1,4 @@
-import { theme, StyledLink } from '../Styles'
+import { theme, NavLink } from '../Styles'
 import styled from 'styled-components'
 import logo from '../logo.svg';
 import { useUser } from '../API/AppLogic';
@@ -65,10 +65,10 @@ export default function Nav() {
             <TableCell col={2}>
                 {user.token &&
                     <>
-                        <StyledLink to="/">Journals</StyledLink>
-                        <StyledLink to="/account">Account Settings</StyledLink>
+                        <NavLink to="/">Journals</NavLink>
+                        <NavLink to="/account">Account Settings</NavLink>
                         {user.role === "ADMIN" &&
-                            <StyledLink to="/user">Admin Panel</StyledLink>
+                            <NavLink to="/admin">Admin Panel</NavLink>
                         }
                     </>
                 }
@@ -76,11 +76,11 @@ export default function Nav() {
             <TableCell col={3} justifySelf={"flex-end"}>
                 {(user.token)
                     ?
-                    <StyledLink onClick={logout} to="/login">Sign Out</StyledLink>
+                    <NavLink onClick={logout} to="/login">Sign Out</NavLink>
                     :
                     <>
-                        <StyledLink to="/login">Login</StyledLink>
-                        <StyledLink to="/register">Register</StyledLink>
+                        <NavLink to="/login">Login</NavLink>
+                        <NavLink to="/register">Register</NavLink>
                     </>
                 }
             </TableCell>

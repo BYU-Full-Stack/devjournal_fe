@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react'
 import { PrettyH2, theme } from '../Styles'
 import { useHistory } from 'react-router-dom'
-import { getUser, login, useAlertBox, useUser } from '../API/AppLogic'
+import { login, useAlertBox, useUser } from '../API/AppLogic'
 import styled from 'styled-components'
 import { FlexContainer } from '../Styles'
 
@@ -54,11 +54,10 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const auth = await login({ username, password }) || '';
-            const { role } = await getUser(username, auth.split(' ')[1])
+            const { token, role } = await login({ username, password }) || '';
             setUser({
                 username,
-                token: auth.split(' ')[1],
+                token,
                 role
             });
             addAlert({

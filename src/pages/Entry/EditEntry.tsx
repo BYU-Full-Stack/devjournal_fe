@@ -39,7 +39,10 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
     try {
       await updateEntry(user.username, editEntry, user.token);
       let date = new Date();
-      setEditEntry({ ...editEntry, lastUpdated: date.setHours(date.getHours() + 6) });
+      setEditEntry({
+        ...editEntry,
+        lastUpdated: date.setHours(date.getHours() + 6),
+      });
       saveEntry(editEntry);
     } catch (err) {
       console.log(err);
@@ -49,7 +52,7 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
   return (
     <>
       <FlexContainer wrap='wrap' height='100%'>
-        <FlexCol margin='auto'>
+        <FlexCol>
           <Button
             ref={saveButtonRef}
             bgColor='bg-dark'
@@ -68,7 +71,10 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
             editableText={editEntry?.title}
             handleInputUpdate={handleUpdateNameInput}
           />
-
+        </FlexCol>
+      </FlexContainer>
+      <FlexContainer>
+        <FlexCol minWidth='100%'>
           <Editor
             height='90vh'
             defaultLanguage='markdown'

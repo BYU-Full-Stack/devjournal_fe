@@ -68,7 +68,7 @@ export default function Nav() {
                         <NavLink to="/">Journals</NavLink>
                         <NavLink to="/account">Account Settings</NavLink>
                         {user.role === "ADMIN" &&
-                            <NavLink to="/admin">Admin Panel</NavLink>
+                            <NavLink to="/admin-panel">Admin Panel</NavLink>
                         }
                     </>
                 }

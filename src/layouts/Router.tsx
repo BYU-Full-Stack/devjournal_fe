@@ -15,7 +15,7 @@ export default function Router() {
   return (
     user.username ?
       <Switch>
-        <Route path='/admin'>
+        <Route path='/admin-panel'>
           <AdminPanel />
         </Route>
         <Route path='/account'>

@@ -121,7 +121,7 @@ export default function Users() {
       <FlexCol data-testid='user-created-date'>{created_date}</FlexCol>
       <FlexCol>
         <Icon
-          data-testid='user-delete-icon'
+          data-testid={`${idx}-user-delete-icon`}
           color='red-hover'
           hcolor='red-deep'
           icon={faTrashAlt}

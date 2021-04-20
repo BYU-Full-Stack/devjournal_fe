@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { theme, Input, StyleProps } from '../../Styles'
-import Icon from '../Icon'
+import Icon from '../Icon/Icon'
 import { faEdit, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
 type Props = {

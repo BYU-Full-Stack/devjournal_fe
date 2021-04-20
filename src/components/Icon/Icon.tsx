@@ -2,8 +2,8 @@ import { KeyboardEventHandler } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MouseEventHandler } from 'react'
 import styled, { css } from 'styled-components'
-import { theme } from '../Styles'
-import { watchButtonPress, KeyDownData } from '../API/AppLogic'
+import { theme } from '../../Styles'
+import { watchButtonPress, KeyDownData } from '../../API/AppLogic'
 
 import {
     IconProp,

@@ -27,20 +27,6 @@ const testRegister = async (username: string, password: string, email: string) =
     await waitFor(() => fireEvent.click(screen.getByTestId('user-register-btn')))
 }
 
-// const server = setupServer(
-//     rest.post('/login', (req, res, ctx) => {
-//         return res((res) => {
-//             res.status = 200
-//             res.headers.set('Authorization', 'token')
-//             return res
-//         })
-//     })
-// )
-
-// beforeAll(() => server.listen())
-// afterEach(() => server.resetHandlers())
-// afterAll(() => server.close())
-
 const initialState = {
     userReducer: {
         username: 'go',

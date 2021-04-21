@@ -88,19 +88,19 @@ const Login = () => {
             <div style={{
                 fontSize: '2rem'
             }}>
-                <PrettyH2 align='center'>Login</PrettyH2>
+                <PrettyH2 align='center' data-testid='login-header'>Login</PrettyH2>
             </div>
             <div>
                 <form onSubmit={(e: FormEvent<HTMLFormElement>) => loginUser(e)}>
                     <StyledInput type='text' placeholder='username' onChange={({ target: { value = '' } = {} }) => {
                         setUserName(value)
-                    }} /><br />
+                    }} data-testid='username' /><br />
                     <StyledInput type='password' placeholder='password' onChange={({ target: { value = '' } = {} }) => {
                         setPassword(value)
-                    }} /><br /><br />
+                    }} data-testid='password'/><br /><br />
 
                     <FlexContainer direction="column" justify="center" align="center">
-                        <StyledButton>Login</StyledButton>
+                        <StyledButton data-testid='user-login-btn'>Login</StyledButton>
                         <p style={{
                             textAlign: 'center',
                             color: 'white'
@@ -108,7 +108,6 @@ const Login = () => {
                         <StyledButton onClick={() => history.replace('/register')} >
                             Sign Up
                         </StyledButton>
-
                     </FlexContainer>
                 </form>
             </div>

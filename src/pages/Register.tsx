@@ -52,21 +52,21 @@ const Register = () => {
             <div style={{
                 fontSize: '2rem'
             }}>
-                <PrettyH2 align='center'>Register</PrettyH2>
+                <PrettyH2 align='center' data-testid='register-header'>Register</PrettyH2>
             </div>
             <div>
                 <form onSubmit={(e: FormEvent<HTMLFormElement>) => createUser(e)}>
                     <StyledInput type='text' placeholder='username' onChange={({ target: { value = '' } = {} }) => {
                         setUserName(value);
-                    }} /><br />
+                    }} data-testid='username'/><br />
                     <StyledInput type='email' placeholder='email' onChange={({ target: { value = '' } = {} }) => {
                         setEmail(value);
-                    }} /><br />
+                    }} data-testid='email'/><br />
                     <StyledInput type='password' placeholder='password' onChange={({ target: { value = '' } = {} }) => {
                         setPassword(value);
-                    }} /><br /><br />
+                    }} data-testid='password'/><br /><br />
                     <FlexContainer direction="column" justify="center" align="center">
-                        <StyledButton>Sign Up</StyledButton>
+                        <StyledButton data-testid='user-register-btn'>Sign Up</StyledButton>
                         <p style={{
                             textAlign: 'center',
                             color: 'white'

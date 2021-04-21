@@ -9,6 +9,7 @@ import ConfirmableInput from '../../components/ConfirmableInput/ConfirmableInput
 type Props = {
   entry: EntryType;
   saveEntry: (editedEntry: EntryType) => void;
+  username: string;
 };
 
 type OnChange = (
@@ -16,7 +17,7 @@ type OnChange = (
   ev: monaco.editor.IModelContentChangedEvent
 ) => void;
 
-const EditEntry = ({ entry, saveEntry }: Props) => {
+const EditEntry = ({ username, entry, saveEntry }: Props) => {
   const saveButtonRef = useRef<HTMLButtonElement>(null);
 
   const [user] = useUser();
@@ -37,7 +38,7 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
 
   const updateEntryDetails = async () => {
     try {
-      await updateEntry(user.username, editEntry, user.token);
+      await updateEntry(username, editEntry, user.token);
       let date = new Date();
       setEditEntry({
         ...editEntry,

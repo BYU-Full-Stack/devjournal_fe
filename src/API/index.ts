@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createBrowserHistory } from 'history';
 const UNAUTHENTICATED = 401;
+const UNAUTHORIZED = 403;
 
 type options = {
   headers: {
@@ -19,25 +20,32 @@ axios.interceptors.response.use(
   error => {
     const { response: { status = -1, data: { statusCode = -1 } = {} } = {} } = error;
     const history = createBrowserHistory();
-    // console.log(status, statusCode, error.response)
-    let flag = false;
-    // If connection refused error
+    // console.log(status, statusCode, error.response, window.location.pathname, error.response)
+
+    const usernameUpdateAttempted = /\/api\/.+\/username/i.test(error?.response?.request?.responseURL || '');
+    let logoutFlag = false;
+
+    // If connection refused
     if (statusCode === -1 && status === -1) {
-      // history.push('/error');
-      flag = true;
+      history.push('/error?status=404');
+      logoutFlag = true;
     }
     // the user's JWT may have expired
-    else if (status === UNAUTHENTICATED) {
+    else if (status === UNAUTHENTICATED && !usernameUpdateAttempted) {
       history.push('/login');
-      flag = true;
+      logoutFlag = true;
+    } else if (status === UNAUTHORIZED && !['/', '/login', '/register'].includes(window.location.pathname)) {
+      history.push('/error?status=403');
+      window.location.reload();
     }
 
     // the history.push doesn't take effect until
     // window.location.reload()
-    if (flag) {
+    if (logoutFlag) {
       window.localStorage.removeItem('token');
       window.localStorage.removeItem('username');
-      // window.location.reload();
+      window.localStorage.removeItem('role');
+      window.location.reload();
     }
 
     return Promise.reject(error);

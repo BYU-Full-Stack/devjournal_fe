@@ -5,9 +5,10 @@ import { EntryType } from '../Journal/ListEntries';
 type Props = {
   entry: EntryType;
   setEntries: React.Dispatch<React.SetStateAction<EntryType[]>>;
+  username: string;
 };
 
-const DeleteEntry = ({ entry, setEntries }: Props) => {
+const DeleteEntry = ({ username, entry, setEntries }: Props) => {
   //user credentials
   const [user] = useUser();
 
@@ -17,7 +18,7 @@ const DeleteEntry = ({ entry, setEntries }: Props) => {
       let journal_id = entry.journalId ? entry.journalId : '';
       let entry_id = entry.id ? entry.id : '';
 
-      await deleteEntry(user.username, journal_id, entry_id, user.token);
+      await deleteEntry(username, journal_id, entry_id, user.token);
 
       // update list of entries displayed within journal
       setEntries((prevState: Array<EntryType>) => {

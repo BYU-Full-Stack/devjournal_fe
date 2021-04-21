@@ -1,6 +1,6 @@
 import React from "react";
 import { FlexContainer } from "../Styles";
-import Icon from "./Icon";
+import Icon from "./Icon/Icon";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {

@@ -177,11 +177,11 @@ export const Button = styled.button`
   &:hover,
   :focus {
     border: ${({ hoverBorder = '' }: StyleProps) => {
-      const borderParts = hoverBorder.split(' ');
-      return hoverBorder
-        ? `${theme[borderParts[0]]} ${borderParts[1]} ${borderParts[2]}`
-        : '';
-    }};
+    const borderParts = hoverBorder.split(' ');
+    return hoverBorder
+      ? `${theme[borderParts[0]]} ${borderParts[1]} ${borderParts[2]}`
+      : '';
+  }};
   }
   &:focus {
     outline: none;
@@ -193,17 +193,28 @@ export const Button = styled.button`
   }
 `;
 
+export const NavLink = styled(Link)`
+    display: inline-block;
+    color: inherit;
+    color: ${theme['turq']};
+    margin: 1.5em 1em 0 1em;
+    transition: border-bottom .25s;
+    &:hover {
+        color: ${theme['turq-hover']};
+        border-bottom: ${theme['orange-deep']} 4px solid;
+    }
+    text-decoration: none;
+`;
+
 export const StyledLink = styled(Link)`
-  display: inline-block;
-  color: inherit;
-  color: ${theme['turq']};
-  margin: 1.5em 1em 0 1em;
-  transition: border-bottom 0.25s;
-  &:hover {
-    color: ${theme['turq-hover']};
-    border-bottom: ${theme['orange-deep']} 4px solid;
-  }
-  text-decoration: none;
+    text-decoration: none;
+    color: ${theme['white']};
+    &:hover {
+        color: ${theme['blue-hover']};
+        border-bottom: ${theme['white']} 2px solid;
+    }
+    display: initial;
+    margin: 0;
 `;
 
 export const Main = styled.main`

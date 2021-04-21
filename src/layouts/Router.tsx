@@ -15,22 +15,21 @@ export default function Router() {
   return (
     user.username ?
       <Switch>
-        <Route path='/user'>
+        <Route path='/admin-panel'>
           <AdminPanel />
         </Route>
         <Route path='/account'>
           <UserSettings />
         </Route>
-        <Route path='/journals/create'>
+        <Route path='/:username/journals/create'>
           <CreateJournal />
         </Route>
-        <Route path='/journals/:id/entries/create'>
+        <Route path='/:username/journals/:id/entries/create'>
           <CreateEntry />
         </Route>
-        <Route path='/journals'>
+        <Route path='/:username/journals/:id?'>
           <Journal />
         </Route>
-
         <Route path='/error'>
           <Error />
         </Route>

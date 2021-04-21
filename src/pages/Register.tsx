@@ -49,15 +49,16 @@ const Register = () => {
             <div style={{
                 fontSize: '2rem'
             }}>
-                <PrettyH2 align='center'>Register</PrettyH2>
+                <PrettyH2 align='center' data-testid='register-header'>Register</PrettyH2>
             </div>
             <div>
                 <form onSubmit={(e: FormEvent<HTMLFormElement>) => createUser(e)}>
-                    <StyledInput type='text' placeholder='username' handleChange={setUserName} /><br />
-                    <StyledInput type='email' placeholder='email' handleChange={setEmail} /><br />
-                    <StyledInput type='password' placeholder='password' handleChange={setPassword} /><br /><br />
+                    <StyledInput type='text' placeholder='username' handleChange={setUserName} data-testid='username' /><br />
+                    <StyledInput type='email' placeholder='email' handleChange={setEmail} data-testid='email' /><br />
+                    <StyledInput type='password' placeholder='password' handleChange={setPassword} data-testid='password' /><br /><br />
+                    
                     <FlexContainer direction="column" justify="center" align="center">
-                        <StyledButton>Sign Up</StyledButton>
+                        <StyledButton data-testid='user-register-btn'>Sign Up</StyledButton>
                         <p style={{
                             textAlign: 'center',
                             color: 'white'

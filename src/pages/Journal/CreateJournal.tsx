@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react"
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { createJournal, useAlertBox, useUser } from "../../API/AppLogic";
 import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput";
 import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles"
@@ -61,14 +61,13 @@ const CreateJournal = () => {
 
     return (
         <Main>
-            <Link to="/journals">
-                <Button
-                    bgColor="bg-dark"
-                    padding=".4em 1em"
-                    border="transparent 2px solid"
-                    hoverBorder="turq 2px solid"
-                >Back to Journals</Button>
-            </Link>
+            <Button
+                bgColor="bg-dark"
+                padding=".4em 1em"
+                border="transparent 2px solid"
+                hoverBorder="turq 2px solid"
+                onClick={() => routeHistory.goBack()}
+            >Back to Journals</Button>
             <H1>Create a New Journal</H1>
             <FlexContainer wrap="wrap" height="100%">
                 <FlexCol margin="auto">

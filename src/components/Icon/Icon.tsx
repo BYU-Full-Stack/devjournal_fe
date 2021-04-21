@@ -2,8 +2,8 @@ import { KeyboardEventHandler } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MouseEventHandler } from 'react'
 import styled, { css } from 'styled-components'
-import { theme } from '../Styles'
-import { watchButtonPress, KeyDownData } from '../API/AppLogic'
+import { theme } from '../../Styles'
+import { watchButtonPress, KeyDownData } from '../../API/AppLogic'
 
 import {
     IconProp,
@@ -35,7 +35,7 @@ type IconStyleProps = {
 };
 
 const StyledIcon = styled(FontAwesomeIcon)`
-    cursor: pointer;
+    cursor: ${({ hcolor = '', color = '' }: IconStyleProps) => hcolor === color ? 'default' : 'pointer'};
     vertical-align: ${({ vertalign = 'middle' }: IconStyleProps) => vertalign};
     margin: ${({ margin = '0 4px' }: IconStyleProps) => margin};
     padding-left: ${({ paddingleft = 'unset' }: IconStyleProps) => paddingleft};

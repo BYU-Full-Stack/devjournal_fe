@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react';
 import { getUsers, useUser, deleteUser, useAlertBox } from '../API/AppLogic';
-import Icon from '../components/Icon';
+import Icon from '../components/Icon/Icon';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-
+import { faExternalLinkSquareAlt } from '@fortawesome/free-solid-svg-icons'
 import { USER_STATE_TYPE } from '../store/reducers/user';
-import { FlexCol, FlexContainer, theme, PrettyH2, H3 } from '../Styles';
+import { FlexCol, FlexContainer, theme, PrettyH2, H3, StyledLink as DefaultStyledLink } from '../Styles';
 import styled from 'styled-components';
+
+const StyledLink = styled(DefaultStyledLink)`
+  color: unset;
+  &:hover {
+      color: ${theme['red-deep']};
+      border-bottom: ${theme['red-deep']} 2px solid;
+  }
+`;
 
 const SharedFlexStyles = styled(FlexContainer)`
   cursor: default;
@@ -103,19 +111,23 @@ export default function Users() {
       <FlexCol data-testid='user-idx' maxWidth='1px'>
         {idx + 1}
       </FlexCol>
+      <FlexCol data-testid='user-username'>
+        <StyledLink to={`/${username}/journals`}>
+          {username} <Icon size='1x' color='red-hover' hcolor='red-deep' icon={faExternalLinkSquareAlt}></Icon>
+        </StyledLink>
+      </FlexCol>
+      <FlexCol data-testid='user-email'>{email}</FlexCol>
+      <FlexCol data-testid='user-role'>{role}</FlexCol>
+      <FlexCol data-testid='user-created-date'>{created_date}</FlexCol>
       <FlexCol>
         <Icon
-          data-testid='user-delete-icon'
+          data-testid={`${idx}-user-delete-icon`}
           color='red-hover'
           hcolor='red-deep'
           icon={faTrashAlt}
           onClick={() => handleDelete(username, user_id, idx)}
         ></Icon>
       </FlexCol>
-      <FlexCol data-testid='user-username'>{username}</FlexCol>
-      <FlexCol data-testid='user-email'>{email}</FlexCol>
-      <FlexCol data-testid='user-role'>{role}</FlexCol>
-      <FlexCol data-testid='user-created-date'>{created_date}</FlexCol>
     </StyledRow>
   );
 
@@ -128,6 +140,10 @@ export default function Users() {
           <FlexCol maxWidth='1px' data-testid='title-idx'>
             {'#'}
           </FlexCol>
+          <FlexCol data-testid='title-username'>Username</FlexCol>
+          <FlexCol data-testid='title-email'>Email</FlexCol>
+          <FlexCol data-testid='title-role'>Role</FlexCol>
+          <FlexCol data-testid='title-created-date'>User Creation Date</FlexCol>
           <FlexCol>
             <Icon
               data-testid='title-delete-icon'
@@ -136,10 +152,6 @@ export default function Users() {
               icon={faTrashAlt}
             ></Icon>
           </FlexCol>
-          <FlexCol data-testid='title-username'>Username</FlexCol>
-          <FlexCol data-testid='title-email'>Email</FlexCol>
-          <FlexCol data-testid='title-role'>Role</FlexCol>
-          <FlexCol data-testid='title-created-date'>User Creation Date</FlexCol>
         </StyledHeader>
         {users.length > 0 &&
           users.map((user, idx) => <UserRow key={idx} {...user} idx={idx} />)}

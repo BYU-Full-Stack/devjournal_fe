@@ -1,9 +1,10 @@
 import { useState, FormEvent } from 'react'
 import { PrettyH2, theme } from '../Styles'
 import { useHistory } from 'react-router-dom'
-import { getUser, login, useAlertBox, useUser } from '../API/AppLogic'
+import { login, useAlertBox, useUser } from '../API/AppLogic'
 import styled from 'styled-components'
 import { FlexContainer } from '../Styles'
+import StyledInput from '../components/StyledInput/StyledInput'
 
 export const Wrapper = styled.div`
     display: flex;
@@ -11,22 +12,6 @@ export const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
 `
-export const StyledInput = styled.input`
-    margin: 0.5rem;
-    padding: 0.5rem;
-    font-family: 'Roboto', sans-serif;
-    border-radius: 10px;
-    font-size: 1.5rem;
-    color: ${theme['purple']};
-    outline: none;
-    background-color: ${theme['bg-dark']};
-    border: 2px solid white;
-    transition: all .4s ease-out;
-    &:focus {
-        border: 2px solid ${theme['turq']}
-    }
-`
-
 export const StyledButton = styled.button`
     border-radius: 4px;
     align-self: center;
@@ -54,11 +39,10 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const auth = await login({ username, password }) || '';
-            const { role } = await getUser(username, auth.split(' ')[1])
+            const { token, role } = await login({ username, password }) || '';
             setUser({
                 username,
-                token: auth.split(' ')[1],
+                token,
                 role
             });
             addAlert({
@@ -92,12 +76,8 @@ const Login = () => {
             </div>
             <div>
                 <form onSubmit={(e: FormEvent<HTMLFormElement>) => loginUser(e)}>
-                    <StyledInput type='text' placeholder='username' onChange={({ target: { value = '' } = {} }) => {
-                        setUserName(value)
-                    }} data-testid='username' /><br />
-                    <StyledInput type='password' placeholder='password' onChange={({ target: { value = '' } = {} }) => {
-                        setPassword(value)
-                    }} data-testid='password'/><br /><br />
+                    <StyledInput type='text' placeholder='username' handleChange={setUserName} /><br />
+                    <StyledInput type='password' placeholder='password' handleChange={setPassword} /><br /><br />
 
                     <FlexContainer direction="column" justify="center" align="center">
                         <StyledButton data-testid='user-login-btn'>Login</StyledButton>

@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react'
-import { registerUser, useUser, login, getUser, useAlertBox } from '../API/AppLogic'
-import { Wrapper, StyledButton, StyledInput } from './Login'
+import { registerUser, useUser, useAlertBox } from '../API/AppLogic'
+import StyledInput from '../components/StyledInput/StyledInput'
+import { Wrapper, StyledButton } from './Login'
 import { PrettyH2 } from '../Styles'
 import { useHistory } from 'react-router-dom'
 
@@ -17,15 +18,11 @@ const Register = () => {
     async function createUser(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
-            await registerUser({ username, email, password });
-
-            const auth = await login({ username, password }) || '';
-            const { role } = await getUser(username, auth.split(' ')[1])
-
+            const { token, role } = await registerUser({ username, email, password });
             setUser({
                 username,
-                token: auth.split(' ')[1],
-                role: role
+                token,
+                role
             });
 
             addAlert({
@@ -56,15 +53,10 @@ const Register = () => {
             </div>
             <div>
                 <form onSubmit={(e: FormEvent<HTMLFormElement>) => createUser(e)}>
-                    <StyledInput type='text' placeholder='username' onChange={({ target: { value = '' } = {} }) => {
-                        setUserName(value);
-                    }} data-testid='username'/><br />
-                    <StyledInput type='email' placeholder='email' onChange={({ target: { value = '' } = {} }) => {
-                        setEmail(value);
-                    }} data-testid='email'/><br />
-                    <StyledInput type='password' placeholder='password' onChange={({ target: { value = '' } = {} }) => {
-                        setPassword(value);
-                    }} data-testid='password'/><br /><br />
+                    <StyledInput type='text' placeholder='username' handleChange={setUserName} /><br />
+                    <StyledInput type='email' placeholder='email' handleChange={setEmail} /><br />
+                    <StyledInput type='password' placeholder='password' handleChange={setPassword} /><br /><br />
+                    
                     <FlexContainer direction="column" justify="center" align="center">
                         <StyledButton data-testid='user-register-btn'>Sign Up</StyledButton>
                         <p style={{

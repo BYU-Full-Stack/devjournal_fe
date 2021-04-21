@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import { RouteMatchType } from '../../Types';
 
 import {
   getEntries,
   getJournals,
   useAlertBox,
-  useUser,
+  useUser
 } from '../../API/AppLogic';
 import ListJournals from './ListJournals';
-import { RouteMatchType } from '../../Types';
 import ListEntries from './ListEntries';
 import Loading from '../../components/Loading';
 
@@ -23,40 +23,37 @@ export type JournalType = {
   numEntries?: number;
 };
 
-export type JournalArray = {
+export type ListJournalsProps = {
   journals: JournalType[];
   setJournals: Function;
+  username: string;
 };
 
 //////////////////  COMPONENT ///////////////////
 const Journal = () => {
-  let match: RouteMatchType | null;
-  match = useRouteMatch({
-    path: '/journals/:id',
-    strict: true,
-    sensitive: true,
-  });
+  const match: RouteMatchType | null = useRouteMatch('/:username/journals/:id?');
+  const routeHistory = useHistory();
+
+  const [, addAlert] = useAlertBox();
+  const [user] = useUser();
+  const [username, setUsername] = useState(match?.params?.username || user.username);
 
   const [journals, setJournals] = useState<JournalType[]>([]);
-  const [user] = useUser();
+  const [journal, setJournal] = useState<JournalType | undefined>(undefined);
+
   const [isLoading, setIsLoading] = useState(true);
-  const routeHistory = useHistory();
-  const [, addAlert] = useAlertBox();
 
   useEffect(() => {
     user.token &&
       (async function () {
         try {
           setIsLoading(true);
-          let promises: any[] = [];
+          const allJournals = await getJournals(username, user.token);
 
-          let allJournals = await getJournals(user.username, user.token);
+          const promises: any[] = allJournals.map(async ({ id = '' }: JournalType) =>
+            getEntries(username, id, user.token));
 
-          promises = allJournals.map(async (x: JournalType) => {
-            return getEntries(user.username, x.id, user.token);
-          });
-
-          Promise.all(promises).then((values) => {
+          Promise.all(promises).then((values: any[]) => {
             const newJournals = allJournals.map((journal: any, idx: number) => {
               return {
                 ...journal,
@@ -77,20 +74,27 @@ const Journal = () => {
           routeHistory.push('/error');
         }
       })();
-  }, [addAlert, routeHistory, user.token, user.username]);
+  }, [addAlert, routeHistory, user.token, username]);
 
-  let journal: JournalType | undefined;
-  journal = Object.values(journals).find(
-    (x: JournalType) => x?.id === match?.params?.id
-  );
+  useEffect(() => {
+    setUsername(match?.params?.username || user.username)
+    // eslint-disable-next-line
+  }, [match?.params?.username]);
+
+  useEffect(() =>
+    setJournal(
+      Object.values(journals).find(
+        ({ id = '' }: JournalType) => id === match?.params?.id
+      )
+    ), [match?.params, journals]);
 
   if (isLoading) {
     return <Loading />;
   } else {
     if (journal === undefined) {
-      return <ListJournals setJournals={setJournals} journals={journals} />;
+      return <ListJournals username={username} setJournals={setJournals} journals={journals} />;
     } else {
-      return <ListEntries {...journal} />;
+      return <ListEntries username={username} {...journal} />;
     }
   }
 };

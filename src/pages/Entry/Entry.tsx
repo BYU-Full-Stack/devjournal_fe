@@ -8,9 +8,10 @@ import DeleteEntry from './DeleteEntry';
 export type SelectedEntryType = {
   entry: EntryType;
   setEntries: React.Dispatch<React.SetStateAction<EntryType[]>>;
+  username: string;
 };
 
-const Entry = ({ entry, setEntries }: SelectedEntryType) => {
+const Entry = ({ username, entry, setEntries }: SelectedEntryType) => {
   const [seeMarkdown, setSeeMarkdown] = useState(true);
 
   const updateEntryList = (editedEntry: EntryType) => {
@@ -28,10 +29,10 @@ const Entry = ({ entry, setEntries }: SelectedEntryType) => {
 
   return (
     <>
-      <DeleteEntry entry={entry} setEntries={setEntries} />
+      <DeleteEntry username={username} entry={entry} setEntries={setEntries} />
       {seeMarkdown === false ? (
         <>
-          <EditEntry entry={entry} saveEntry={updateEntryList} />
+          <EditEntry username={username} entry={entry} saveEntry={updateEntryList} />
         </>
       ) : (
         <>

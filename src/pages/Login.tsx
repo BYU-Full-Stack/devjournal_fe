@@ -76,8 +76,8 @@ const Login = () => {
             </div>
             <div>
                 <form onSubmit={(e: FormEvent<HTMLFormElement>) => loginUser(e)}>
-                    <StyledInput type='text' placeholder='username' handleChange={setUserName} /><br />
-                    <StyledInput type='password' placeholder='password' handleChange={setPassword} /><br /><br />
+                    <StyledInput type='text' placeholder='username' handleChange={setUserName} data-testid='username' /><br />
+                    <StyledInput type='password' placeholder='password' handleChange={setPassword} data-testid='password' /><br /><br />
 
                     <FlexContainer direction="column" justify="center" align="center">
                         <StyledButton data-testid='user-login-btn'>Login</StyledButton>

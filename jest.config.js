@@ -21,7 +21,10 @@ module.exports = {
     collectCoverageFrom: [
         "src/**/*{.ts,.tsx}",
         "!src/stories/*",
-        "!src/__tests__/**/*"
+        "!src/__tests__/**/*",
+        "!src/components/**/*.stories.tsx",
+        "!src/components/Alerts/*",
+        "!src/store/**/*"
     ],
 
     // Test spec file resolution pattern

@@ -157,6 +157,7 @@ const DeleteJournal = ({ username, journal, setJournals = () => { } }: Props) =>
                             hoverBorder="red-deep 2px solid"
                             disabled={userDeleting}
                             onClick={deleteJournalHandler}
+                            data-testid="journal-delete-btn"
                         >Yes, Delete</Button>
                     </FlexContainer>
                     {(isLoading) &&

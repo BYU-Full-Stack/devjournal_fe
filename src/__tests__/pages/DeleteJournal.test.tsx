@@ -42,3 +42,10 @@ test('Renders page text', async () => {
     const PageTitle = screen.getByText(/Are You Sure You Want to Delete Your/i);
     expect(PageTitle).toBeInTheDocument();
 });
+
+test('Delete journal', async () => {
+    await waitFor(() => render(<DeleteJournal username={props.username} journal={props.journal} setJournals={props.setJournals} />, { initialState }));
+
+    // perform api save of changes
+    await waitFor(() => fireEvent.click(screen.getByTestId('journal-delete-btn')));
+});

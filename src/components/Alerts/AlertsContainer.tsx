@@ -1,4 +1,5 @@
 
+import { useCallback } from 'react'
 import { ALERT_STATE_TYPE } from '../../store/reducers/alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteAlertAction } from '../../store/actions/alert'
@@ -18,26 +19,24 @@ const Alerts = () => {
     const alerts = useSelector((state: RootState) => state.alertsReducer);
     const dispatch = useDispatch();
 
-    const removeAlert = (key: string) => {
-
+    const removeAlert = useCallback((id: string) => {
         dispatch(
-            deleteAlertAction({ key, alerts })
+            deleteAlertAction({ id, alerts })
         )
-    };
+    }, [dispatch, alerts]);
 
     return (
         <AlertsContainer>
             {
                 // @ts-ignore
-                alerts.map(({ text, timeout, dismissable, key, theme = 'error' }: ALERT_STATE_TYPE, idx: number) =>
+                alerts.map(({ id, ...rest }: ALERT_STATE_TYPE, idx: number) =>
                     <Alert
                         top={`${50 * (idx + 1) + 50 * (idx)}px`}
-                        theme={theme}
-                        text={text}
                         key={idx}
-                        timeout={timeout}
-                        dismissable={dismissable}
-                        dismiss={() => removeAlert(key)} />
+                        id={id}
+                        dismiss={() => removeAlert(id)}
+                        {...rest}
+                    />
                 )
             }
         </AlertsContainer>

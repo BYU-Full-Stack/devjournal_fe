@@ -12,6 +12,6 @@ export const getAlertsAction = () => {
     return { type: GET_ALERTS }
 }
 
-export const deleteAlertAction = ({ key, alerts }: { key: string, alerts: ALERT_STATE_TYPE[] }) => {
-    return { type: DELETE_ALERT, key, alerts }
+export const deleteAlertAction = ({ id, alerts }: { id: string, alerts: ALERT_STATE_TYPE[] }) => {
+    return { type: DELETE_ALERT, id, alerts }
 }

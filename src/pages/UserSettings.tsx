@@ -44,7 +44,6 @@ const LeftNav = styled(FlexCol)`
     }
 `;
 
-const testUser = 'admin';
 const UserSettings = () => {
     const [, addAlert] = useAlertBox();
     const saveButtonRef = useRef<HTMLButtonElement>(null)
@@ -63,7 +62,7 @@ const UserSettings = () => {
         user.token && (async function () {
             try {
                 // @ts-ignore
-                const apiUser: USER_STATE_TYPE = await getUser(testUser, user.token);
+                const apiUser: USER_STATE_TYPE = await getUser(user.username, user.token);
                 setUser(apiUser);
             } catch (err) {
                 addAlert({
@@ -74,17 +73,28 @@ const UserSettings = () => {
                 });
             }
         })();
-    }, [user.token, setUser, addAlert]);
+        // eslint-disable-next-line
+    }, [user.token]);
 
+    useEffect(() => {
+        // When the user is done editing the field, focus on the save button
+        !canUserSave && saveButtonRef.current?.focus();
+    }, [canUserSave])
     useEffect(() => setEditUser(user), [user])
 
-    const updateUserSettings = async (value: Object) => {
+    const updateUserSettings = async () => {
         try {
             saveButtonRef.current && (saveButtonRef.current.disabled = true);
-            await updateUser(user.username, fieldsToUpdate[indexOfUpdateField].key, { ...editUser, username: user.username, updatedUsername: editUser.username });
+            const token = await updateUser(user.username, fieldsToUpdate[indexOfUpdateField].key, { ...editUser, username: user.username, updatedUsername: editUser.username });
 
-            // @ts-ignore
-            setUser({ [fieldsToUpdate[indexOfUpdateField].key]: editUser[fieldsToUpdate[indexOfUpdateField].key] });
+            // A new token is generated when the user update's his/her username
+            if (token) {
+                // @ts-ignore
+                setUser({ token, [fieldsToUpdate[indexOfUpdateField].key]: editUser[fieldsToUpdate[indexOfUpdateField].key] });
+            } else {
+                // @ts-ignore
+                setUser({ [fieldsToUpdate[indexOfUpdateField].key]: editUser[fieldsToUpdate[indexOfUpdateField].key] });
+            }
 
             saveButtonRef.current && (saveButtonRef.current.disabled = false);
             addAlert({
@@ -96,6 +106,14 @@ const UserSettings = () => {
 
         } catch (err) {
             saveButtonRef.current && (saveButtonRef!.current.disabled = false);
+            // reset the user to what it was before failed update
+            if (fieldsToUpdate[indexOfUpdateField].key !== 'password')
+                setEditUser(prevUser => ({
+                    ...prevUser,
+                    // @ts-ignore
+                    [fieldsToUpdate[indexOfUpdateField].key]: user[fieldsToUpdate[indexOfUpdateField].key]
+                }));
+
             addAlert({
                 key: `failed-update-${fieldsToUpdate[indexOfUpdateField].key}-attempt-${new Date()}`,
                 text: `Failed to update your ${fieldsToUpdate[indexOfUpdateField].key}`,
@@ -141,7 +159,7 @@ const UserSettings = () => {
                         hoverBorder="turq 2px solid"
                         disabled={canUserSave}
                         data-testid="user-settings-save-btn"
-                        onClick={updateUserSettings}
+                        onClick={() => updateUserSettings()}
                     >Save</Button>
                 </FlexContainer>
             </FlexCol>

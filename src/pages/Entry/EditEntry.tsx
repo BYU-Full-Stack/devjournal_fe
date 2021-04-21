@@ -9,6 +9,7 @@ import ConfirmableInput from '../../components/ConfirmableInput/ConfirmableInput
 type Props = {
   entry: EntryType;
   saveEntry: (editedEntry: EntryType) => void;
+  username: string;
 };
 
 type OnChange = (
@@ -16,7 +17,7 @@ type OnChange = (
   ev: monaco.editor.IModelContentChangedEvent
 ) => void;
 
-const EditEntry = ({ entry, saveEntry }: Props) => {
+const EditEntry = ({ username, entry, saveEntry }: Props) => {
   const saveButtonRef = useRef<HTMLButtonElement>(null);
 
   const [user] = useUser();
@@ -37,10 +38,12 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
 
   const updateEntryDetails = async () => {
     try {
-      await updateEntry(user.username, editEntry, user.token);
+      await updateEntry(username, editEntry, user.token);
       let date = new Date();
-      setEditEntry({...editEntry, lastUpdated: date.setHours(date.getHours() + 6)})
-      console.log(editEntry);
+      setEditEntry({
+        ...editEntry,
+        lastUpdated: date.setHours(date.getHours() + 6),
+      });
       saveEntry(editEntry);
     } catch (err) {
       console.log(err);
@@ -50,7 +53,7 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
   return (
     <>
       <FlexContainer wrap='wrap' height='100%'>
-        <FlexCol margin='auto'>
+        <FlexCol>
           <Button
             ref={saveButtonRef}
             bgColor='bg-dark'
@@ -69,7 +72,10 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
             editableText={editEntry?.title}
             handleInputUpdate={handleUpdateNameInput}
           />
-
+        </FlexCol>
+      </FlexContainer>
+      <FlexContainer>
+        <FlexCol minWidth='100%'>
           <Editor
             height='90vh'
             defaultLanguage='markdown'

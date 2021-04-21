@@ -1,8 +1,8 @@
+import { KeyboardEventHandler } from 'react'
 import { POST, GET, DELETE, defaultReqOptions as options, PUT } from './index';
 import { USER_STATE_TYPE } from '../store/reducers/user';
 import { ALERT_STATE_TYPE } from '../store/reducers/alert';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { RootState } from '../store';
 import { useCallback } from 'react';
 import { userStateAction } from '../store/actions/user';
@@ -21,22 +21,24 @@ export const login = async (user: USER_STATE_TYPE) => {
       `${API_URL}login`,
       user
     );
-    return auth;
+    const token = auth.split(' ')?.[1] || '';
+    const { role } = await getUser(user?.username, token);
+    return { token, role };
   } catch (err) {
     throw err;
   }
 };
 
-export const registerUser = async (newUser: USER_STATE_TYPE) => {
+export const registerUser = async (user: USER_STATE_TYPE) => {
   const customOptions: typeof options = { ...options };
   try {
-    const { headers: { authorization: auth = 'Bearer ' } = {} } = await POST(
+    await POST(
       `${API_URL}${API_BASE}user/signup`,
-      newUser,
+      user,
       customOptions
     );
 
-    return auth;
+    return await login(user);
   } catch (err) {
     throw err;
   }
@@ -69,9 +71,7 @@ export const getUsers = async (token: string = '') => {
     );
     return users;
   } catch (err) {
-    //    TODO: handle errors better than this
-    console.log(err);
-    return [];
+    throw err;
   }
 };
 
@@ -84,11 +84,12 @@ export const updateUser = async (
   customOptions.headers.Authorization = `Bearer ${updatedUser.token}`;
 
   try {
-    await PUT(
+    const { headers: { authorization: auth = '' } = {} } = await PUT(
       `${API_URL}${API_BASE}${username}/${field}`,
       updatedUser,
       customOptions
     );
+    return auth ? auth.split(' ')[1] : '';
   } catch (err) {
     throw err;
   }
@@ -213,9 +214,7 @@ export const getEntries = async (
     );
     return entries;
   } catch (err) {
-    //    TODO: handle errors better than this
-    console.log(err);
-    return [];
+    throw err;
   }
 };
 
@@ -254,8 +253,7 @@ export const createEntry = async (
       customOptions
     );
   } catch (err) {
-    //    TODO: handle errors better than this
-    console.log(err.response.data);
+    throw err;
   }
 };
 
@@ -274,7 +272,6 @@ export const updateEntry = async (
       customOptions
     );
   } catch (err) {
-    //    TODO: handle errors better than this
     throw err;
   }
 };
@@ -294,8 +291,7 @@ export const deleteEntry = async (
       customOptions
     );
   } catch (err) {
-    //    TODO: handle errors better than this
-    console.log(err);
+    throw err;
   }
 };
 
@@ -316,6 +312,26 @@ export const setEntry = async (
     throw err;
   }
 };
+
+export type KeyDownData = {
+  keyCodes?: number[],
+  cb?: (...arg: any[]) => any | void,
+  params?: any[]
+};
+
+/**
+ * Description: Function for watching keyboard presses and running a callback function with parameters
+ * Parameters: 
+ *  cb: callback function to execute when specific keyboard keys are pressed
+ *  keyCodes: an array of keyboard keys (ascii) to watch for
+ *  params: any parameters for the callback function 
+ */
+export const watchButtonPress = (e: KeyboardEventHandler, { keyCodes = [13, 32], cb = () => { }, params = [] }: KeyDownData) => {
+  // @ts-ignore
+  if (keyCodes.includes(e.charCode)) {
+    cb(...params)
+  }
+}
 
 export const useAlertBox = (): [
   alertState: ALERT_STATE_TYPE[],
@@ -340,11 +356,14 @@ export const useUser = (): [userState: USER_STATE_TYPE, fun: Function] => {
   const dispatch = useDispatch();
   const setUser = useCallback(
     (user: USER_STATE_TYPE) => {
-      if (user.token) {
+      if (user.token !== undefined) {
         window.localStorage.setItem('token', user.token);
       }
-      if (user.username) {
+      if (user.username !== undefined) {
         window.localStorage.setItem('username', user.username);
+      }
+      if (user.role !== undefined) {
+        window.localStorage.setItem('role', user.role)
       }
       dispatch(userStateAction(user));
     },
@@ -352,3 +371,7 @@ export const useUser = (): [userState: USER_STATE_TYPE, fun: Function] => {
   );
   return [userState, setUser];
 };
+
+export const useQuery = (search: any) => {
+  return new URLSearchParams(search);
+}

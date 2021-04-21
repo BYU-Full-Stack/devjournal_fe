@@ -1,7 +1,7 @@
 import { ADD_ALERT, DELETE_ALERT } from '../actions/alert'
 
 export type ALERT_STATE_TYPE = {
-    key: string;
+    id: string;
     text: string;
     timeout?: number;
     dismissable?: boolean;
@@ -14,7 +14,7 @@ type ACTION_TYPE = {
     type: string;
     alert?: ALERT_STATE_TYPE;
     alerts?: ALERT_STATE_TYPE[];
-    key?: string;
+    id?: string;
 };
 
 const alertReducer = (state = alertState, action: ACTION_TYPE) => {
@@ -22,7 +22,7 @@ const alertReducer = (state = alertState, action: ACTION_TYPE) => {
         case ADD_ALERT:
             return [...state, action.alert];
         case DELETE_ALERT:
-            return state.filter(({ key }: ALERT_STATE_TYPE) => key !== action.key)
+            return state.filter(({ id }: ALERT_STATE_TYPE) => id !== action.id)
         default:
             return state;
     }

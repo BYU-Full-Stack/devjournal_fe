@@ -53,8 +53,9 @@ const CreateEntry = () => {
     <main>
       <Button onClick={() => routeHistory.goBack()}>Back</Button>
       <H1>Create a New Entry</H1>
+
       <FlexContainer wrap='wrap' height='100%'>
-        <FlexCol margin='auto'>
+        <FlexCol>
           <H3 display='inline'>Name:</H3>
           <ConfirmableInput
             myKey={0}
@@ -62,6 +63,23 @@ const CreateEntry = () => {
             editableText={entry?.title}
             handleInputUpdate={handleUpdateNameInput}
           />
+        </FlexCol>
+        <FlexCol margin='3em' />
+        <FlexCol>
+          <Button
+            bgColor='bg-dark'
+            padding='.4em 1em'
+            border='transparent 2px solid'
+            hoverBorder='turq 2px solid'
+            disabled={canUserSave}
+            onClick={createEntryHandler}
+          >
+            Create
+          </Button>
+        </FlexCol>
+      </FlexContainer>
+      <FlexContainer margin='1em 0em'>
+        <FlexCol minWidth='100%'>
           <Editor
             height='90vh'
             defaultLanguage='markdown'
@@ -69,18 +87,6 @@ const CreateEntry = () => {
             theme='vs-dark'
             onChange={handleUpdateTextInput}
           />
-          <FlexContainer justify='flex-end' margin='1em 0em'>
-            <Button
-              bgColor='bg-dark'
-              padding='.4em 1em'
-              border='transparent 2px solid'
-              hoverBorder='turq 2px solid'
-              disabled={canUserSave}
-              onClick={createEntryHandler}
-            >
-              Create
-            </Button>
-          </FlexContainer>
         </FlexCol>
       </FlexContainer>
     </main>

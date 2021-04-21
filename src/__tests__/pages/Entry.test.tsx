@@ -15,6 +15,7 @@ import userEvent from '@testing-library/user-event';
 const mockFn = jest.fn();
 
 const entryProps = {
+  username: 'user1',
   entry: {
     id: 'string',
     journalId: 'string',
@@ -95,6 +96,7 @@ test('Edits Entry Markdown', async () => {
       '{selectall} {del} ### New Text'
     );
     expect(screen.getByTestId('monaco-editor')).toHaveValue('### New Text');
+    expect(mockFn).toBeCalledTimes(1);
   }, 500);
 });
 

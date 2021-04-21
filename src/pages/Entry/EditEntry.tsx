@@ -54,6 +54,7 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
       <FlexContainer wrap='wrap' height='100%'>
         <FlexCol>
           <Button
+            data-testid='title-button'
             ref={saveButtonRef}
             bgColor='bg-dark'
             padding='.4em 1em'
@@ -66,6 +67,7 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
           <br></br>
           <H3 display='inline'>Name:</H3>
           <ConfirmableInput
+            data-testid='title-input'
             myKey={0}
             setCanUserSave={setCanUserSave}
             editableText={editEntry?.title}
@@ -76,6 +78,7 @@ const EditEntry = ({ entry, saveEntry }: Props) => {
       <FlexContainer>
         <FlexCol minWidth='100%'>
           <Editor
+            data-testid='monaco-editor'
             height='90vh'
             defaultLanguage='markdown'
             value={editEntry?.markdown}

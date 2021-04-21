@@ -33,6 +33,7 @@ const DeleteEntry = ({ entry, setEntries }: Props) => {
   };
   return (
     <Button
+      data-testid='delete-entry'
       bgColor='bg-dark'
       padding='.4em 1em'
       border='transparent 2px solid'

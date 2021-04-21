@@ -77,7 +77,9 @@ const CreateJournal = () => {
                         setCanUserSave={setCanUserSave}
                         editableText={journal?.name}
                         maxLength={20}
-                        handleInputUpdate={handleUpdateTextInput} />
+                        handleInputUpdate={handleUpdateTextInput}
+                        inputTestId={'name-input-test-id'}
+                        iconTestId={'name-icon-toggle-test-id'} />
                     <H3 display="inline">Color:</H3>
                     <ConfirmableInput
                         myKey={1}
@@ -85,7 +87,9 @@ const CreateJournal = () => {
                         editableText={journal?.color}
                         maxLength={20}
                         handleInputUpdate={handleUpdateTextInput}
-                        setVisibleObject={setDisplayColorPicker} />
+                        setVisibleObject={setDisplayColorPicker}
+                        inputTestId={'color-input-test-id'}
+                        iconTestId={'color-icon-toggle-test-id'} />
 
                     <FlexContainer justify="space-between" margin="1em 0em">
                         <ColorPicker visible={displayColorPicker} color={journal?.color} setColor={setJournalColor}></ColorPicker>
@@ -97,6 +101,7 @@ const CreateJournal = () => {
                             hoverBorder="turq 2px solid"
                             disabled={canUserSave}
                             onClick={createJournalHandler}
+                            data-testid="journal-create-save-btn"
                         >Create</Button>
                     </FlexContainer>
                     {(isLoading) &&

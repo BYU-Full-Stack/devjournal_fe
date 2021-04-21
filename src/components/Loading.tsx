@@ -10,7 +10,7 @@ type Props = {
 const Loading = (props: Props) => {
     return (
         <FlexContainer justify={"center"} align={"center"} height={props.height || "500px"}>
-            <Icon size={"4x"} icon={faSpinner} spin={true}></Icon>
+            <Icon size={"4x"} icon={faSpinner} spin={true} testid={"loading-test-id"}></Icon>
         </FlexContainer>
     )
 };

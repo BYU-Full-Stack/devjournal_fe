@@ -18,6 +18,15 @@ module.exports = {
         "<rootDir>/src/__tests__/jest/initializeEnv.js"
     ],
 
+    collectCoverageFrom: [
+        "src/**/*{.ts,.tsx}",
+        "!src/stories/*",
+        "!src/__tests__/**/*",
+        "!src/components/**/*.stories.tsx",
+        "!src/components/Alerts/*",
+        "!src/store/**/*"
+    ],
+
     // Test spec file resolution pattern
     // Matches parent folder `__tests__` and filename
     // should contain `test` or `spec`.

@@ -97,7 +97,9 @@ const EditJournal = ({ username, journal, setJournals = () => { } }: Props) => {
                         setCanUserSave={setCanUserSave}
                         editableText={editJournal?.name}
                         maxLength={20}
-                        handleInputUpdate={handleUpdateTextInput} />
+                        handleInputUpdate={handleUpdateTextInput}
+                        inputTestId={'name-input-test-id'}
+                        iconTestId={'name-icon-toggle-test-id'} />
                     <H3 display="inline">Color:</H3>
                     <ConfirmableInput
                         myKey={1}
@@ -105,7 +107,9 @@ const EditJournal = ({ username, journal, setJournals = () => { } }: Props) => {
                         editableText={editJournal?.color}
                         maxLength={20}
                         handleInputUpdate={handleUpdateTextInput}
-                        setVisibleObject={setDisplayColorPicker} />
+                        setVisibleObject={setDisplayColorPicker}
+                        inputTestId={'color-input-test-id'}
+                        iconTestId={'color-icon-toggle-test-id'}/>
 
                     <FlexContainer justify="space-between" margin="1em 0em">
                         <ColorPicker visible={displayColorPicker} color={editJournal?.color} setColor={setJournalColor}></ColorPicker>
@@ -117,6 +121,7 @@ const EditJournal = ({ username, journal, setJournals = () => { } }: Props) => {
                             hoverBorder="turq 2px solid"
                             disabled={canUserSave}
                             onClick={updateJournalDetails}
+                            data-testid="journal-edit-save-btn"
                         >Save</Button>
                     </FlexContainer>
                     {(isLoading) &&

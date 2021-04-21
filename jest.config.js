@@ -25,7 +25,10 @@ module.exports = {
         "!src/__tests__/**/*",
         "!src/components/**/*.stories.tsx",
         "!src/components/Alerts/*",
-        "!src/store/**/*"
+        "!src/store/**/*",
+        "!src/setupTests.ts",
+        "!src/react-app-env.d.ts",
+        "!src/index.tsx",
     ],
 
     // Test spec file resolution pattern

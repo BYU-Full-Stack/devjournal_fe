@@ -18,7 +18,7 @@ const Error = () => {
 
     return (
         <FlexContainer justify={"center"} align={"center"} height={"500px"}>
-            <H3>
+            <H3 data-testid='error-test-id'>
                 {
                     renderError(reason)
                 }

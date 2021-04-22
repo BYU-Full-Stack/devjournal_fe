@@ -59,7 +59,7 @@ test('Renders the page title', async () => {
     })
 });
 
-test('Renders all users', async () => {
+test('Renders all users & handles delete', async () => {
     await waitFor(() => {
         act(() => {
             render(<AdminPanel />, { initialState })

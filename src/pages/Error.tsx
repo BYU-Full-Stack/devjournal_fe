@@ -1,4 +1,4 @@
-import { FlexContainer, H3 } from "../Styles"
+import { FlexContainer, H3 } from "../styles/GlobalStyles"
 import { useQuery } from '../API/AppLogic'
 import { useLocation } from 'react-router-dom';
 const Error = () => {

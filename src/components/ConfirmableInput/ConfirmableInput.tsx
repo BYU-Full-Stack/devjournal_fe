@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { theme, Input, StyleProps } from '../../Styles'
+import { theme, Input, StyleProps } from '../../styles/GlobalStyles'
 import Icon from '../Icon/Icon'
 import { faEdit, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
@@ -38,17 +38,22 @@ const Wrapper = styled.section`
     min-width: 300px;
     @media screen and (max-width: 500px) {
         min-width: 50%;
-        input[type=text], span {
-            min-width: unset;
+        input[type=text],input[type=password],input[type=email], span {
+            min-width: calc(100% - 50px);
         }
     }
 `;
 
 export const Span = styled.span`
     display: ${({ display = 'inline-block' }: StyleProps) => display};
-    color: ${({ color = 'white' }: StyleProps) => theme[color]};
+    color: ${({ color = 'white' }: StyleProps) => theme[color] || color};
     x-overflow: ${({ xOverflow = 'auto' }: StyleProps) => xOverflow};
 `;
+
+const colorValidation = (input: string) => {
+    // make sure the string is valid hexidecimal
+    return /^#[a-f0-9]{6}$/i.test(input);
+};
 
 export default function ConfirmableInput({
     myKey,
@@ -59,7 +64,7 @@ export default function ConfirmableInput({
     handleInputUpdate,
     setCanUserSave = undefined,
     setVisibleObject = undefined,
-    validate = (value) => !!value,
+    validate = type === 'color' ? colorValidation : (value: string) => !!value,
     hint = 'Required input',
     inputTestId = 'custom-input',
     iconTestId = 'toggle-custom-input'
@@ -72,11 +77,11 @@ export default function ConfirmableInput({
     const displayText = (type === 'password') ? editableText.slice(0, 30).replace(/./g, '&bull;') : '';
 
     const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-        // Hide the hint if it's showing
+        // Hide the validation hint if it's showing
         if (showHint && value)
             setShowHint(false);
 
-        handleInputUpdate(value, myKey)
+        handleInputUpdate(value, myKey);
     };
 
     // used to hide the password when focusing in on the input field
@@ -87,7 +92,8 @@ export default function ConfirmableInput({
     };
 
     useEffect(() => {
-        setToggleType(type);
+        // the <input> below should stay as type 'text' when the props type is color
+        setToggleType(type === 'color' ? 'text' : type);
         setIsFirstFocus(true);
         setIsBeingEdited(false);
         setCanUserSave && setCanUserSave(false);
@@ -106,6 +112,7 @@ export default function ConfirmableInput({
             setIsBeingEdited(isBeingEdited => !isBeingEdited);
             setVisibleObject && setVisibleObject(!isBeingEdited);
         } else {
+            // show the hint when validation fails 
             setShowHint(true);
         }
     }
@@ -135,7 +142,11 @@ export default function ConfirmableInput({
                         // show little password dots (when not being edited) instead of revealing the password
                         <Span dangerouslySetInnerHTML={{ __html: displayText }} color="purple" data-testid="password-hidden-text"></Span>
                         :
-                        <Span color="purple" data-testid="editable-text">{editableText.slice(0, 30)}</Span>
+                        type === 'color' ?
+                            // set the color of the text to the selected color 
+                            <Span color={editableText}>{editableText}</Span>
+                            :
+                            <Span color="purple" data-testid="editable-text">{editableText.slice(0, 30)}</Span>
                     }
                     {/* Confirm/Save Icon */}
                     <Icon tabindex={0} keyDownData={{ cb: toggleIsBeingEdited }} size="2x" icon={faEdit} onClick={toggleIsBeingEdited} testid={iconTestId} />

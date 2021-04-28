@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { deleteJournal, useAlertBox, useUser } from "../../API/AppLogic";
 import Loading from "../../components/Loading";
-import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles";
+import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../styles/GlobalStyles";
 import { JournalType } from "./Journal";
 import { dateType } from "./ListJournals";
 

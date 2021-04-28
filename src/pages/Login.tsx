@@ -1,9 +1,9 @@
 import { useState, FormEvent } from 'react'
-import { PrettyH2, theme } from '../Styles'
+import { PrettyH2, theme } from '../styles/GlobalStyles'
 import { useHistory } from 'react-router-dom'
 import { login, useAlertBox, useUser } from '../API/AppLogic'
 import styled from 'styled-components'
-import { FlexContainer } from '../Styles'
+import { FlexContainer } from '../styles/GlobalStyles'
 import StyledInput from '../components/StyledInput/StyledInput'
 
 export const Wrapper = styled.div`

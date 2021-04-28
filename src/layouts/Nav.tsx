@@ -1,4 +1,4 @@
-import { theme, NavLink } from '../Styles'
+import { theme, NavLink } from '../styles/GlobalStyles'
 import styled from 'styled-components'
 import logo from '../logo.svg';
 import { useUser } from '../API/AppLogic';

@@ -1,4 +1,4 @@
-import { H2, PrettyH2 } from '../../Styles'
+import { H2, PrettyH2 } from '../../styles/GlobalStyles'
 
 const Font = {
     title: 'Font',

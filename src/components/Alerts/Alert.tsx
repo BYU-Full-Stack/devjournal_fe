@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
-import { theme } from '../../Styles'
+import { theme } from '../../styles/GlobalStyles'
 
 import Icon from '../Icon/Icon'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'

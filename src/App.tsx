@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux';
-import { GlobalStyles } from './Styles';
+import { GlobalStyles } from './styles/GlobalStyles';
 import store from './store';
 import Nav from './layouts/Nav';
 import MyRouter from './layouts/Router'

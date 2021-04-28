@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { updateEntry, useUser } from '../../API/AppLogic';
 import { EntryType } from '../Journal/ListEntries';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { Button, FlexCol, FlexContainer, H3 } from '../../Styles';
+import { Button, FlexCol, FlexContainer, H3 } from '../../styles/GlobalStyles';
 import ConfirmableInput from '../../components/ConfirmableInput/ConfirmableInput';
 
 type Props = {

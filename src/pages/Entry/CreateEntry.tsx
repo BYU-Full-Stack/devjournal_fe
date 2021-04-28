@@ -3,7 +3,7 @@ import Editor from '@monaco-editor/react';
 import { useState } from 'react';
 import { createEntry, useUser, useAlertBox } from '../../API/AppLogic';
 import ConfirmableInput from '../../components/ConfirmableInput/ConfirmableInput';
-import { Button, FlexCol, FlexContainer, H1, H3 } from '../../Styles';
+import { Button, FlexCol, FlexContainer, H1, H3 } from '../../styles/GlobalStyles';
 import { EntryType } from '../Journal/ListEntries';
 import { useHistory, useParams } from 'react-router-dom';
 

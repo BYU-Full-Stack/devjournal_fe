@@ -1,13 +1,13 @@
 import { DragEvent, useState } from 'react'
-import { theme, FlexContainer, FlexCol, StyleProps } from '../../Styles'
 import styled, { css } from 'styled-components'
+import { theme, FlexContainer, FlexCol, StyleProps, devices } from '../../styles/GlobalStyles'
 import Icon from '../Icon/Icon'
 import { faCaretSquareRight, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
-    children: React.ReactNode;
-    open?: boolean;
-    top?: number;
+  children: React.ReactNode;
+  open?: boolean;
+  top?: number;
 } & StyleProps;
 
 const StyledCol = styled(FlexCol)`
@@ -49,15 +49,47 @@ const StyledCol = styled(FlexCol)`
     justify-content: space-between;
   }
 
-  @media screen and (max-width: ${700}px) {
+  ul {
+    padding: 0;
+    list-style: none;
+    transition-duration: 0.5s;
+    
+    border: 1px ${theme['gray-light']} solid;
+    border-top: none;
+    cursor: pointer;
+  }
+
+  li {
+    padding: 10px;
+    padding-left: 15px;
+    font-size: 18px;
+  }
+
+    li:focus {
+        outline: none;
+    }
+    li:hover:nth-child(n),li:focus:nth-child(n) {
+       background-color: ${theme['green-hover']};
+    }
+
+    li:hover:nth-child(2n),li:focus:nth-child(2n) {
+        background-color: ${theme['orange-hover']};
+    }
+
+    li:hover:nth-child(3n),li:focus:nth-child(3n) {
+       background-color: ${theme['red-hover']};
+    }
+
+  @media screen and (max-width: ${devices.tablet}) {
       position: fixed;
       transition: width .5s;
       z-index: 10;
     ${({ open }: Props) =>
-        open ?
-            css`
+    open ?
+      css`
             min-width: inherit;
             width: 300px;
+            max-width: 95%;
             height: 100vh;
             top: 0;
             box-shadow: #444 0 0 2px 5px;
@@ -65,7 +97,7 @@ const StyledCol = styled(FlexCol)`
                 display: block;
             }
         ` :
-            css`
+      css`
             ${({ top }: Props) => top !== undefined && css`
                 top: ${top}px;    
             `}
@@ -81,48 +113,58 @@ const StyledCol = styled(FlexCol)`
                 display: block;
             }
         `
-    }
+  }
     
   }
 `;
 
 const LeftNav = ({ children, open = false, ...rest }: Props) => {
-    // opens and closes the left-nav
-    const [menuIsOpen, toggleIsOpen] = useState<boolean>(open);
-    const toggleLeftNav = () => toggleIsOpen(prevValue => !prevValue);
+  // opens and closes the left-nav
+  const [menuIsOpen, toggleIsOpen] = useState<boolean>(open);
+  const toggleLeftNav = () => toggleIsOpen(prevValue => !prevValue);
 
-    // controls the y-axis positioning of the left-nav opener
-    const [top, setTopPosition] = useState<number>(130);
+  // controls the y-axis positioning of the left-nav opener
+  const [top, setTopPosition] = useState<number>(130);
 
-    const handleDrag = ({ clientY = 130 }: DragEvent) => {
-        // make sure the left-nav opener stays on screen
-        if (clientY > 0 && clientY + 50 < window.innerHeight) {
-            setTopPosition(clientY);
-        }
-    };
+  const handleDrag = ({ clientY = 130 }: DragEvent) => {
+    // make sure the left-nav opener stays on screen
+    if (clientY > 0 && clientY + 50 < window.innerHeight) {
+      setTopPosition(clientY);
+    }
+  };
 
-    return (
-        <StyledCol top={top} open={menuIsOpen} {...rest} draggable={!menuIsOpen} onDragEnd={handleDrag}>
-            {
-                <>
-                    <Icon
-                        icon={faCaretSquareRight}
-                        id='open-icon'
-                        size='3x'
-                        color="bg-dark"
-                        hcolor="turq"
-                        onClick={toggleLeftNav}
-                    />
-                    <section id='contents'>
-                        <FlexContainer justify="flex-end">
-                            <Icon id="close-icon" color="bg-dark" hcolor="red-deep" icon={faTimes} size="2x" onClick={toggleLeftNav} />
-                        </FlexContainer>
-                        {children}
-                    </section>
-                </>
-            }
-        </StyledCol>
-    )
+  return (
+    <StyledCol top={top} open={menuIsOpen} {...rest} draggable={!menuIsOpen} onDragEnd={handleDrag}>
+      {
+        <>
+          <Icon
+            icon={faCaretSquareRight}
+            id='open-icon'
+            size='3x'
+            color="bg-dark"
+            hcolor="turq"
+            tabindex={0}
+            onClick={toggleLeftNav}
+            keyDownData={{ cb: toggleLeftNav }}
+          />
+          <section id='contents'>
+            <FlexContainer justify="flex-end">
+              <Icon
+                tabindex={1}
+                keyDownData={{ cb: toggleLeftNav }}
+                onClick={toggleLeftNav}
+                id="close-icon"
+                color="bg-dark"
+                hcolor="red-deep"
+                icon={faTimes}
+                size="2x" />
+            </FlexContainer>
+            {children}
+          </section>
+        </>
+      }
+    </StyledCol>
+  )
 };
 
 export default LeftNav;

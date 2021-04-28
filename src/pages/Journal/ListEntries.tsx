@@ -8,7 +8,7 @@ import {
   PrettyH2,
   H1,
   Button,
-} from '../../Styles';
+} from '../../styles/GlobalStyles';
 import LeftNav from '../../components/LeftNav/LeftNav'
 import Entry from '../Entry/Entry';
 import { JournalType } from './Journal';

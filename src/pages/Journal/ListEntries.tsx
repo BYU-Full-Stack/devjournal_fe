@@ -5,11 +5,11 @@ import {
   Main,
   FlexCol,
   FlexContainer,
-  LeftNav,
   PrettyH2,
   H1,
   Button,
 } from '../../Styles';
+import LeftNav from '../../components/LeftNav/LeftNav'
 import Entry from '../Entry/Entry';
 import { JournalType } from './Journal';
 import Loading from '../../components/Loading';
@@ -97,7 +97,8 @@ const ListEntries = ({ username, id, name }: ListeEntriesProps) => {
         >Back to Journals</Button>
 
         <FlexContainer wrap='wrap' height='100%'>
-          <LeftNav width='15%'>
+          <LeftNav width='20%'>
+
             <PrettyH2>{name} Journal Entries</PrettyH2>
             {entries.map(({ title, lastUpdated }, idx) => {
               lastUpdated = (lastUpdated !== undefined) ? new Date(lastUpdated) : undefined;
@@ -115,10 +116,15 @@ const ListEntries = ({ username, id, name }: ListeEntriesProps) => {
               );
             })}
             <Link to={`/${username}/journals/${id}/entries/create`}>
-              <Button>Create New Entry</Button>
+              <Button
+                bgColor="bg-dark"
+                padding=".4em 1em"
+                border="transparent 2px solid"
+                width="100%"
+                hoverBorder="turq 2px solid">Create New Entry</Button>
             </Link>
           </LeftNav>
-          <FlexCol width='80%' margin='1em'>
+          <FlexCol width='75%' margin='1em'>
             {visibleEntry !== undefined ? (
               <>
                 <H1>{visibleEntry.title}</H1>

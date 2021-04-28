@@ -1,7 +1,7 @@
 import { OnChange } from '@monaco-editor/react';
 import Editor from '@monaco-editor/react';
 import { useState } from 'react';
-import { createEntry, useUser } from '../../API/AppLogic';
+import { createEntry, useUser, useAlertBox } from '../../API/AppLogic';
 import ConfirmableInput from '../../components/ConfirmableInput/ConfirmableInput';
 import { Button, FlexCol, FlexContainer, H1, H3 } from '../../Styles';
 import { EntryType } from '../Journal/ListEntries';
@@ -10,6 +10,9 @@ import { useHistory, useParams } from 'react-router-dom';
 const CreateEntry = () => {
   //bring in user credentials
   const [user] = useUser();
+
+  // use side alert box 
+  const [, addAlert] = useAlertBox();
 
   //route information to access journal id
   const routeHistory = useHistory();
@@ -46,12 +49,23 @@ const CreateEntry = () => {
       );
       routeHistory.push(`/journals/${journalId.id}`);
     } catch (err) {
-      console.log(err);
+      const { message = 'Ensure you entered a title for your new journal.' } = err?.response?.data || {};
+      addAlert({
+        key: `failed-create-entry-${journalId}-${new Date()}`,
+        text: message,
+        timeout: 7,
+        theme: 'error',
+      });
     }
   };
   return (
     <main>
-      <Button onClick={() => routeHistory.goBack()}>Back</Button>
+      <Button
+        bgColor="bg-dark"
+        padding=".4em 1em"
+        border="transparent 2px solid"
+        hoverBorder="turq 2px solid"
+        onClick={() => routeHistory.goBack()}>Back to Journal</Button>
       <H1>Create a New Entry</H1>
 
       <FlexContainer wrap='wrap' height='100%'>

@@ -1,4 +1,4 @@
-import { KeyboardEventHandler } from 'react'
+import { KeyboardEvent } from 'react'
 import { POST, GET, DELETE, defaultReqOptions as options, PUT } from './index';
 import { USER_STATE_TYPE } from '../store/reducers/user';
 import { ALERT_STATE_TYPE } from '../store/reducers/alert';
@@ -326,7 +326,7 @@ export type KeyDownData = {
  *  keyCodes: an array of keyboard keys (ascii) to watch for
  *  params: any parameters for the callback function 
  */
-export const watchButtonPress = (e: KeyboardEventHandler, { keyCodes = [13, 32], cb = () => { }, params = [] }: KeyDownData) => {
+export const watchButtonPress = (e: KeyboardEvent, { keyCodes = [13, 32], cb = () => { }, params = [] }: KeyDownData) => {
   // @ts-ignore
   if (keyCodes.includes(e.charCode)) {
     cb(...params)

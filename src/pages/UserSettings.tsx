@@ -4,45 +4,9 @@ import { PrettyH2, H3 } from '../Styles'
 
 // Test component to ensure store state is updating correctly
 import ConfirmableInput from '../components/ConfirmableInput/ConfirmableInput'
-import { FlexContainer, FlexCol, Button, theme } from '../Styles'
-import styled from 'styled-components'
+import LeftNav from '../components/LeftNav/LeftNav'
+import { FlexContainer, FlexCol, Button } from '../Styles'
 import { USER_STATE_TYPE } from '../store/reducers/user'
-
-
-const LeftNav = styled(FlexCol)`
-    height: 100%;
-    border-radius: 4px;
-    background-color: ${theme['gray-light']};
-    margin-top: 1em;
-    color: ${theme['bg-dark']};
-    h2 {
-        background-color: ${theme['bg-dark']};
-        text-align: center;
-        margin: 0;
-        padding: 1em 0;
-        border-radius: inherit;
-        border: 2px ${theme['gray-light']} solid;
-        border-bottom: none;
-    }
-    div {
-        padding: 10px 5px;
-        transition-duration: .5s;
-        :hover {
-            &:nth-child(2) {
-                background-color: ${theme['orange-hover']};
-            }
-            &:nth-child(3) {
-                background-color: ${theme['green-hover']};
-            }
-            &:nth-child(4) {
-                background-color: ${theme['red-hover']};
-            }
-        }
-        border: 1px ${theme['gray-light']} solid;
-        border-top: none;
-        cursor: pointer;
-    }
-`;
 
 const UserSettings = () => {
     const [, addAlert] = useAlertBox();

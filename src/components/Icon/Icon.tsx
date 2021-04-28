@@ -1,4 +1,4 @@
-import { KeyboardEventHandler } from 'react'
+import { KeyboardEventHandler, DragEventHandler } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MouseEventHandler } from 'react'
 import styled, { css } from 'styled-components'
@@ -9,16 +9,6 @@ import {
     IconProp,
     SizeProp
 } from '@fortawesome/fontawesome-svg-core'
-
-type props = {
-    icon: IconProp;
-    size?: SizeProp;
-    onClick?: MouseEventHandler<any>;
-    spin?: boolean;
-    testid?: string;
-    tabindex?: number | undefined;
-    keyDownData?: KeyDownData;
-}
 
 type IconStyleProps = {
     vertalign?: string;
@@ -33,6 +23,18 @@ type IconStyleProps = {
     right?: string;
     top?: string;
 };
+
+type props = {
+    icon: IconProp;
+    size?: SizeProp;
+    spin?: boolean;
+    testid?: string;
+    tabindex?: number | undefined;
+    keyDownData?: KeyDownData;
+    id?: string;
+    onClick?: MouseEventHandler;
+    onDragStart?: DragEventHandler;
+} & IconStyleProps;
 
 const StyledIcon = styled(FontAwesomeIcon)`
     cursor: ${({ hcolor = '', color = '' }: IconStyleProps) => hcolor === color ? 'default' : 'pointer'};
@@ -65,7 +67,19 @@ const StyledIcon = styled(FontAwesomeIcon)`
         `}
 `;
 
-export default function Icon({ icon, color = 'white', keyDownData, tabindex = -1, hcolor = undefined, size = '2x', onClick = (() => null), spin = false, testid, ...rest }: props & IconStyleProps) {
-    // @ts-ignore
-    return <StyledIcon tabIndex={tabindex} onKeyPress={(e: KeyboardEventHandler) => (tabindex > -1) && watchButtonPress(e, keyDownData)} hcolor={hcolor} icon={icon} color={color} size={size} onClick={onClick} spin={spin} data-testid={testid} {...rest} />;
+export default function Icon({ icon, color = 'white', keyDownData, tabindex = -1, hcolor = undefined, size = '2x', onClick = (() => null), spin = false, testid, ...rest }: props) {
+
+    const keyboardHandler: KeyboardEventHandler<SVGSVGElement> =
+        (e) => (tabindex > -1) && watchButtonPress(e, keyDownData || {});
+
+    return <StyledIcon tabIndex={tabindex}
+        onKeyPress={keyboardHandler}
+        hcolor={hcolor}
+        icon={icon}
+        color={color}
+        size={size}
+        onClick={onClick}
+        spin={spin}
+        data-testid={testid}
+        {...rest} />;
 };

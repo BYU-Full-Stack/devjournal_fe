@@ -2,10 +2,10 @@ import { useState, FormEvent } from 'react'
 import { registerUser, useUser, useAlertBox } from '../API/AppLogic'
 import StyledInput from '../components/StyledInput/StyledInput'
 import { Wrapper, StyledButton } from './Login'
-import { PrettyH2 } from '../Styles'
+import { PrettyH2 } from '../styles/GlobalStyles'
 import { useHistory } from 'react-router-dom'
 
-import { FlexContainer } from '../Styles'
+import { FlexContainer } from '../styles/GlobalStyles'
 
 const Register = () => {
     const [username, setUserName] = useState('');
@@ -56,7 +56,7 @@ const Register = () => {
                     <StyledInput type='text' placeholder='username' handleChange={setUserName} data-testid='username' /><br />
                     <StyledInput type='email' placeholder='email' handleChange={setEmail} data-testid='email' /><br />
                     <StyledInput type='password' placeholder='password' handleChange={setPassword} data-testid='password' /><br /><br />
-                    
+
                     <FlexContainer direction="column" justify="center" align="center">
                         <StyledButton data-testid='user-register-btn'>Sign Up</StyledButton>
                         <p style={{

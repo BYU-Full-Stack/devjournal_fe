@@ -1,4 +1,4 @@
-import { theme } from '../../Styles'
+import { theme } from '../../styles/GlobalStyles'
 import styled from 'styled-components'
 
 export const StyledInput = styled.input`

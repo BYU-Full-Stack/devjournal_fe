@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { getUser, updateUser, useUser, useAlertBox } from '../API/AppLogic'
-import { PrettyH2, H3 } from '../Styles'
+import { getUser, updateUser, useUser, useAlertBox, watchButtonPress } from '../API/AppLogic'
+import { PrettyH2, H3 } from '../styles/GlobalStyles'
 
 // Test component to ensure store state is updating correctly
 import ConfirmableInput from '../components/ConfirmableInput/ConfirmableInput'
 import LeftNav from '../components/LeftNav/LeftNav'
-import { FlexContainer, FlexCol, Button } from '../Styles'
+import { FlexContainer, FlexCol, Button } from '../styles/GlobalStyles'
 import { USER_STATE_TYPE } from '../store/reducers/user'
 
 const UserSettings = () => {
@@ -21,7 +21,7 @@ const UserSettings = () => {
         { label: 'Password', key: 'password', type: 'password', maxLength: 50 },
         {
             label: 'Email', key: 'email', maxLength: 50, type: 'email', hint: 'Enter a valid email', validate: (input: string) => {
-                return /^[a-z_\.0-9]+@[a-z0-9_\.]+\.(com|edu|org|gov|net)$/i.test(input);
+                return /^[a-z_.0-9]+@[a-z0-9_.]+\.(com|edu|org|gov|net)$/i.test(input);
             }
         },
     ];
@@ -104,9 +104,14 @@ const UserSettings = () => {
         <FlexContainer wrap="wrap" height="100%">
             <LeftNav width='250px'>
                 <PrettyH2 data-testid="page-title">Account Settings</PrettyH2>
-                {fieldsToUpdate.map(({ label }, idx) => <div key={idx} onClick={() => changeUpdateField(idx)} data-testid={`${label}-field-to-update`}>{label}</div>)}
+                <ul>
+                    {
+                        fieldsToUpdate.map(({ label }, idx) =>
+                            <li tabIndex={idx + 1} onKeyPress={(e) => watchButtonPress(e, { cb: () => changeUpdateField(idx) })} key={idx} onClick={() => changeUpdateField(idx)} data-testid={`${label}-field-to-update`}>{label}</li>)
+                    }
+                </ul>
             </LeftNav>
-            <FlexCol margin="auto">
+            <FlexCol margin="auto" className="main">
                 <H3 display="inline">{fieldsToUpdate[indexOfUpdateField].label}:</H3>
                 <ConfirmableInput
                     myKey={indexOfUpdateField}
@@ -133,7 +138,7 @@ const UserSettings = () => {
                     >Save</Button>
                 </FlexContainer>
             </FlexCol>
-            <FlexCol width='250px'></FlexCol>
+            <FlexCol width='250px' className='empty-col'></FlexCol>
         </FlexContainer>
     );
 };

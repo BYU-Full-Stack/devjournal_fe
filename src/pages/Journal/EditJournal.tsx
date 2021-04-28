@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 
 import { getJournalByID, updateJournal, useAlertBox, useUser } from "../../API/AppLogic";
 import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput";
-import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles";
+import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../styles/GlobalStyles";
 import { JournalType } from "./Journal";
 import { useHistory } from "react-router-dom";
 import Loading from "../../components/Loading";
@@ -105,11 +105,12 @@ const EditJournal = ({ username, journal, setJournals = () => { } }: Props) => {
                         myKey={1}
                         setCanUserSave={setCanUserSave}
                         editableText={editJournal?.color}
+                        type='color'
                         maxLength={20}
                         handleInputUpdate={handleUpdateTextInput}
                         setVisibleObject={setDisplayColorPicker}
                         inputTestId={'color-input-test-id'}
-                        iconTestId={'color-icon-toggle-test-id'}/>
+                        iconTestId={'color-icon-toggle-test-id'} />
 
                     <FlexContainer justify="space-between" margin="1em 0em">
                         <ColorPicker visible={displayColorPicker} color={editJournal?.color} setColor={setJournalColor}></ColorPicker>

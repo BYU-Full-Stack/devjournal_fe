@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import { devices } from './Devices';
 
 export const theme: { [key: string]: string } = {
   'bg-dark': '#212121',
@@ -22,7 +23,9 @@ export const theme: { [key: string]: string } = {
 };
 
 export const GlobalStyles = createGlobalStyle`
-
+  * {
+    // box-sizing: border-box;
+  }
     body {
         background-color: ${theme['bg-dark']};
 
@@ -43,7 +46,6 @@ export const GlobalStyles = createGlobalStyle`
         overflow-x: hidden;
         height: 100%;
     }
-
 `;
 
 export const Navbar = styled.section`
@@ -91,6 +93,15 @@ export const FlexCol = styled.section`
   justify-content: ${(props: StyleProps) => props.justify || 'flex-start'};
   max-width: ${({ maxWidth = '' }: StyleProps) => maxWidth};
   margin: ${({ margin = 'none' }: StyleProps) => margin};
+
+  @media screen and (max-width: ${devices.tablet}) {
+    &.empty-col {
+      display: none;
+    }
+    &.main {
+      width: 350px;
+    }
+  }
 `;
 
 export const Input = styled.input`
@@ -183,3 +194,5 @@ export const StyledLink = styled(Link)`
 export const Main = styled.main`
   margin: 20px;
 `;
+
+export * from './Devices';

@@ -1,5 +1,4 @@
-import React from "react";
-import { FlexContainer } from "../Styles";
+import { FlexContainer } from "../styles/GlobalStyles";
 import Icon from "./Icon/Icon";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 

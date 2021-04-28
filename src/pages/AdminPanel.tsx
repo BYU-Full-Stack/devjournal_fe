@@ -4,7 +4,7 @@ import Icon from '../components/Icon/Icon';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faExternalLinkSquareAlt } from '@fortawesome/free-solid-svg-icons'
 import { USER_STATE_TYPE } from '../store/reducers/user';
-import { FlexCol, FlexContainer, theme, PrettyH2, H3, StyledLink as DefaultStyledLink } from '../Styles';
+import { FlexCol, FlexContainer, theme, PrettyH2, H3, StyledLink as DefaultStyledLink } from '../styles/GlobalStyles';
 import styled from 'styled-components';
 
 const StyledLink = styled(DefaultStyledLink)`

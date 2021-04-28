@@ -2,7 +2,7 @@ import { KeyboardEventHandler, DragEventHandler } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MouseEventHandler } from 'react'
 import styled, { css } from 'styled-components'
-import { theme } from '../../Styles'
+import { theme } from '../../styles/GlobalStyles'
 import { watchButtonPress, KeyDownData } from '../../API/AppLogic'
 
 import {

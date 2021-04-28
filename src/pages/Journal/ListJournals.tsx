@@ -2,7 +2,7 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import { faSort } from '@fortawesome/free-solid-svg-icons'
 
 import styled from 'styled-components';
-import { H1, theme, Button, Main, StyledLink } from './../../Styles';
+import { H1, theme, Button, Main, StyledLink } from '../../styles/GlobalStyles';
 import Icon from '../../components/Icon/Icon'
 import { faExternalLinkSquareAlt } from '@fortawesome/free-solid-svg-icons'
 import { JournalType, ListJournalsProps } from './Journal'

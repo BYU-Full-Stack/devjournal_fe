@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react"
 import { useHistory } from "react-router-dom";
 import { createJournal, useAlertBox, useUser } from "../../API/AppLogic";
 import ConfirmableInput from "../../components/ConfirmableInput/ConfirmableInput";
-import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../Styles"
+import { Button, FlexCol, FlexContainer, H1, H3, Main } from "../../styles/GlobalStyles"
 import { JournalType } from "./Journal";
 import Loading from "../../components/Loading";
 import ColorPicker from "../../components/ColorPicker";
@@ -86,6 +86,7 @@ const CreateJournal = () => {
                         setCanUserSave={setCanUserSave}
                         editableText={journal?.color}
                         maxLength={20}
+                        type='color'
                         handleInputUpdate={handleUpdateTextInput}
                         setVisibleObject={setDisplayColorPicker}
                         inputTestId={'color-input-test-id'}

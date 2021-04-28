@@ -1,5 +1,5 @@
 import { deleteEntry, useUser } from '../../API/AppLogic';
-import { Button } from '../../Styles';
+import { Button } from '../../styles/GlobalStyles';
 import { EntryType } from '../Journal/ListEntries';
 
 type Props = {

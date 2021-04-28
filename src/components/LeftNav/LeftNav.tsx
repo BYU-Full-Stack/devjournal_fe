@@ -86,10 +86,12 @@ const StyledCol = styled(FlexCol)`
   }
 `;
 
-
 const LeftNav = ({ children, open = false, ...rest }: Props) => {
+    // opens and closes the left-nav
     const [menuIsOpen, toggleIsOpen] = useState<boolean>(open);
     const toggleLeftNav = () => toggleIsOpen(prevValue => !prevValue);
+
+    // controls the y-axis positioning of the left-nav opener
     const [top, setTopPosition] = useState<number>(130);
 
     const handleDrag = ({ clientY = 130 }: DragEvent) => {
@@ -97,13 +99,12 @@ const LeftNav = ({ children, open = false, ...rest }: Props) => {
         if (clientY > 0 && clientY + 50 < window.innerHeight) {
             setTopPosition(clientY);
         }
-    }
+    };
 
     return (
-        <StyledCol top={top} open={menuIsOpen} {...rest} draggable={true} onDragEnd={handleDrag}>
+        <StyledCol top={top} open={menuIsOpen} {...rest} draggable={!menuIsOpen} onDragEnd={handleDrag}>
             {
                 <>
-
                     <Icon
                         icon={faCaretSquareRight}
                         id='open-icon'
@@ -111,12 +112,10 @@ const LeftNav = ({ children, open = false, ...rest }: Props) => {
                         color="bg-dark"
                         hcolor="turq"
                         onClick={toggleLeftNav}
-
                     />
-
                     <section id='contents'>
                         <FlexContainer justify="flex-end">
-                            <Icon id="close-icon" color="bg-dark" hcolor="purple" icon={faTimes} size="2x" onClick={toggleLeftNav} />
+                            <Icon id="close-icon" color="bg-dark" hcolor="red-deep" icon={faTimes} size="2x" onClick={toggleLeftNav} />
                         </FlexContainer>
                         {children}
                     </section>

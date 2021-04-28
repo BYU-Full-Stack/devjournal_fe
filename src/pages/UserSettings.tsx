@@ -19,7 +19,11 @@ const UserSettings = () => {
     const fieldsToUpdate = [
         { label: 'Username', key: 'username', maxLength: 20 },
         { label: 'Password', key: 'password', type: 'password', maxLength: 50 },
-        { label: 'Email', key: 'email', maxLength: 50 },
+        {
+            label: 'Email', key: 'email', maxLength: 50, type: 'email', hint: 'Enter a valid email', validate: (input: string) => {
+                return /^[a-z_\.0-9]+@[a-z0-9_\.]+\.(com|edu|org|gov|net)$/i.test(input);
+            }
+        },
     ];
 
     useEffect(() => {
@@ -109,6 +113,8 @@ const UserSettings = () => {
                     setCanUserSave={setCanUserSave}
                     label={fieldsToUpdate[indexOfUpdateField].label}
                     type={fieldsToUpdate[indexOfUpdateField].type ? fieldsToUpdate[indexOfUpdateField].type : 'text'}
+                    validate={fieldsToUpdate[indexOfUpdateField].validate}
+                    hint={fieldsToUpdate[indexOfUpdateField].hint}
                     // @ts-ignore
                     editableText={editUser[fieldsToUpdate[indexOfUpdateField].key]}
                     maxLength={fieldsToUpdate[indexOfUpdateField].maxLength}

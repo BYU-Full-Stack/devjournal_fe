@@ -11,14 +11,20 @@ type Props = {
     maxLength?: number;
     handleInputUpdate: (input: string, key: number) => void;
     setCanUserSave?: (bool: boolean) => void;
+    validate?: undefined | ((input: string) => boolean);
+    hint?: string;
     type?: string;
     setVisibleObject?: (bool: boolean) => void;
     inputTestId?: string;
     iconTestId?: string;
 };
 
+const Hint = styled.p`
+    color: ${theme['red-hover']}
+`;
+
 const Wrapper = styled.section`
-    input[type=text],input[type=password], span {
+    input[type=text],input[type=password],input[type=email], span {
         min-width: 300px;
     }
     span {
@@ -44,18 +50,38 @@ export const Span = styled.span`
     x-overflow: ${({ xOverflow = 'auto' }: StyleProps) => xOverflow};
 `;
 
-export default function ConfirmableInput({ myKey, label, editableText = '', maxLength, type = 'text', handleInputUpdate, setCanUserSave = undefined, setVisibleObject = undefined, inputTestId = 'custom-input', iconTestId = 'toggle-custom-input' }: Props) {
+export default function ConfirmableInput({
+    myKey,
+    label,
+    editableText = '',
+    maxLength,
+    type = 'text',
+    handleInputUpdate,
+    setCanUserSave = undefined,
+    setVisibleObject = undefined,
+    validate = (value) => !!value,
+    hint = 'Required input',
+    inputTestId = 'custom-input',
+    iconTestId = 'toggle-custom-input'
+}: Props) {
     const [isBeingEdited, setIsBeingEdited] = useState(false);
     const [isFirstFocus, setIsFirstFocus] = useState(true);
+    const [showHint, setShowHint] = useState<boolean>(false);
     const [toggleType, setToggleType] = useState(type);
     const confirmableInput = useRef<HTMLInputElement>(null);
     const displayText = (type === 'password') ? editableText.slice(0, 30).replace(/./g, '&bull;') : '';
 
     const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+        // Hide the hint if it's showing
+        if (showHint && value)
+            setShowHint(false);
+
         handleInputUpdate(value, myKey)
     };
 
+    // used to hide the password when focusing in on the input field
     const handleFocus = type === 'password' && isFirstFocus ? (() => { handleInputUpdate('', myKey); setIsFirstFocus(false); }) : () => undefined;
+    // strictly for toggling the password text between bullets and plain text
     const toggleShowing = () => {
         setToggleType(toggleType === 'password' ? 'text' : 'password');
     };
@@ -74,9 +100,14 @@ export default function ConfirmableInput({ myKey, label, editableText = '', maxL
     }, [confirmableInput, isBeingEdited])
 
     const toggleIsBeingEdited = () => {
-        setCanUserSave && setCanUserSave(!isBeingEdited);
-        setIsBeingEdited(isBeingEdited => !isBeingEdited);
-        setVisibleObject && setVisibleObject(!isBeingEdited);
+        // validate the input before allowing user to confirm
+        if (!isBeingEdited || validate(confirmableInput.current?.value || '')) {
+            setCanUserSave && setCanUserSave(!isBeingEdited);
+            setIsBeingEdited(isBeingEdited => !isBeingEdited);
+            setVisibleObject && setVisibleObject(!isBeingEdited);
+        } else {
+            setShowHint(true);
+        }
     }
 
     return (
@@ -97,6 +128,7 @@ export default function ConfirmableInput({ myKey, label, editableText = '', maxL
                                 checked={toggleType === 'text'}
                                 onChange={toggleShowing}
                                 data-testid="show-password-checkbox" /></label>)}
+                    <Hint>{showHint ? `*${hint}` : ''}</Hint>
                 </> :
                 <>
                     {type === 'password' ?

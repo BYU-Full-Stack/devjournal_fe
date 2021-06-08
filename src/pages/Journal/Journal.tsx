@@ -66,7 +66,7 @@ const Journal = () => {
           });
         } catch (err) {
           addAlert({
-            key: `get-journals-attempt-${new Date()}`,
+            id: `get-journals-attempt`,
             text: 'Unable to Retrieve Journals.',
             timeout: 7,
             theme: 'error',

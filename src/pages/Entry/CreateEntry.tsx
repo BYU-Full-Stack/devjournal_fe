@@ -51,7 +51,7 @@ const CreateEntry = () => {
     } catch (err) {
       const { message = 'Ensure you entered a title for your new journal.' } = err?.response?.data || {};
       addAlert({
-        key: `failed-create-entry-${journalId}-${new Date()}`,
+        id: `failed-create-entry-${journalId}`,
         text: message,
         timeout: 7,
         theme: 'error',

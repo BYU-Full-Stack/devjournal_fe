@@ -42,14 +42,14 @@ const CreateJournal = () => {
             setIsLoading(false);
             routeHistory.push("/journals");
             addAlert({
-                key: `create-${journal.name}-attempt-${new Date()}`,
+                id: `create-${journal.name}-attempt`,
                 text: `Successfully created your ${journal.name} Journal`,
                 timeout: 4,
                 theme: 'success'
             });
         } catch (err) {
             addAlert({
-                key: `create-journal-attempt-${new Date()}`,
+                id: `create-journal-attempt`,
                 text: 'Unable to Create Journal.',
                 timeout: 7,
                 theme: 'error'

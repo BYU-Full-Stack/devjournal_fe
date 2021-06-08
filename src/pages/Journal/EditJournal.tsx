@@ -62,14 +62,14 @@ const EditJournal = ({ username, journal, setJournals = () => { } }: Props) => {
             //take off loading
             setIsLoading(false);
             addAlert({
-                key: `update-${newJournal.name}-attempt-${new Date()}`,
+                id: `update-${newJournal.name}-attempt`,
                 text: `Successfully updated your ${newJournal.name} Journal`,
                 timeout: 4,
                 theme: 'success'
             });
         } catch (err) {
             addAlert({
-                key: `update-journal-attempt-${new Date()}`,
+                id: `update-journal-attempt`,
                 text: 'Unable to Update Journal.',
                 timeout: 7,
                 theme: 'error'

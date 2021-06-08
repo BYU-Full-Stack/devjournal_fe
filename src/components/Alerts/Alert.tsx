@@ -20,7 +20,8 @@ type StyledAlertProps = {
 
 const StyledAlert = styled.div`
     position: absolute;
-    transition: right .5s;
+    // smooth transition for top and right properties 
+    transition: all .5s;
     right: ${({ visible = false }: StyledAlertProps) => visible ? '.5em' : '-50em'};
     font-size: 14px;
     background-color: ${theme['bg-dark']};

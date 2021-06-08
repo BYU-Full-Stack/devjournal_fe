@@ -102,14 +102,14 @@ const DeleteJournal = ({ username, journal, setJournals = () => { } }: Props) =>
             setUserDeleting(false);
             routeHistory.goBack();
             addAlert({
-                key: `delete-${journal.name}-attempt-${new Date()}`,
+                id: `delete-${journal.name}-attempt`,
                 text: `Successfully deleted your ${journal.name} Journal`,
                 timeout: 4,
                 theme: 'success'
             });
         } catch (err) {
             addAlert({
-                key: `delete-journal-attempt-${new Date()}`,
+                id: `delete-journal-attempt`,
                 text: 'Unable to Delete Journal.',
                 timeout: 7,
                 theme: 'error'

@@ -46,7 +46,7 @@ const Login = () => {
                 role
             });
             addAlert({
-                key: `login-${username}-attempt-${new Date()}`,
+                id: `login-${username}-attempt`,
                 text: `Welcome back, ${username}!`,
                 timeout: 4,
                 theme: 'success'
@@ -59,7 +59,7 @@ const Login = () => {
                 message = 'Invalid login credentials. Please try again.'
             }
             addAlert({
-                key: `login-user-attempt-${new Date()}`,
+                id: `login-user-attempt`,
                 text: message,
                 timeout: 7,
                 theme: 'error'

@@ -65,7 +65,7 @@ export default function Users() {
           setUsers(allUsers);
         } catch (err) {
           addAlert({
-            key: `failed-users-retrieval--${new Date()}`,
+            id: `failed-users-retrieval`,
             text: 'Failed to retrieve all users',
             timeout: 7,
             theme: 'error',
@@ -83,7 +83,7 @@ export default function Users() {
       await deleteUser(username, user_id, user.token);
 
       addAlert({
-        key: `delete-user-${users[index].username}-${new Date()}`,
+        id: `delete-user-${users[index].username}`,
         text: `Successfully deleted user with username '${users[index].username}'`,
         timeout: 7,
         theme: 'success',
@@ -91,7 +91,7 @@ export default function Users() {
       setUsers([...users.slice(0, index), ...users.slice(index + 1)]);
     } catch (err) {
       addAlert({
-        key: `failed-delete-user-${users[index].username}-${new Date()}`,
+        id: `failed-delete-user-${users[index].username}}`,
         text: `Failed to delete user with username '${users[index].username}'`,
         timeout: 7,
         theme: 'error',

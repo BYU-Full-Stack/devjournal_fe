@@ -32,7 +32,7 @@ const Alerts = () => {
                 alerts.map(({ id, ...rest }: ALERT_STATE_TYPE, idx: number) =>
                     <Alert
                         top={`${50 * (idx + 1) + 50 * (idx)}px`}
-                        key={idx}
+                        key={id}
                         id={id}
                         dismiss={() => removeAlert(id)}
                         {...rest}

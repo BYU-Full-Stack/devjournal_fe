@@ -20,7 +20,8 @@ type ACTION_TYPE = {
 const alertReducer = (state = alertState, action: ACTION_TYPE) => {
     switch (action.type) {
         case ADD_ALERT:
-            return [...state, action.alert];
+            const existingAlert = state.find(alert => alert.id === action?.alert?.id);
+            return existingAlert ? state : [...state, action.alert];
         case DELETE_ALERT:
             return state.filter(({ id }: ALERT_STATE_TYPE) => id !== action.id)
         default:

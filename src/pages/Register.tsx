@@ -26,7 +26,7 @@ const Register = () => {
             });
 
             addAlert({
-                key: `create-${username}-attempt-${new Date()}`,
+                id: `create-${username}-attempt`,
                 text: `Successfully created your new account, ${username}!`,
                 timeout: 4,
                 theme: 'success'
@@ -36,7 +36,7 @@ const Register = () => {
         } catch (err: any) {
             const { message = 'Unable to Register. Please try again with different username.' } = err?.response?.data || {};
             addAlert({
-                key: `create-user-attempt-${new Date()}`,
+                id: `create-user-attempt`,
                 text: message,
                 timeout: 7,
                 theme: 'error'

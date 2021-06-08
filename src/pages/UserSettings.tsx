@@ -34,7 +34,7 @@ const UserSettings = () => {
                 setUser(apiUser);
             } catch (err) {
                 addAlert({
-                    key: `get-user-attempt-${new Date()}`,
+                    id: `get-user-attempt`,
                     text: 'Unable to retrieve user.',
                     timeout: 7,
                     theme: 'error'
@@ -66,7 +66,7 @@ const UserSettings = () => {
 
             saveButtonRef.current && (saveButtonRef.current.disabled = false);
             addAlert({
-                key: `update-${fieldsToUpdate[indexOfUpdateField].key}-attempt-${new Date()}`,
+                id: `update-${fieldsToUpdate[indexOfUpdateField].key}-attempt`,
                 text: `Successfully updated your ${fieldsToUpdate[indexOfUpdateField].key}`,
                 timeout: 4,
                 theme: 'success'
@@ -83,7 +83,7 @@ const UserSettings = () => {
                 }));
 
             addAlert({
-                key: `failed-update-${fieldsToUpdate[indexOfUpdateField].key}-attempt-${new Date()}`,
+                id: `failed-update-${fieldsToUpdate[indexOfUpdateField].key}-attempt`,
                 text: `Failed to update your ${fieldsToUpdate[indexOfUpdateField].key}`,
                 timeout: 7,
                 theme: 'error'
